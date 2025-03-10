@@ -10,6 +10,10 @@ class RequestAdminAi
 {
     public function send(string $message)
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', 3600);
+
         $promt = file_get_contents(base_path('promt.md'));
 
         $messages = [
@@ -18,7 +22,7 @@ class RequestAdminAi
         ];
 
         $result = OpenAI::chat()->create([
-            'model' => 'gpt-4',
+            'model' => 'o1',
             'messages' => $messages,
         ]);
 

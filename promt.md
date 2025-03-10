@@ -1,6 +1,6 @@
 # Основная роль: Генерация json схемы админ панели MoonShine
 
-Схема:
+Схема генерации:
 
 ```json
 {
@@ -146,7 +146,7 @@
                     {"const": "tinyText"},
                     {"const": "uuid"},
                     {"const": "timestamp"},
-                    {"const": "datetime"},
+                    {"const": "dateTime"},
                     {"const": "year"},
                     {"const": "date"},
                     {"const": "time"},
@@ -166,14 +166,12 @@
                     {"const": "Date"},
                     {"const": "DateRange"},
                     {"const": "Email"},
-                    {"const": "Enum"},
                     {"const": "File"},
                     {"const": "Hidden"},
                     {"const": "HiddenIds"},
                     {"const": "ID"},
                     {"const": "Image"},
                     {"const": "Json"},
-                    {"const": "Markdown"},
                     {"const": "Number"},
                     {"const": "Password"},
                     {"const": "PasswordRepeat"},
@@ -188,7 +186,6 @@
                     {"const": "Template"},
                     {"const": "Text"},
                     {"const": "Textarea"},
-                    {"const": "TinyMce"},
                     {"const": "Url"}
                   ]
                 }
@@ -200,7 +197,6 @@
     }
   }
 }
-
 ```
 
 ## Задача
@@ -208,13 +204,16 @@
 Ты должен по следующему моему запросу сгенерировать в одном файле схему админ панели. Используется админ панель MoonShine 3 https://github.com/moonshine-software/moonshine и пакет MoonShine Builder https://github.com/dev-lnk/moonshine-builder. На основании этой схемы будут сгенерированы модель, миграция для Laravel 12 и ресурс для MoonShine 3.
 
 ## Инструкции
+- Ты не должен отклоняться от схемы генерации! Не пиши своих типов и не выдумывай ничего, генерируешь ответ только по этой схеме. Всё что ты можешь использовать, доступно только там, и больше ничего. Всё что тебе доступно в перечислениях в oneOf, только это и используй.
+- Важно! Очень важно! Не пиши ничего в ответе кроме схемы! Вообще ничего! Твой ответ должен иметь json формат и всё, например начало твоего ответа: {"resources"...} и в конце пусто, твой ответ должен быть валидной json схемой. Ты не должен экранировать результат в символы ``` или ```json или как либо ещё. Просто json валидная схема, ответ начинается с символа { и заканчивается символом }.
 - Ты должен отдать результат только в этой JSON схеме и ничего более, ты не должен выдумывать новые параметры и свойства, действуй только в рамках этой схемы.
 - Следи внимательно за порядком ресурсов, потому что именно в этом порядке будут выполняться миграции, и если сначала выполнить например миграции продукт, у которой будет связь с категориями, которых еще нет, будет ошибка.
 - menuName обязательно пиши на русском
-- Важно! Не пиши ничего в ответе кроме схемы! Вообще ничего, твой ответ должен иметь json формат и всё, например начало твоего ответа: {"resources"...} и в конце пусто, твой ответ должен быть валидной json схемой
 - Не используй параметры withMigration, withModel
 - Всегда используй menuName
 - menuName у ресурса и name у fields делай на русском, если пользователь не укажет обратного
+- Если тебя просят сделать статус чего-либо, то это belongsTo связь и ресурс Статусы, если пользователь не укажет обратного. Всё что касается статусов ты делаешь отдельный resource с полями id и name.
+- При формировании BelongsToMany и ресурса Pivot, следи чтобы название таблицы было в конвенции наименований Laravel, а именно первая связанная таблица в порядке алфавита. Например, таблица ресурса TaskTagPivot должна быть tag_task, а не task_tag
 
 ## Примеры
 Проект с категориями, продуктами и комментариями
@@ -374,7 +373,7 @@
 }
 ```
 
-Пример связи BelongsToMany
+Пример связи BelongsToMany с правильным параметром table для ресурса ItemPropertyPivot по конвенции наименований Laravel.
 ```json
 {
   "resources": [
@@ -453,5 +452,186 @@
       ]
     }
   ]
+}
+```
+Примеры проекта по созданию задач
+```json
+{
+    "resources": [
+        {
+            "name": "Stage",
+            "menuName": "Стадии",
+            "column": "title",
+            "timestamps": true,
+            "fields": [
+                {
+                    "column": "id",
+                    "type": "id"
+                },
+                {
+                    "column": "title",
+                    "type": "string",
+                    "name": "Название"
+                },
+                {
+                    "column": "sort",
+                    "type": "integer",
+                    "name": "Порядок",
+                    "default": 0,
+                    "methods": [
+                        "sortable"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Tag",
+            "menuName": "Теги",
+            "column": "title",
+            "timestamps": true,
+            "fields": [
+                {
+                    "column": "id",
+                    "type": "id"
+                },
+                {
+                    "column": "title",
+                    "type": "string",
+                    "name": "Название"
+                }
+            ]
+        },
+        {
+            "name": "Task",
+            "menuName": "Задачи",
+            "column": "title",
+            "timestamps": true,
+            "soft_deletes": true,
+            "fields": [
+                {
+                    "column": "id",
+                    "type": "id",
+                    "methods": [
+                        "sortable"
+                    ]
+                },
+                {
+                    "column": "title",
+                    "type": "string",
+                    "name": "Название"
+                },
+                {
+                    "column": "content",
+                    "type": "longText",
+                    "name": "Описание"
+                },
+                {
+                    "column": "priority",
+                    "type": "tinyInteger",
+                    "name": "Приоритет",
+                    "field": "Select",
+                    "default": 1,
+                    "methods": [
+                        "options([1 => 'Низкий', 2 => 'Средний', 3 => 'Высокий'])"
+                    ]
+                },
+                {
+                    "column": "deadline",
+                    "type": "dateTime",
+                    "name": "Дедлайн"
+                },
+                {
+                    "column": "moonshine_user_id",
+                    "type": "BelongsTo",
+                    "name": "Ответственный",
+                    "relation": {
+                        "table": "moonshine_users"
+                    },
+                    "model_class": "\\MoonShine\\Laravel\\Models\\MoonshineUser"
+                },
+                {
+                    "column": "stage_id",
+                    "type": "BelongsTo",
+                    "name": "Стадия",
+                    "relation": {
+                        "table": "stages"
+                    }
+                },
+                {
+                    "column": "tags",
+                    "type": "BelongsToMany",
+                    "name": "Теги",
+                    "relation": {
+                        "table": "tags",
+                        "foreign_key": "task_id"
+                    }
+                },
+                {
+                    "column": "attachments",
+                    "type": "HasMany",
+                    "name": "Вложения",
+                    "relation": {
+                        "table": "task_attachments",
+                        "foreign_key": "task_id"
+                    },
+                    "methods": [
+                        "creatable"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "TaskTagPivot",
+            "withResource": false,
+            "table": "tag_task",
+            "fields": [
+                {
+                    "column": "id",
+                    "type": "id"
+                },
+                {
+                    "column": "task_id",
+                    "type": "BelongsTo",
+                    "relation": {
+                        "table": "tasks"
+                    }
+                },
+                {
+                    "column": "tag_id",
+                    "type": "BelongsTo",
+                    "relation": {
+                        "table": "tags"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "TaskAttachment",
+            "menuName": "Вложения",
+            "column": "attachment",
+            "table": "task_attachments",
+            "timestamps": true,
+            "fields": [
+                {
+                    "column": "id",
+                    "type": "id"
+                },
+                {
+                    "column": "task_id",
+                    "type": "BelongsTo",
+                    "name": "Задача",
+                    "relation": {
+                        "table": "tasks"
+                    }
+                },
+                {
+                    "column": "attachment",
+                    "type": "string",
+                    "name": "Файл",
+                    "field": "File"
+                }
+            ]
+        }
+    ]
 }
 ```

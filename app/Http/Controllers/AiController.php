@@ -11,13 +11,13 @@ class AiController extends MoonShineController
 {
     public function index(RequestAdminAi $requestAdminAi): BinaryFileResponse
     {
-//        $schema = $requestAdminAi->send(request()->input(['promt']));
-//
-//        $filePath = base_path('/results/item_' . time() . '.json');
-//
-//        file_put_contents($filePath, $schema);
+        $schema = $requestAdminAi->send(request()->input(['promt']));
 
-        $filePath = base_path('results/item_1740752589.json');
+        $filePath = base_path('/results/item_' . time() . '.json');
+
+        file_put_contents($filePath, $schema);
+
+        //$filePath = base_path('results/item_1740752589.json');
 
         $makeAdmin = new MakeAdmin($filePath);
         $path = $makeAdmin->handle();

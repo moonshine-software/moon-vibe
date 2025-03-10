@@ -1,0 +1,4 @@
+/docker
+!/docker/dockerfiles/nginx/config
+/Makefile
+docker-compose.yml

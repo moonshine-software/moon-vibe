@@ -1,0 +1,100 @@
+services:
+  nginx:
+    build:
+      args:
+        project_dir: ${APP_PATH}
+      context: .
+      dockerfile: ./docker/dockerfiles/nginx/Dockerfile
+      target: dev
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    ports:
+      - "${APP_WEB_PORT}:80"
+    volumes:
+      - ./:${APP_PATH}
+    depends_on:
+      - php
+
+  php:
+    build:
+      args:
+        user: ${DOCKER_USER}
+        uid: 1000
+        xdebug_idekey: ${XDEBUG_IDEKEY}
+        xdebug_client_port: ${XDEBUG_CLIENT_PORT}
+        target: dev
+      context: .
+      dockerfile: ./docker/dockerfiles/php/Dockerfile
+      target: dev
+    container_name: ${COMPOSE_PROJECT_NAME}-php
+    volumes:
+      - ./:/var/www/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - db
+      - redis
+
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    build:
+      args:
+        db_root_pass: ${MYSQL_ROOT_PASS}
+      context: .
+      dockerfile: ./docker/dockerfiles/mysql/Dockerfile
+    volumes:
+      - ./docker/volumes/mysql:/var/lib/mysql
+    ports:
+      - "${APP_MYSQL_PORT}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
+
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: redis:7.0.11-alpine
+    volumes:
+      - ./docker/volumes/redis:/data
+    ports:
+      - "${APP_REDIS_PORT}:6379"
+
+  npm:
+    build:
+      context: .
+      dockerfile: ./docker/dockerfiles/node/Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}-npm
+    volumes:
+      - ./:${APP_PATH}:cached
+      - ./.env:${APP_PATH}/.env
+    working_dir: ${APP_PATH}
+    profiles: ["npm"]
+    entrypoint: ['npm']
+    ports:
+      - "${APP_VITE_PORT}:5173"
+
+#  scheduler:
+#    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
+#    build:
+#      args:
+#        user: ${DOCKER_USER}
+#        uid: 1000
+#      context: .
+#      dockerfile: ./docker/dockerfiles/php/Dockerfile
+#      target: scheduler
+#    volumes:
+#      - ./:${APP_PATH}
+#    restart: unless-stopped
+#    depends_on:
+#      - php
+#
+#  worker:
+#    container_name: ${COMPOSE_PROJECT_NAME}-worker
+#    build:
+#      args:
+#        user: ${DOCKER_USER}
+#        uid: 1000
+#      context: .
+#      dockerfile: ./docker/dockerfiles/php/Dockerfile
+#      target: worker
+#    volumes:
+#      - ./:${APP_PATH}
+#    depends_on:
+#      - php

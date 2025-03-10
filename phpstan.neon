@@ -1,0 +1,10 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    editorUrl: 'anything'
+    editorUrlTitle: "\nat %%relFile%%:%%line%%"
+    level: max
+    paths:
+        - app
+        - tests

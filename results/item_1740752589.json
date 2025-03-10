@@ -1,0 +1,150 @@
+{
+  "resources": [
+    {
+      "name": "Category",
+      "menuName": "Категории",
+      "column": "name",
+      "fields": [
+        {
+          "column": "id",
+          "type": "id",
+          "methods": [
+            "sortable"
+          ]
+        },
+        {
+          "column": "name",
+          "type": "string",
+          "name": "Название"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "menuName": "Статусы",
+      "column": "name",
+      "fields": [
+        {
+          "column": "id",
+          "type": "id",
+          "methods": [
+            "sortable"
+          ]
+        },
+        {
+          "column": "name",
+          "type": "string",
+          "name": "Название"
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "menuName": "Товары",
+      "column": "name",
+      "timestamps": true,
+      "fields": [
+        {
+          "column": "id",
+          "type": "id",
+          "methods": [
+            "sortable"
+          ]
+        },
+        {
+          "column": "name",
+          "type": "string",
+          "name": "Название"
+        },
+        {
+          "column": "description",
+          "type": "text",
+          "name": "Описание"
+        },
+        {
+          "column": "price",
+          "type": "unsignedInteger",
+          "name": "Цена",
+          "default": 0,
+          "methods": [
+            "sortable"
+          ],
+          "migration": {
+            "methods": [
+              "index()"
+            ]
+          }
+        },
+        {
+          "column": "status_id",
+          "type": "BelongsTo",
+          "name": "Статус",
+          "relation": {
+            "table" : "statuses"
+          }
+        },
+        {
+          "column": "categories",
+          "type": "BelongsToMany",
+          "name": "Категории",
+          "relation": {
+            "table" : "categories"
+          },
+          "methods": [
+            "creatable"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Note",
+      "menuName": "Заметки",
+      "column": "name",
+      "fields": [
+        {
+          "column": "id",
+          "type": "id",
+          "methods": [
+            "sortable"
+          ]
+        },
+        {
+          "column": "name",
+          "type": "string",
+          "name": "Название"
+        },
+        {
+          "column": "description",
+          "type": "text",
+          "name": "Описание"
+        }
+      ]
+    },
+    {
+      "name": "CategoryProductPivot",
+      "withResource": false,
+      "withModel": false,
+      "table": "category_product",
+      "fields": [
+        {
+          "column": "id",
+          "type": "id"
+        },
+        {
+          "column": "category_id",
+          "type": "BelongsTo",
+          "relation": {
+            "table": "categories"
+          }
+        },
+        {
+          "column": "product_id",
+          "type": "BelongsTo",
+          "relation": {
+            "table": "products"
+          }
+        }
+      ]
+    }
+  ]
+}

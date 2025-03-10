@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "./public/js",
+        "baseUrl": "./resources/ts"
+    },
+    "include": [
+        "resources/ts/**/*.ts"
+    ],
+    "exclude": ["node_modules"]
+}

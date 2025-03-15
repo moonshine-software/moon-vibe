@@ -51,6 +51,14 @@ readonly class SchemaValidator
                         continue;
                     }
 
+                    if($column->getResourceMethods() !== []) {
+                        foreach ($column->getResourceMethods() as $methodName) {
+                            if(! str_contains($methodName, "(")) {
+                                throw new SchemaValidationException("{$column->column()}, resourceMethod $methodName, в методе ресурса должны быть указаны скобки, например $methodName()");
+                            }
+                        }
+                    }
+
                     if(
                         ! in_array($field, $packageFields)
                         && ! class_exists("\\MoonShine\\UI\\Fields\\$field")
@@ -61,10 +69,15 @@ readonly class SchemaValidator
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
                             $method = strstr($methodName, '(', true);
-                            $class = new ReflectionClass("\\MoonShine\\UI\\Fields\\$field");
-                            if(! $class->hasMethod($method)) {
-                                throw new SchemaValidationException("{$column->column()}: метод $method не существует для поля $field");
+                            try {
+                                $class = new ReflectionClass("\\MoonShine\\UI\\Fields\\$field");
+                                if(! $class->hasMethod($method)) {
+                                    throw new SchemaValidationException("{$column->column()}: метод $method не существует для поля $field");
+                                }
+                            } catch (Throwable $e) {
+                                throw new SchemaValidationException("{$column->column()}->$methodName - ошибка проверки метода: " . $e->getMessage());
                             }
+
                         }
                     }
                 }

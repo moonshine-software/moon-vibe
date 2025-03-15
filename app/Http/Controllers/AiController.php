@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GenerateFromAI;
 use App\Models\Project;
 use App\MoonShine\Resources\ProjectResource;
 use App\Services\RequestAdminAi;
@@ -16,37 +17,23 @@ class AiController extends MoonShineController
     /**
      * @throws Throwable
      */
-    public function index(RequestAdminAi $requestAdminAi): RedirectResponse
+    public function index(GenerateFromAI $action): RedirectResponse
     {
         $data = request()->validate([
             'promt' => ['string', 'required'],
             'project_name' => ['string', 'required'],
         ]);
 
-        $project = Project::query()->create([
-            'name' => $data['project_name'],
-            'description' => $data['promt'],
-            'moonshine_user_id' => auth('moonshine')->user()->id
-        ]);
-
-        $schema = $requestAdminAi->send($data['promt']);
-
-        $error = '';
-        try {
-            (new SchemaValidator($schema))->validate();
-        } catch (Throwable $e) {
-            $error = $e->getMessage();
-        }
-
-        $project->schemas()->create([
-            'error' => $error,
-            'schema' => $schema
-        ]);
+        $projectId = $action->handle(
+            $data['project_name'],
+            $data['promt'],
+            (int) auth('moonshine')->user()->id
+        );
 
         return toPage(
             FormPage::class,
             ProjectResource::class,
-            params: ['resourceItem' => $project->getKey()],
+            params: ['resourceItem' => $projectId],
             redirect: true
         );
     }

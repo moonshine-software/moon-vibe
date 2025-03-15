@@ -8,22 +8,12 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class RequestAdminAi
 {
-    public function send(string $message)
+    public function send(array $messages)
     {
-        $promt = file_get_contents(base_path('promt.md'));
-
-        $messages = [
-            ['role' => 'system', 'content' => $promt],
-            ['role' => 'user', 'content' => $message]
-        ];
-
-        $result = \OpenAI\Laravel\Facades\OpenAI::chat()->create([
-            //'model' => 'gpt-4o-mini',
-            'model' => 'gpt-4',
+        $result = OpenAI::chat()->create([
+            'model' => 'gpt-3.5-turbo',
             'messages' => $messages,
         ]);
-
-        //logger()->debug('gpt-info', json_decode(json_encode($result), true));
 
         return $result->choices[0]->message->content;
     }

@@ -46,17 +46,24 @@ readonly class SchemaValidator
                 }
 
                 foreach ($codeStructure->columns() as $column) {
-                    $field = $column->getFieldClass();
-                    if($field === null) {
-                        continue;
-                    }
-
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
                             if(! str_contains($methodName, "(")) {
-                                throw new SchemaValidationException("{$column->column()}, resourceMethod $methodName, в методе ресурса должны быть указаны скобки, например $methodName()");
+                                throw new SchemaValidationException("{$column->column()} (resourceMethod - $methodName), в методе ресурса должны быть указаны скобки, например $methodName()");
                             }
                         }
+                    }
+
+                    if($column->getMigrationMethods() !== []) {
+                        foreach ($column->getMigrationMethods() as $methodName) {
+                            if(! str_contains($methodName, "(")) {
+                                throw new SchemaValidationException("{$column->column()} (migrationMethod - $methodName), в методе миграции должны быть указаны скобки, например $methodName()");
+                            }
+                        }
+                    }
+                    $field = $column->getFieldClass();
+                    if($field === null) {
+                        continue;
                     }
 
                     if(

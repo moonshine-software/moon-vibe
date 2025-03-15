@@ -70,8 +70,7 @@ class ProjectSchemaResource extends ModelResource
     {
         $item->error = '';
         try {
-            (new SchemaValidator(request()
-                ->input('schema')))
+            (new SchemaValidator(request()->input('schema')))
                 ->validate();
         }catch (\Throwable $e) {
             $item->error = $e->getMessage();
@@ -87,8 +86,7 @@ class ProjectSchemaResource extends ModelResource
     {
         $item->error = '';
         try {
-            (new SchemaValidator(request()
-                ->input('schema')))
+            (new SchemaValidator(request()->input('schema')))
                 ->validate();
         }catch (\Throwable $e) {
             $item->error = $e->getMessage();

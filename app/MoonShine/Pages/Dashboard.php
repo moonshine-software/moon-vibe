@@ -8,6 +8,7 @@ namespace App\MoonShine\Pages;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
 #[\MoonShine\MenuManager\Attributes\SkipMenu]
@@ -36,12 +37,12 @@ class Dashboard extends Page
 	{
 		return [
             FormBuilder::make(route('ai-request'), fields: [
+                Text::make('Название проекта', 'project_name'),
                 Textarea::make('Запрос', 'promt')->customAttributes([
                     'rows' => 6,
                 ])
             ])
                 ->submit('Отправить')
-                ->async()
         ];
 	}
 }

@@ -2,24 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\MakeAdmin;
+use App\Models\Project;
+use App\MoonShine\Resources\ProjectResource;
 use App\Services\RequestAdminAi;
+use App\Support\SchemaValidator;
+use Illuminate\Http\RedirectResponse;
+use JsonException;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use Throwable;
 
 class AiController extends MoonShineController
 {
-    public function index(RequestAdminAi $requestAdminAi): BinaryFileResponse
+    /**
+     * @throws Throwable
+     */
+    public function index(RequestAdminAi $requestAdminAi): RedirectResponse
     {
-        $schema = $requestAdminAi->send(request()->input(['promt']));
+        $data = request()->validate([
+            'promt' => ['string', 'required'],
+            'project_name' => ['string', 'required'],
+        ]);
 
-        $filePath = base_path('/results/item_' . time() . '.json');
+        $project = Project::query()->create([
+            'name' => $data['project_name'],
+            'moonshine_user_id' => auth('moonshine')->user()->id
+        ]);
 
-        file_put_contents($filePath, $schema);
+        $schema = $requestAdminAi->send($data['promt']);
 
-        $makeAdmin = new MakeAdmin($filePath);
-        $path = $makeAdmin->handle();
+        $error = '';
+        try {
+            (new SchemaValidator($schema))
+                ->validate();
+        }catch (Throwable $e) {
+            $error = $e->getMessage();
+        }
 
-        return response()->download($path);
+        $project->schemas()->create([
+            'error' => $error,
+            'schema' => $schema
+        ]);
+
+        return toPage(
+            FormPage::class,
+            ProjectResource::class,
+            params: ['resourceItem' => $project->getKey()],
+            redirect: true
+        );
     }
 }

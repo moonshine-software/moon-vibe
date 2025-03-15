@@ -6,6 +6,8 @@ namespace App\Support;
 
 use App\Exceptions\SchemaValidationException;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use InvalidArgumentException;
+use ReflectionClass;
 use Throwable;
 
 readonly class SchemaValidator
@@ -22,6 +24,10 @@ readonly class SchemaValidator
     public function validate(): void
     {
         try {
+            if (! json_validate($this->schema)) {
+                throw new InvalidArgumentException('Некорректная JSON схема');
+            }
+
             $data = json_decode($this->schema, true);
 
             $factory = new StructureFromArray($data);
@@ -41,12 +47,21 @@ readonly class SchemaValidator
 
                 foreach ($codeStructure->columns() as $column) {
                     $field = $column->getFieldClass();
-                    if(
-                        $field !== null
-                        && ! in_array($field, $packageFields)
-                    ) {
-                        if(! class_exists("\\MoonShine\\UI\\Fields\\$field")) {
-                            throw new SchemaValidationException("{$column->column()}: поля $field не существует в MoonShine");
+                    if($field === null) {
+                        continue;
+                    }
+
+                    if(! in_array($field, $packageFields) && ! class_exists("\\MoonShine\\UI\\Fields\\$field")) {
+                        throw new SchemaValidationException("{$column->column()}: поля $field не существует в MoonShine");
+                    }
+
+                    if($column->getResourceMethods() !== []) {
+                        foreach ($column->getResourceMethods() as $methodName) {
+                            $method = strstr($methodName, '(', true);
+                            $class = new ReflectionClass("\\MoonShine\\UI\\Fields\\$field");
+                            if(! $class->hasMethod($method)) {
+                                throw new SchemaValidationException("{$column->column()}: метод $method не существует для поля $field");
+                            }
                         }
                     }
                 }

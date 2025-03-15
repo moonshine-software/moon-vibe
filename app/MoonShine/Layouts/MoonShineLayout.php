@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use App\MoonShine\Pages\Dashboard;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\ColorManager\ColorManager;
@@ -31,6 +32,8 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\TopBar,
     Layout\Wrapper,
     When};
+use MoonShine\MenuManager\MenuItem;
+use App\MoonShine\Resources\ProjectResource;
 
 final class MoonShineLayout extends CompactLayout
 {
@@ -43,7 +46,11 @@ final class MoonShineLayout extends CompactLayout
 
     protected function menu(): array
     {
-        return [];
+        return [
+            MenuItem::make('Генерация', Dashboard::class),
+            MenuItem::make('Проекты', ProjectResource::class),
+            ...parent::menu(),
+        ];
     }
 
     /**
@@ -63,22 +70,22 @@ final class MoonShineLayout extends CompactLayout
                 $this->getHeadComponent(),
                 Body::make([
                     Wrapper::make([
+                        // $this->getTopBarComponent(),
+                        $this->getSidebarComponent(),
                         Div::make([
-                            Div::make([
+                            Fragment::make([
                                 Flash::make(),
 
-                                Content::make($this->getContentComponents()),
+                                $this->getHeaderComponent(),
 
-                            ])
-                                ->class('layout-page')
-                                ->name(self::CONTENT_FRAGMENT_NAME)
-                                ->customAttributes([
-                                    'style' => 'max-width: 70%; margin: 0 auto; border: inherit',
-                                ])
-                            ,
+                                Content::make([
+                                    Components::make(
+                                        $this->getPage()->getComponents()
+                                    ),
+                                ]),
+                            ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
-                    ])
-                    ,
+                    ]),
                 ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([
@@ -87,5 +94,10 @@ final class MoonShineLayout extends CompactLayout
                 ->withAlpineJs()
                 ->withThemes(),
         ]);
+    }
+
+    protected function getFooterCopyright(): string
+    {
+        return '';
     }
 }

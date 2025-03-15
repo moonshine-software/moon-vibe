@@ -13,11 +13,12 @@ class RequestAdminAi
         $promt = file_get_contents(base_path('promt.md'));
 
         $messages = [
-            ['role' => 'user', 'content' => $promt],
+            ['role' => 'system', 'content' => $promt],
             ['role' => 'user', 'content' => $message]
         ];
 
-        $result = OpenAI::chat()->create([
+        $result = \OpenAI\Laravel\Facades\OpenAI::chat()->create([
+            //'model' => 'gpt-4o-mini',
             'model' => 'gpt-4',
             'messages' => $messages,
         ]);

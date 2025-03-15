@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca3265dabe690d686c21439683b7b4e4",
+    "content-hash": "9509335b53bd726def4ffea86d216603",
     "packages": [
         {
             "name": "brick/math",
@@ -2205,6 +2205,71 @@
                 }
             ],
             "time": "2024-12-05T17:15:07+00:00"
+        },
+        {
+            "name": "moonshine/easymde",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonshine-software/easymde.git",
+                "reference": "c6d60e0e835680fa47725eb9add27a20e3910b8e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonshine-software/easymde/zipball/c6d60e0e835680fa47725eb9add27a20e3910b8e",
+                "reference": "c6d60e0e835680fa47725eb9add27a20e3910b8e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.2|^8.3"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "^3.0",
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.0.1",
+                "rector/rector": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoonShine\\EasyMde\\Providers\\EasyMdeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoonShine\\EasyMde\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil Shutsky",
+                    "email": "info@cutcode.ru",
+                    "homepage": "https://cutcode.dev"
+                }
+            ],
+            "description": "Markdown editor for MoonShine",
+            "homepage": "https://moonshine-laravel.com",
+            "keywords": [
+                "easymde",
+                "markdown",
+                "moonshine"
+            ],
+            "support": {
+                "issues": "https://github.com/moonshine-software/easymde/issues",
+                "source": "https://github.com/moonshine-software/easymde"
+            },
+            "time": "2025-01-14T10:48:56+00:00"
         },
         {
             "name": "moonshine/moonshine",
@@ -6480,6 +6545,70 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "dev-lnk/moonshine-builder",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dev-lnk/moonshine-builder.git",
+                "reference": "b2207a99d033172a9841855058a1cac8c18588da"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/b2207a99d033172a9841855058a1cac8c18588da",
+                "reference": "b2207a99d033172a9841855058a1cac8c18588da",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "^3.0",
+                "orchestra/testbench": "^9.0",
+                "phpstan/phpstan": "^1.11",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DevLnk\\MoonShineBuilder\\Providers\\MoonShineBuilderProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "DevLnk\\MoonShineBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Levchenko",
+                    "email": "lkivanmail@gmail.com",
+                    "homepage": "https://github.com/dev-lnk"
+                }
+            ],
+            "description": "Project builder for MoonShine",
+            "keywords": [
+                "builder",
+                "moonshine"
+            ],
+            "support": {
+                "issues": "https://github.com/dev-lnk/moonshine-builder/issues",
+                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.0"
+            },
+            "time": "2025-03-13T09:05:40+00:00"
+        },
         {
             "name": "fakerphp/faker",
             "version": "v1.24.1",

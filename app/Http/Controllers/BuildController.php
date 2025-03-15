@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectSchema;
 use App\Services\MakeAdmin;
-use App\Services\RequestAdminAi;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-class AiController extends MoonShineController
+class BuildController extends MoonShineController
 {
-    public function index(RequestAdminAi $requestAdminAi): BinaryFileResponse
+    public function index(int $schemaId): BinaryFileResponse
     {
-        $schema = $requestAdminAi->send(request()->input(['promt']));
+        $projectSchema = ProjectSchema::query()->where('id', $schemaId)->first();
 
         $filePath = base_path('/results/item_' . time() . '.json');
 
-        file_put_contents($filePath, $schema);
+        file_put_contents($filePath, $projectSchema->schema);
 
         $makeAdmin = new MakeAdmin($filePath);
         $path = $makeAdmin->handle();

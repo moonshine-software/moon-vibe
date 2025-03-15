@@ -7,7 +7,6 @@ use App\MoonShine\Resources\ProjectResource;
 use App\Services\RequestAdminAi;
 use App\Support\SchemaValidator;
 use Illuminate\Http\RedirectResponse;
-use JsonException;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use Throwable;
@@ -26,6 +25,7 @@ class AiController extends MoonShineController
 
         $project = Project::query()->create([
             'name' => $data['project_name'],
+            'description' => $data['promt'],
             'moonshine_user_id' => auth('moonshine')->user()->id
         ]);
 
@@ -33,9 +33,8 @@ class AiController extends MoonShineController
 
         $error = '';
         try {
-            (new SchemaValidator($schema))
-                ->validate();
-        }catch (Throwable $e) {
+            (new SchemaValidator($schema))->validate();
+        } catch (Throwable $e) {
             $error = $e->getMessage();
         }
 

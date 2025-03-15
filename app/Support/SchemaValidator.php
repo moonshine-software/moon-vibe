@@ -51,7 +51,10 @@ readonly class SchemaValidator
                         continue;
                     }
 
-                    if(! in_array($field, $packageFields) && ! class_exists("\\MoonShine\\UI\\Fields\\$field")) {
+                    if(
+                        ! in_array($field, $packageFields)
+                        && ! class_exists("\\MoonShine\\UI\\Fields\\$field")
+                    ) {
                         throw new SchemaValidationException("{$column->column()}: поля $field не существует в MoonShine");
                     }
 

@@ -9,11 +9,14 @@ use App\Models\ProjectSchema;
 use App\Support\SchemaValidator;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
 /**
@@ -30,6 +33,12 @@ class ProjectSchemaResource extends ModelResource
         return [
 			ID::make('id'),
 			BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
+            Text::make('Ошибки', 'error')->changePreview(function (string $value, Text $ctx) {
+                if($value === '') {
+                    return (string) Badge::make('Без ошибок', Color::GREEN);
+                }
+                return (string) Badge::make($value, Color::RED);
+            }),
         ];
     }
 
@@ -37,7 +46,8 @@ class ProjectSchemaResource extends ModelResource
     {
         return [
             Box::make([
-                ...$this->indexFields(),
+                ID::make('id'),
+                BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
                 Textarea::make('Json схема', 'schema')->customAttributes([
                     'rows' => 20,
                 ])
@@ -58,9 +68,15 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeCreating(mixed $item): mixed
     {
-        (new SchemaValidator(request()
-            ->input('schema')))
-            ->validate();
+        $item->error = '';
+        try {
+            (new SchemaValidator(request()
+                ->input('schema')))
+                ->validate();
+        }catch (\Throwable $e) {
+            $item->error = $e->getMessage();
+        }
+
         return $item;
     }
 
@@ -69,9 +85,15 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeUpdating(mixed $item): mixed
     {
-        (new SchemaValidator(request()
-            ->input('schema')))
-            ->validate();
+        $item->error = '';
+        try {
+            (new SchemaValidator(request()
+                ->input('schema')))
+                ->validate();
+        }catch (\Throwable $e) {
+            $item->error = $e->getMessage();
+        }
+
         return $item;
     }
 

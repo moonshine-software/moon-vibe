@@ -11,6 +11,11 @@ class ProjectSchema extends Model
     protected $fillable = [
 		'project_id',
 		'schema',
+		'error',
+    ];
+
+    protected $casts = [
+        'schema' => 'json',
     ];
 
     public function project(): BelongsTo

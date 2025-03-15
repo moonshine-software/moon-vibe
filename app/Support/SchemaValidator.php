@@ -17,6 +17,7 @@ readonly class SchemaValidator
 
     /**
      * @throws SchemaValidationException
+     * @throws Throwable
      */
     public function validate(): void
     {
@@ -31,15 +32,40 @@ readonly class SchemaValidator
                 throw new SchemaValidationException('Не удалось получить ни одного ресурса');
             }
 
+            $packageFields = ['Markdown', 'TinyMce'];
+
             foreach ($codeStructures->codeStructures() as $codeStructure) {
                 if($codeStructure->columns() === []) {
                     throw new SchemaValidationException("В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля");
                 }
+
+                foreach ($codeStructure->columns() as $column) {
+                    $field = $column->getFieldClass();
+                    if(
+                        $field !== null
+                        && ! in_array($field, $packageFields)
+                    ) {
+                        if(! class_exists("\\MoonShine\\UI\\Fields\\$field")) {
+                            throw new SchemaValidationException("{$column->column()}: поля $field не существует в MoonShine");
+                        }
+                    }
+                }
             }
-        }catch (SchemaValidationException $e) {
+        } catch (SchemaValidationException $e) {
             throw $e;
-        } catch (Throwable) {
-            throw new SchemaValidationException("Ошибка валидации схемы");
+        } catch (Throwable $e) {
+            $error = $e->getMessage();
+            if($error === 'Undefined array key "resources"') {
+                throw new SchemaValidationException("В схеме не найдены ресурсы");
+            }
+
+            if(str_contains($error, "is not a valid backing value for enum DevLnk\MoonShineBuilder\Enums\SqlTypeMap")) {
+                $type = str_replace(" is not a valid backing value for enum DevLnk\MoonShineBuilder\Enums\SqlTypeMap", "", $error);
+                throw new SchemaValidationException("Типа $type не существует");
+            }
+
+            throw $e;
         }
+
     }
 }

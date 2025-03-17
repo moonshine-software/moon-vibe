@@ -70,6 +70,19 @@ services:
     ports:
       - "${APP_VITE_PORT}:5173"
 
+  centrifugo:
+    container_name: ${COMPOSE_PROJECT_NAME}-centrifugo
+    image: centrifugo/centrifugo:v5
+    volumes:
+      - ./docker/volumes/Centrifugo:/centrifugo
+    command: centrifugo -c config.json --port=8000 --admin
+    ports:
+      - "8000:8000"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
 #  scheduler:
 #    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
 #    build:
@@ -85,16 +98,16 @@ services:
 #    depends_on:
 #      - php
 #
-#  worker:
-#    container_name: ${COMPOSE_PROJECT_NAME}-worker
-#    build:
-#      args:
-#        user: ${DOCKER_USER}
-#        uid: 1000
-#      context: .
-#      dockerfile: ./docker/dockerfiles/php/Dockerfile
-#      target: worker
-#    volumes:
-#      - ./:${APP_PATH}
-#    depends_on:
-#      - php
+  worker:
+    container_name: ${COMPOSE_PROJECT_NAME}-worker
+    build:
+      args:
+        user: ${DOCKER_USER}
+        uid: 1000
+      context: .
+      dockerfile: ./docker/dockerfiles/php/Dockerfile
+      target: worker
+    volumes:
+      - ./:${APP_PATH}
+    depends_on:
+      - php

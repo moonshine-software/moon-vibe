@@ -10,10 +10,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "centrifugal/phpcent": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "moonshine/easymde": "^1.0",
         "moonshine/moonshine": "^3.7",
+        "moonshine/rush": "^2.0",
         "openai-php/laravel": "^0.11.0"
     },
     "require-dev": {
@@ -78,5 +80,11 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://moonshine-laravel.com/repository/"
+        }
+    ]
 }

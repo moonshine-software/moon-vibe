@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('project_schemas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('project_id');
-            $table->json('schema');
+            $table->json('schema')->nullable();
+            $table->unsignedTinyInteger('status_id')->default(1);
             $table->string('error')->nullable();
             $table->timestamps();
 

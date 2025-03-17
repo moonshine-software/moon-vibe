@@ -23,7 +23,7 @@ class AiController extends MoonShineController
             'promt' => ['string', 'required'],
             'project_name' => ['string', 'required'],
         ]);
-
+        
         $projectId = $action->handle(
             $data['project_name'],
             $data['promt'],

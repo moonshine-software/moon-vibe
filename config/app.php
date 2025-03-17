@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'centrifugo' => [
+        'api-key' => env('CENTRIFUGO_APIKEY'),
+        'host' => env('CENTRIFUGO_URL'),
+        'port' => env('CENTRIFUGO_PORT')
+    ]
 ];

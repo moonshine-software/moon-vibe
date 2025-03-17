@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 
 use App\Support\SchemaValidator;
@@ -14,8 +15,10 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\Enum;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
@@ -33,11 +36,15 @@ class ProjectSchemaResource extends ModelResource
         return [
 			ID::make('id'),
 			BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
-            Text::make('Ошибки', 'error')->changePreview(function (string $value, Text $ctx) {
-                if($value === '') {
-                    return (string) Badge::make('Без ошибок', Color::GREEN);
+            Preview::make('Статус', formatted: function (ProjectSchema $schema) {
+                if($schema->status_id === SchemaStatus::ERROR) {
+                    return (string) Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([
+                        'class' => 'schema-id-' . $schema->id
+                    ]);
                 }
-                return (string) Badge::make($value, Color::RED);
+                return (string) Badge::make($schema->status_id->toString(), $schema->status_id->color())->customAttributes([
+                    'class' => 'schema-id-' . $schema->id
+                ]);
             }),
         ];
     }
@@ -48,10 +55,13 @@ class ProjectSchemaResource extends ModelResource
             Box::make([
                 ID::make('id'),
                 BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
-                Textarea::make('Json схема', 'schema')->customAttributes([
-                    'rows' => 20,
-                ])
-                ,
+                Textarea::make('', 'schema')->changeFill(function(ProjectSchema $data, Textarea $field){
+                    $field->customAttributes([
+                        'class' => 'schema-edit-id-' . $data->id,
+                        'rows' => 20,
+                    ]);
+                    return $data->schema;
+                }),
             ])
         ];
     }
@@ -93,17 +103,6 @@ class ProjectSchemaResource extends ModelResource
         }
 
         return $item;
-    }
-
-    protected function indexButtons(): ListOf
-    {
-        return parent::indexButtons()
-            ->prepend(
-                ActionButton::make(
-                    'Build',
-                    fn(Model $item) => route('build', ['schema_id' => $item->getKey()])
-                )
-            );
     }
 
     public function filters(): iterable

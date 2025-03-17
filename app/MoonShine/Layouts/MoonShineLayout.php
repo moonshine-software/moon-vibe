@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use App\Models\ProjectSchema;
 use App\MoonShine\Pages\Dashboard;
+use App\MoonShine\Resources\ProjectSchemaResource;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\ColorManager\ColorManager;
@@ -34,6 +36,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     When};
 use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\ProjectResource;
+use MoonShine\Rush\Services\Rush;
 
 final class MoonShineLayout extends CompactLayout
 {
@@ -49,6 +52,7 @@ final class MoonShineLayout extends CompactLayout
         return [
             MenuItem::make('Генерация', Dashboard::class),
             MenuItem::make('Проекты', ProjectResource::class),
+            //MenuItem::make('Схемы', ProjectSchemaResource::class),
             ...parent::menu(),
         ];
     }
@@ -86,6 +90,7 @@ final class MoonShineLayout extends CompactLayout
                             ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
                     ]),
+                    Rush::components()->htmlReload()
                 ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use App\Models\Project;
 use App\Models\ProjectSchema;
 use App\MoonShine\Pages\Dashboard;
 use App\MoonShine\Resources\ProjectSchemaResource;
+use MoonShine\AssetManager\InlineCss;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Laravel\Components\Fragment;
 use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\ColorManager\ColorManager;
@@ -40,21 +43,57 @@ use MoonShine\Rush\Services\Rush;
 
 final class MoonShineLayout extends CompactLayout
 {
+    /**
+     * @return list<AssetElementContract>
+     */
     protected function assets(): array
     {
-        return [
-            ...parent::assets(),
-        ];
+        $assets = parent::assets();
+
+        $assets[] = InlineCss::make(
+            "
+            :root {
+              --radius: " . $this->getRadius('default') . "rem;
+              --radius-sm: " . $this->getRadius('sm') . "rem;
+              --radius-md: " . $this->getRadius('md') . "rem;
+              --radius-lg: " . $this->getRadius('lg') . "rem;
+              --radius-xl: " . $this->getRadius('xl') . "rem;
+              --radius-2xl: " . $this->getRadius('2xl') . "rem;
+              --radius-3xl: " . $this->getRadius('3xl') . "rem;
+              --radius-full: " . $this->getRadius('full') . "px;
+            }",
+        );
+
+        return $assets;
     }
 
     protected function menu(): array
     {
         return [
             MenuItem::make('Генерация', Dashboard::class),
-            MenuItem::make('Проекты', ProjectResource::class),
-            //MenuItem::make('Схемы', ProjectSchemaResource::class),
-            ...parent::menu(),
+            MenuItem::make('Проекты', ProjectResource::class)->badge(fn() => Project::query()->count()),
+            MenuItem::make('Профиль', \App\MoonShine\Pages\ProfilePage::class),
         ];
+    }
+
+    private function getRadius(?string $name = null): string|array
+    {
+        $r = [
+            'default' => session()->get('radius.default', '0.15'),
+            'sm' => '0.075',
+            'md' => '0.275',
+            'lg' => '0.3',
+            'xl' => '0.4',
+            '2xl' => '0.5',
+            '3xl' => '1',
+            'full' => '9999',
+        ];
+
+        if($name === null) {
+            return $r;
+        }
+
+        return $r[$name];
     }
 
     /**
@@ -64,7 +103,9 @@ final class MoonShineLayout extends CompactLayout
     {
         parent::colors($colorManager);
 
-        // $colorManager->primary('#00000');
+        $colorManager
+            ->primary('linear-gradient(90deg,#282e35,#252c33,#242a31)')
+        ;
     }
 
     public function build(): Layout
@@ -80,7 +121,7 @@ final class MoonShineLayout extends CompactLayout
                             Fragment::make([
                                 Flash::make(),
 
-                                $this->getHeaderComponent(),
+                                //$this->getHeaderComponent(),
 
                                 Content::make([
                                     Components::make(
@@ -99,6 +140,30 @@ final class MoonShineLayout extends CompactLayout
                 ->withAlpineJs()
                 ->withThemes(),
         ]);
+    }
+
+    protected function getSidebarComponent(): Sidebar
+    {
+        return Sidebar::make([
+            Div::make([
+                Menu::make(),
+                When::make(
+                    fn (): bool => $this->isProfileEnabled(),
+                    fn (): array => [
+                        $this->getProfileComponent(sidebar: true),
+                    ],
+                ),
+            ])->customAttributes([
+                'class' => 'menu',
+                ':class' => "asideMenuOpen && '_is-opened'",
+                'style' => 'margin-top: 10rem'
+            ]),
+        ])->collapsed();
+    }
+
+    protected function getHeaderComponent(): Header
+    {
+        return Header::make();
     }
 
     protected function getFooterCopyright(): string

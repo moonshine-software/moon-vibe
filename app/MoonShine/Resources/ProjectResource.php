@@ -6,14 +6,23 @@ namespace App\MoonShine\Resources;
 
 use App\Models\Project;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Phone;
+use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 
 /**
  * @extends ModelResource<Project>
@@ -26,31 +35,50 @@ class ProjectResource extends ModelResource
 
     protected string $column = 'name';
 
+    protected function activeActions(): ListOf
+    {
+        return new ListOf(Action::class, [
+            Action::CREATE,
+            Action::UPDATE,
+            Action::DELETE,
+        ]);
+    }
+
     public function indexFields(): iterable
     {
         return [
-			ID::make('id'),
-			Text::make('Название', 'name'),
-			Text::make('Описание', 'description'),
+            StackFields::make('')->fields(function(StackFields $fields){
+                return [
+                    //Preview::make(column: 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+                    Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+                    Textarea::make('', 'description'),
+                ];
+            }),
         ];
     }
 
     public function formFields(): iterable
     {
         return [
-            Box::make([
-                ...$this->indexFields(),
-                HasMany::make('Схемы', 'schemas', resource: ProjectSchemaResource::class)
-                    ->indexButtons([
-                        ActionButton::make('Build',
-                            url: fn($model) => route('build', ['schemaId' => $model->getKey()])
+            ...$this->indexFields(),
+            HasMany::make('Схемы', 'schemas', resource: ProjectSchemaResource::class)
+                ->indexButtons([
+                    ActionButton::make('Build',
+                        url: fn($model) => route('build', ['schemaId' => $model->getKey()])
+                    )
+                        ->withConfirm(
+                            'Выполнить построение проекта?',
                         )
-                            ->withConfirm(
-                                'Выполнить построение проекта?',
-                            )
-                    ])
-                    ->creatable(),
-            ])
+                ])
+                ->creatable(),
+
+        ];
+    }
+
+    protected function trAttributes(): Closure
+    {
+        return fn(?DataWrapperContract $data, int $row) => [
+            'style' => 'margin-bottom: 5rem'
         ];
     }
 

@@ -9,6 +9,7 @@ use App\Models\ProjectSchema;
 
 use App\Support\SchemaValidator;
 use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
@@ -31,10 +32,18 @@ class ProjectSchemaResource extends ModelResource
 
 	protected array $with = ['project'];
 
+    protected function activeActions(): ListOf
+    {
+        return new ListOf(Action::class, [
+            Action::CREATE,
+            Action::UPDATE,
+            Action::DELETE,
+        ]);
+    }
+
     public function indexFields(): iterable
     {
         return [
-			ID::make('id'),
 			BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
             Preview::make('Статус', formatted: function (ProjectSchema $schema) {
                 if($schema->status_id === SchemaStatus::ERROR) {

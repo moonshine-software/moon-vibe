@@ -2325,16 +2325,16 @@
         },
         {
             "name": "moonshine/moonshine",
-            "version": "3.8.9",
+            "version": "3.8.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moonshine-software/moonshine.git",
-                "reference": "c447cc463674b28753906d4b0ca4fc8396362f14"
+                "reference": "107c94040a3a1240827578b54eb3d0cce9065d8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moonshine-software/moonshine/zipball/c447cc463674b28753906d4b0ca4fc8396362f14",
-                "reference": "c447cc463674b28753906d4b0ca4fc8396362f14",
+                "url": "https://api.github.com/repos/moonshine-software/moonshine/zipball/107c94040a3a1240827578b54eb3d0cce9065d8b",
+                "reference": "107c94040a3a1240827578b54eb3d0cce9065d8b",
                 "shasum": ""
             },
             "require": {
@@ -2428,7 +2428,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-03-16T15:13:33+00:00"
+            "time": "2025-03-17T15:51:04+00:00"
         },
         {
             "name": "moonshine/rush",
@@ -6639,16 +6639,16 @@
     "packages-dev": [
         {
             "name": "dev-lnk/moonshine-builder",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dev-lnk/moonshine-builder.git",
-                "reference": "b2207a99d033172a9841855058a1cac8c18588da"
+                "reference": "d384f40204b06a1cce01668bf52d5ec8a76a8ff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/b2207a99d033172a9841855058a1cac8c18588da",
-                "reference": "b2207a99d033172a9841855058a1cac8c18588da",
+                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/d384f40204b06a1cce01668bf52d5ec8a76a8ff4",
+                "reference": "d384f40204b06a1cce01668bf52d5ec8a76a8ff4",
                 "shasum": ""
             },
             "require": {
@@ -6697,9 +6697,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dev-lnk/moonshine-builder/issues",
-                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.0"
+                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.1"
             },
-            "time": "2025-03-13T09:05:40+00:00"
+            "time": "2025-03-18T12:48:01+00:00"
         },
         {
             "name": "fakerphp/faker",

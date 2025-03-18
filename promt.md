@@ -245,6 +245,7 @@
   "model_class": "\\MoonShine\\Laravel\\Models\\MoonshineUser"
 }
 ```
+- Представь ответ в отформатированном виде с переносом строк и отступами
 
 ## Инструкции по формированию полей fields
 - Не используй поля Markdown и TinyMce, вместо них используй Textarea

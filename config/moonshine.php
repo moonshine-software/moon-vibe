@@ -20,7 +20,7 @@ use MoonShine\Laravel\Pages\LoginPage;
 use MoonShine\Laravel\Pages\ProfilePage;
 
 return [
-    'title' => env('MOONSHINE_TITLE', 'MoonShine'),
+    'title' => env('MOONSHINE_TITLE', 'Ms-Builder'),
     'logo' => 'vendor/moonshine/logo.svg',
     'logo_small' => 'vendor/moonshine/logo-small.svg',
 

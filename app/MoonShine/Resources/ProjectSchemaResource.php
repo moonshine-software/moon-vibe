@@ -7,20 +7,26 @@ namespace App\MoonShine\Resources;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 
+use App\MoonShine\Pages\Schema\SchemaDetailPage;
+use App\Services\SimpleSchema;
 use App\Support\SchemaValidator;
-use Illuminate\Database\Eloquent\Model;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructureList;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromJson;
 use MoonShine\Laravel\Enums\Action;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Layout\Box;
-use MoonShine\UI\Fields\Enum;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\UI\Fields\Preview;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
 /**
@@ -32,13 +38,26 @@ class ProjectSchemaResource extends ModelResource
 
 	protected array $with = ['project'];
 
+    protected bool $detailInModal = true;
+
     protected function activeActions(): ListOf
     {
         return new ListOf(Action::class, [
             Action::CREATE,
+            Action::VIEW,
             Action::UPDATE,
             Action::DELETE,
         ]);
+    }
+
+    protected function pages(): array
+    {
+        return [
+            IndexPage::class,
+            FormPage::class,
+            DetailPage::class,
+            //SchemaDetailPage::class,
+        ];
     }
 
     public function indexFields(): iterable
@@ -54,6 +73,14 @@ class ProjectSchemaResource extends ModelResource
                     'class' => 'schema-id-' . $schema->id
                 ]);
             }),
+
+            Preview::make('Схема', formatted: function (ProjectSchema $schema) {
+                if($schema->schema === null) {
+                    return '';
+                }
+                $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+                return $simpleSchema->generate(false);
+            })
         ];
     }
 
@@ -77,7 +104,13 @@ class ProjectSchemaResource extends ModelResource
     public function detailFields(): iterable
     {
         return [
-            ...$this->indexFields()
+            Preview::make('Схема', formatted: function (ProjectSchema $schema) {
+                if($schema->schema === null) {
+                    return '';
+                }
+                $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+                return $simpleSchema->generate();
+            })
         ];
     }
 

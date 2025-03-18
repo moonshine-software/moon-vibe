@@ -43,7 +43,9 @@ class ProjectResource extends ModelResource
             StackFields::make('')->fields(function(StackFields $fields){
                 return [
                     Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
-                    Textarea::make('', 'description'),
+                    Textarea::make('', 'description')->customAttributes([
+                        'rows' => 6,
+                    ]),
                 ];
             }),
         ];
@@ -64,7 +66,6 @@ class ProjectResource extends ModelResource
                 ])
                 ->searchable(false)
                 ->creatable(),
-
         ];
     }
 

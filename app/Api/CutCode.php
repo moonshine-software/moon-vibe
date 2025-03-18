@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Api;
 
-use App\Contracts\SchemaGenerateContract;
 use Throwable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
 
-class CutCode implements SchemaGenerateContract
+class CutCode
 {
     private string $token;
 
@@ -27,32 +26,22 @@ class CutCode implements SchemaGenerateContract
     /**
      * @throws ConnectionException
      */
-    public function request(string $userPromt): string
+    public function post(array $data): string
     {
         try {
             $response = Http::timeout(3600)
                 ->withHeaders([
                     'Content-Type' => 'application/json'
                 ])
-                ->post($this->url, [
-                    'prompt' => $userPromt
-                ]);
+                ->post($this->url, $data);
 
             if (! $response->successful()) {
-                throw new ConnectionException('Failed to connect to the API: ' . $response->status());
+                throw new ConnectionException('Failed to connect to CutCode API: ' . $response->status());
             }
 
             return $response->body();
         } catch (Throwable $e) {
-            throw new ConnectionException('Error connecting to API: ' . $e->getMessage());
+            throw new ConnectionException('Error connecting to CutCode API: ' . $e->getMessage());
         }
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    public function generate(array $messages): string
-    {
-        return $this->request($messages[1]['content']);
     }
 }

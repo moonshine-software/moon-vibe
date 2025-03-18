@@ -29,9 +29,12 @@ readonly class SimpleSchema
                 foreach ($codeStructure->columns() as $column) {
                     $result .= str('<li>')
                         ->append("\t")
-                        ->append($column->name())
-                        ->append(': ')
+                        ->append("{$column->name()}")
+                        ->append(' (')
+                        ->append($column->column())
+                        ->append(':')
                         ->append($column->type()->value)
+                        ->append(')')
                         ->append("</li>");
                 }
                 $result .= '</ul>';

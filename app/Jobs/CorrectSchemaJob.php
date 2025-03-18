@@ -8,7 +8,6 @@ use MoonShine\Rush\Services\Rush;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Fields\Textarea;
-use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Throwable;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
@@ -16,7 +15,7 @@ use App\Support\SchemaValidator;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class GenerateSchemaJob implements ShouldQueue
+class CorrectSchemaJob implements ShouldQueue
 {
     use Queueable;
 
@@ -44,10 +43,8 @@ class GenerateSchemaJob implements ShouldQueue
             $requestAdminAi = app(SchemaGenerateContract::class);
             $requestAdminAi->setSchemaId($this->schemaId);
 
-            $mainPrompt = file_get_contents(base_path('promt.md'));
-
             $messages = [
-                ['role' => 'system', 'content' => $mainPrompt],
+                ['role' => 'system', 'content' => 'Исправление схемы'],
                 ['role' => 'user', 'content' => $this->prompt]
             ];
 
@@ -59,15 +56,12 @@ class GenerateSchemaJob implements ShouldQueue
                 $tries++;
 
                 $event = $tries === 1
-                    ? "выполнение запроса..."
-                    : "выполнение запроса, попытка $tries..."
+                    ? "исправление схемы..."
+                    : "исправление схемы, попытка $tries..."
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $requestAdminAi->generate($messages);
-
-//                sleep(70);
-//                $schemaResult = '{"resources": [{"name": "resource1"}, {"name": "resource2"}]}';
+                $schemaResult = $requestAdminAi->correct($messages);
 
                 if (str_starts_with($schemaResult, '```json')) {
                     $schemaResult = preg_replace('/^```json\s*/', '', $schemaResult);
@@ -102,11 +96,6 @@ class GenerateSchemaJob implements ShouldQueue
 
                     $isValidSchema = false;
                 }
-
-                logger()->debug('job', [$isValidSchema, $tries]);
-
-                logger()->debug('job', [$isValidSchema && $tries < $this->generateTries]);
-
             } while ($isValidSchema === false && $tries < $this->generateTries);
 
             $this->sendEvent("сохранение", (int)$schema->id);

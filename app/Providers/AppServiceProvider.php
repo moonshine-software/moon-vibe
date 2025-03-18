@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Api\CutCode;
-use App\Api\DeepSeek;
 use App\Contracts\SchemaGenerateContract;
 use App\Services\Centrifugo;
+use App\Services\CutCodeAgent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +35,6 @@ class AppServiceProvider extends ServiceProvider
         moonShineAssets()->add([new Js(Vite::asset('resources/ts/app.ts'))]);
 
         //$this->app->bind(SchemaGenerateContract::class, DeepSeek::class);
-        $this->app->bind(SchemaGenerateContract::class, CutCode::class);
+        $this->app->bind(SchemaGenerateContract::class, CutCodeAgent::class);
     }
 }

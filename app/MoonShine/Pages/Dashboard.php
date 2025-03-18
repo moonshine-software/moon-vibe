@@ -21,9 +21,9 @@ class Dashboard extends Page
     protected function components(): iterable
 	{
 		return [
-            FormBuilder::make(route('ai-request'), fields: [
+            FormBuilder::make(route('ai-request.request'), fields: [
                 Text::make('Название проекта', 'project_name'),
-                Textarea::make('Запрос', 'promt')->customAttributes([
+                Textarea::make('Запрос', 'prompt')->customAttributes([
                     'rows' => 6,
                 ])
             ])

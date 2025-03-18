@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CorrectFromAI;
 use App\Actions\GenerateFromAI;
-use App\Models\Project;
 use App\MoonShine\Resources\ProjectResource;
-use App\Services\RequestAdminAi;
-use App\Support\SchemaValidator;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use MoonShine\Laravel\Pages\Crud\FormPage;
@@ -20,13 +18,13 @@ class AiController extends MoonShineController
     public function index(GenerateFromAI $action): RedirectResponse
     {
         $data = request()->validate([
-            'promt' => ['string', 'required'],
+            'prompt' => ['string', 'required'],
             'project_name' => ['string', 'required'],
         ]);
         
         $projectId = $action->handle(
             $data['project_name'],
-            $data['promt'],
+            $data['prompt'],
             (int) auth('moonshine')->user()->id
         );
 
@@ -36,5 +34,16 @@ class AiController extends MoonShineController
             params: ['resourceItem' => $projectId],
             redirect: true
         );
+    }
+
+    public function correct(int $schemaId, CorrectFromAI $action)
+    {
+        $data = request()->validate([
+            'prompt' => ['string', 'required']
+        ]);
+
+        $action->handle($schemaId, $data['prompt']);
+
+        return back();
     }
 }

@@ -10,11 +10,11 @@ use App\Enums\SchemaStatus;
 
 readonly class GenerateFromAI
 {   
-    public function handle(string $projectName, string $promt, int $userId): int
+    public function handle(string $projectName, string $prompt, int $userId): int
     {
         $project = Project::query()->create([
             'name' => $projectName,
-            'description' => $promt,
+            'description' => $prompt,
             'moonshine_user_id' => $userId
         ]);
 
@@ -23,7 +23,7 @@ readonly class GenerateFromAI
             'schema' => null
         ]);
 
-        dispatch(new GenerateSchemaJob($promt, $schema->id));
+        dispatch(new GenerateSchemaJob($prompt, $schema->id));
 
         return $project->id;
     }

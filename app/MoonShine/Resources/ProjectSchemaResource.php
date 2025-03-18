@@ -44,7 +44,6 @@ class ProjectSchemaResource extends ModelResource
     public function indexFields(): iterable
     {
         return [
-			BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
             Preview::make('Статус', formatted: function (ProjectSchema $schema) {
                 if($schema->status_id === SchemaStatus::ERROR) {
                     return (string) Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([

@@ -7,19 +7,12 @@ namespace App\MoonShine\Resources;
 use App\Models\Project;
 
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Layout\Box;
-use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Number;
-use MoonShine\UI\Fields\Phone;
-use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
@@ -49,7 +42,6 @@ class ProjectResource extends ModelResource
         return [
             StackFields::make('')->fields(function(StackFields $fields){
                 return [
-                    //Preview::make(column: 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
                     Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
                     Textarea::make('', 'description'),
                 ];
@@ -70,6 +62,7 @@ class ProjectResource extends ModelResource
                             'Выполнить построение проекта?',
                         )
                 ])
+                ->searchable(false)
                 ->creatable(),
 
         ];

@@ -2,15 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Contracts\SchemaGenerateContract;
 use MoonShine\Rush\Enums\HtmlReloadAction;
 use MoonShine\Rush\Services\Rush;
 use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Fields\Textarea;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Throwable;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
-use App\Services\RequestAdminAi;
 use App\Support\SchemaValidator;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,101 +22,139 @@ class GenerateSchemaJob implements ShouldQueue
 
     private int $generateTries;
 
+
     public function __construct(
         private readonly string $promt,
         private readonly int $schemaId,
     ) {
         // TODO config
-        $this->generateTries = 1;
+        $this->generateTries = 3;
     }
 
     public function handle(): void
     {
-        logger()->debug('start job');
-
         $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
         if($schema === null) {
             return;
         }
 
-        logger()->debug('generate job', ['promt' => $this->promt, 'schemaId' => $this->schemaId]);
+        $schemaResult = null;
 
-        $requestAdminAi = new RequestAdminAi();
+        try {
+            $requestAdminAi = app(SchemaGenerateContract::class);
 
-        $mainPromt = file_get_contents(base_path('promt.md'));
+            $mainPromt = file_get_contents(base_path('promt.md'));
 
-        $messages = [
-            ['role' => 'system', 'content' => $mainPromt],
-            ['role' => 'user', 'content' => $this->promt]
-        ];
+            $messages = [
+                ['role' => 'system', 'content' => $mainPromt],
+                ['role' => 'user', 'content' => $this->promt]
+            ];
 
-        $isValidSchema = true;
-        $tries = 0;
+            $isValidSchema = true;
+            $tries = 0;
+            $error = '';
 
-        $error = '';
+            do {
+                $tries++;
 
-        do {
-            $tries++;
+                $event = $tries === 1
+                    ? "выполнение запроса..."
+                    : "выполнение запроса, попытка $tries..."
+                ;
 
-            $this->sendEvent("выполнение запроса, попытка $tries...", (int) $schema->id);
-            $schemaResult = $requestAdminAi->send($messages);
+                $this->sendEvent($event, (int) $schema->id);
+                $schemaResult = $requestAdminAi->generate($messages);
 
-//            sleep(5);
-//            $schemaResult = '{"resources": [{"name": "resource1"}, {"name": "resource2"}]}';
+//                sleep(70);
+//                $schemaResult = '{"resources": [{"name": "resource1"}, {"name": "resource2"}]}';
 
-            if(str_starts_with($schemaResult, '```json')) {
-                $schemaResult = preg_replace('/^```json\s*/', '', $schemaResult);
-                $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
-            }
-            if(str_starts_with($schemaResult, '```')) {
-                $schemaResult = preg_replace('/^```\s*/', '', $schemaResult);
-                $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
-            }
+                if (str_starts_with($schemaResult, '```json')) {
+                    $schemaResult = preg_replace('/^```json\s*/', '', $schemaResult);
+                    $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
+                }
+                if (str_starts_with($schemaResult, '```')) {
+                    $schemaResult = preg_replace('/^```\s*/', '', $schemaResult);
+                    $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
+                }
 
-            try {
-                $this->sendEvent("валидация ответа", (int) $schema->id);
-                (new SchemaValidator($schemaResult))->validate();
-            } catch (Throwable $e) {
-                $error = $e->getMessage();
+                try {
+                    $this->sendEvent("валидация ответа", (int)$schema->id);
+                    (new SchemaValidator($schemaResult))->validate();
+                } catch (Throwable $e) {
+                    $error = $e->getMessage();
 
-                $messages[] = ['role' => 'assistant', 'content' => $schemaResult];
-                $messages[] = ['role' => 'user', 'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."];
+                    $messages[] = [
+                        'role'    => 'assistant',
+                        'content' => $schemaResult
+                    ];
+                    $messages[] = [
+                        'role'    => 'user',
+                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."
+                    ];
 
-                logger()->debug('generation error', ['error' => $error, 'try' => $tries, 'schema' => $schemaResult]);
+                    logger()->debug('generation error', [
+                            'error'  => $error,
+                            'try'    => $tries,
+                            'schema' => $schemaResult
+                        ]
+                    );
 
-                $isValidSchema = false;
+                    $isValidSchema = false;
+                }
 
-                continue;
-            }
-        } while($isValidSchema && $tries < $this->generateTries);
+                logger()->debug('job', [$isValidSchema, $tries]);
 
-        $this->sendEvent("сохранение", (int) $schema->id);
+                logger()->debug('job', [$isValidSchema && $tries < $this->generateTries]);
 
-        $status = $error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
+            } while ($isValidSchema === false && $tries < $this->generateTries);
 
-        $schema->status_id = $status;
-        $schema->schema = $schemaResult;
-        $schema->error = $error !== '' ? $error : null;
-        $schema->save();
+            $this->sendEvent("сохранение", (int)$schema->id);
 
-        $badge = $status === SchemaStatus::ERROR
-            ? Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([
-                'class' => 'schema-id-' . $schema->id
-            ])
-            : Badge::make($schema->status_id->toString(), $schema->status_id->color())->customAttributes([
-                'class' => 'schema-id-' . $schema->id
-            ])
-        ;
-        Rush::events()->htmlReload('.schema-id-' . $schema->id, (string) $badge, HtmlReloadAction::OUTER_HTML);
+            $status = $error === '' ? SchemaStatus::SUCCESS
+                : SchemaStatus::ERROR;
 
-        $textarea = Textarea::make('Json схема', 'schema')->customAttributes([
-            'class' => 'schema-edit-id-' . $schema->id,
-            'rows' => 20,
-        ])->setValue($schema->schema);
-        Rush::events()->htmlReload('.schema-edit-id-' . $schema->id, (string) $textarea, HtmlReloadAction::OUTER_HTML);
+            $schema->status_id = $status;
+            $schema->schema = $schemaResult;
+            $schema->error = $error !== '' ? $error : null;
+            $schema->save();
+
+            $badge = $status === SchemaStatus::ERROR
+                ? Badge::make('Ошибка: ' . $schema->error, Color::RED)
+                    ->customAttributes([
+                        'class' => 'schema-id-' . $schema->id
+                    ])
+                : Badge::make(
+                    $schema->status_id->toString(),
+                    $schema->status_id->color()
+                )->customAttributes([
+                    'class' => 'schema-id-' . $schema->id
+                ]);
+            Rush::events()->htmlReload(
+                '.schema-id-' . $schema->id,
+                (string)$badge,
+                HtmlReloadAction::OUTER_HTML
+            );
+
+            $textarea = Textarea::make('Json схема', 'schema')
+                ->customAttributes([
+                    'class' => 'schema-edit-id-' . $schema->id,
+                    'rows'  => 20,
+                ])->setValue($schema->schema);
+            Rush::events()->htmlReload(
+                '.schema-edit-id-' . $schema->id,
+                (string) $textarea,
+                HtmlReloadAction::OUTER_HTML
+            );
+        } catch (Throwable $e) {
+            $schema->status_id = SchemaStatus::ERROR;
+            $schema->schema = $schemaResult;
+            $schema->error = "Ошибка сервера: " . $e->getMessage();
+            $schema->save();
+            report($e);
+        }
     }
 
-    private function sendEvent(string $event, int $schemaId)
+    private function sendEvent(string $event, int $schemaId): void
     {
         Rush::events()->htmlReload(
             '.schema-id-' . $schemaId,
@@ -124,5 +163,10 @@ class GenerateSchemaJob implements ShouldQueue
             ]),
             HtmlReloadAction::OUTER_HTML
         );
+    }
+
+    public function failed(Throwable $e): void
+    {
+        report($e);
     }
 }

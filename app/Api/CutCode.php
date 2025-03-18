@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use App\Contracts\SchemaGenerateContract;
 use Throwable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\ConnectionException;
 
-class CutCode
+class CutCode implements SchemaGenerateContract
 {
     private string $token;
 
@@ -45,5 +46,13 @@ class CutCode
         } catch (Throwable $e) {
             throw new ConnectionException('Error connecting to API: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function generate(array $messages): string
+    {
+        return $this->request($messages[1]['content']);
     }
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Api;
 
+use App\Contracts\SchemaGenerateContract;
 use Illuminate\Support\Facades\Http;
 
-class DeepSeek
+class DeepSeek implements SchemaGenerateContract
 {
     private string $token;
 
@@ -21,20 +22,27 @@ class DeepSeek
         $this->model = 'deepseek-reasoner';
     }
 
-    public function request(array $userPromt): string
+    public function request(array $messages): string
     {
         $response = Http::timeout(3600)
             ->withHeaders([
                 'Authorization' => 'Bearer ' . $this->token,
                 'Content-Type' => 'application/json',
             ])->post($this->url, [
-                'user_promt' => $userPromt
+                'model' => $this->model,
+                'messages' => $messages,
+                'stream' => false
             ]);
 
         $result = $response->json();
 
-        logger()->debug('DeepSeek response', [$response->getBody()]);
+        logger()->debug('DeepSeek response', $result);
 
         return $result['choices'][0]['message']['content'];
+    }
+
+    public function generate(array $messages): string
+    {
+        return $this->request($messages);
     }
 }

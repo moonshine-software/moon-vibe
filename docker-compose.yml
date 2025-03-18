@@ -21,6 +21,8 @@ services:
         uid: 1000
         xdebug_idekey: ${XDEBUG_IDEKEY}
         xdebug_client_port: ${XDEBUG_CLIENT_PORT}
+        ms_user: ${MS_USER}
+        ms_pass: ${MS_PASS}
         target: dev
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
@@ -104,6 +106,8 @@ services:
       args:
         user: ${DOCKER_USER}
         uid: 1000
+        ms_user: ${MS_USER}
+        ms_pass: ${MS_PASS}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: worker

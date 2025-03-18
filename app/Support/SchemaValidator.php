@@ -102,8 +102,6 @@ readonly class SchemaValidator
                 throw new SchemaValidationException("Типа $type не существует");
             }
 
-            report($e);
-            
             throw $e;
         }
 

@@ -78,8 +78,12 @@ class ProjectSchemaResource extends ModelResource
                 if($schema->schema === null) {
                     return '';
                 }
-                $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
-                return $simpleSchema->generate(false);
+                try {
+                    $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+                    return $simpleSchema->generate(false);
+                } catch (\Throwable) {
+                    return '';
+                }
             })
         ];
     }
@@ -125,6 +129,7 @@ class ProjectSchemaResource extends ModelResource
                 ->validate();
         }catch (\Throwable $e) {
             $item->error = $e->getMessage();
+            $item->status_id = SchemaStatus::ERROR;
         }
 
         return $item;
@@ -139,8 +144,14 @@ class ProjectSchemaResource extends ModelResource
         try {
             (new SchemaValidator(request()->input('schema')))
                 ->validate();
+
+            if($item->status_id === SchemaStatus::ERROR) {
+                $item->error = '';
+                $item->status_id = SchemaStatus::SUCCESS;
+            }
         }catch (\Throwable $e) {
             $item->error = $e->getMessage();
+            $item->status_id = SchemaStatus::ERROR;
         }
 
         return $item;

@@ -68,4 +68,4 @@ npm-host:
 
 #app
 admin:
-	cd admins && tar -xvf admin.tar.gz && cd admin && cp .env.example .env && make build && make install
+	cd admins && tar -xvf admin.tar.gz && chown -R ivan:ivan admin && cd admin && cp .env.example .env && make build && make install

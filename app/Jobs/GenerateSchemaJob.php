@@ -22,13 +22,12 @@ class GenerateSchemaJob implements ShouldQueue
 
     private int $generateTries;
 
-
     public function __construct(
         private readonly string $prompt,
         private readonly int $schemaId,
     ) {
         // TODO config
-        $this->generateTries = 3;
+        $this->generateTries = 5;
     }
 
     public function handle(): void
@@ -42,7 +41,6 @@ class GenerateSchemaJob implements ShouldQueue
 
         try {
             $requestAdminAi = app(SchemaGenerateContract::class);
-            $requestAdminAi->setSchemaId($this->schemaId);
 
             $mainPrompt = file_get_contents(base_path('promt.md'));
 
@@ -51,20 +49,21 @@ class GenerateSchemaJob implements ShouldQueue
                 ['role' => 'user', 'content' => $this->prompt]
             ];
 
-            $isValidSchema = true;
             $tries = 0;
-            $error = '';
-
             do {
                 $tries++;
+                $isValidSchema = true;
+                $error = '';
 
                 $event = $tries === 1
                     ? "выполнение запроса..."
-                    : "выполнение запроса, попытка $tries..."
+                    : "выполнение запроса, повтор $tries..."
                 ;
 
+                $mode = $tries === 1 ? 'gen' : 'fix';
+
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $requestAdminAi->generate($messages);
+                $schemaResult = $requestAdminAi->generate($messages, $mode, (int) $schema->id);
 
 //                sleep(70);
 //                $schemaResult = '{"resources": [{"name": "resource1"}, {"name": "resource2"}]}';
@@ -83,6 +82,8 @@ class GenerateSchemaJob implements ShouldQueue
                     (new SchemaValidator($schemaResult))->validate();
                 } catch (Throwable $e) {
                     $error = $e->getMessage();
+
+                    logger()->debug('wrong schema', [$tries, $schemaResult]);
 
                     $messages[] = [
                         'role'    => 'assistant',
@@ -103,9 +104,7 @@ class GenerateSchemaJob implements ShouldQueue
                     $isValidSchema = false;
                 }
 
-                logger()->debug('job', [$isValidSchema, $tries]);
-
-                logger()->debug('job', [$isValidSchema && $tries < $this->generateTries]);
+                logger()->debug('validate', [$isValidSchema, $tries, $isValidSchema === false && $tries < $this->generateTries]);
 
             } while ($isValidSchema === false && $tries < $this->generateTries);
 

@@ -27,7 +27,7 @@ class CorrectSchemaJob implements ShouldQueue
         private readonly int $schemaId,
     ) {
         // TODO config
-        $this->generateTries = 3;
+        $this->generateTries = 5;
     }
 
     public function handle(): void
@@ -41,19 +41,16 @@ class CorrectSchemaJob implements ShouldQueue
 
         try {
             $requestAdminAi = app(SchemaGenerateContract::class);
-            $requestAdminAi->setSchemaId($this->schemaId);
-
             $messages = [
                 ['role' => 'system', 'content' => 'Исправление схемы'],
                 ['role' => 'user', 'content' => $this->prompt]
             ];
 
-            $isValidSchema = true;
             $tries = 0;
-            $error = '';
-
             do {
                 $tries++;
+                $isValidSchema = true;
+                $error = '';
 
                 $event = $tries === 1
                     ? "исправление схемы..."
@@ -61,7 +58,7 @@ class CorrectSchemaJob implements ShouldQueue
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $requestAdminAi->correct($messages);
+                $schemaResult = $requestAdminAi->generate($messages, 'fix', (int) $schema->id);
 
                 if (str_starts_with($schemaResult, '```json')) {
                     $schemaResult = preg_replace('/^```json\s*/', '', $schemaResult);

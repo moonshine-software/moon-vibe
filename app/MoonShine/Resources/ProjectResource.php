@@ -11,6 +11,7 @@ use App\Services\SimpleSchema;
 use Closure;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -82,8 +83,13 @@ class ProjectResource extends ModelResource
                                         if($schema->schema === null) {
                                             return '';
                                         }
-                                        $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
-                                        return $simpleSchema->generate();
+
+                                        try {
+                                            $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+                                            return $simpleSchema->generate();
+                                        } catch (\Throwable) {
+                                            return '';
+                                        }
                                     }),
                                     Divider::make(),
                                     Textarea::make('Запрос', 'prompt')->customAttributes([
@@ -97,10 +103,17 @@ class ProjectResource extends ModelResource
         ];
     }
 
+    public function modifyListComponent(ComponentContract $component): ComponentContract
+    {
+        return parent::modifyListComponent($component)->customAttributes([
+            'style' => 'border-spacing: 0rem 1.2rem;'
+        ]);
+    }
+
     protected function trAttributes(): Closure
     {
         return fn(?DataWrapperContract $data, int $row) => [
-            'style' => 'margin-bottom: 5rem'
+            //'style' => 'margin-bottom: 5rem'
         ];
     }
 

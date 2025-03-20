@@ -41,7 +41,7 @@ class DeepSeek implements SchemaGenerateContract
         return $result['choices'][0]['message']['content'];
     }
 
-    public function generate(array $messages): string
+    public function generate(array $messages, ?string $mode, ?int $schemaId): string
     {
         return $this->request($messages);
     }

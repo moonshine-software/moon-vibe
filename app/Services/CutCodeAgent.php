@@ -9,35 +9,21 @@ use App\Contracts\SchemaGenerateContract;
 
 class CutCodeAgent implements SchemaGenerateContract
 {
-    private int $schemaId;
-
     public function __construct(
         private CutCode $api
     ) {
     }
 
-    public function setSchemaId(int $schemaId): self
+    public function generate(array $messages, ?string $mode, ?int $schemaId): string
     {
-        $this->schemaId = $schemaId;
-        return $this;
-    }
+        $message = array_pop($messages);
 
-    public function generate(array $messages): string
-    {
-        $data = [
-            'prompt' => $messages[1]['content'],
-            'mode' => 'gen',
-            'id' => $this->schemaId,
-        ];
-        return $this->api->post($data);
-    }
+        logger()->debug('cut code agent', [$mode, $message['content']]);
 
-    public function correct(array $messages): string
-    {
         $data = [
-            'prompt' => $messages[1]['content'],
-            'mode' => 'fix',
-            'id' => $this->schemaId,
+            'prompt' => $message['content'],
+            'mode' => $mode,
+            'id' => $schemaId,
         ];
         return $this->api->post($data);
     }

@@ -6,5 +6,5 @@ namespace App\Contracts;
 
 interface SchemaGenerateContract
 {
-    public function generate(array $messages): string;
+    public function generate(array $messages, ?string $mode, ?int $schemaId): string;
 }

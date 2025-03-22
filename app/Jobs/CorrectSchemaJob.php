@@ -50,7 +50,6 @@ class CorrectSchemaJob implements ShouldQueue
             do {
                 $tries++;
                 $isValidSchema = true;
-                $error = '';
 
                 $event = $tries === 1
                     ? "исправление схемы..."
@@ -69,11 +68,16 @@ class CorrectSchemaJob implements ShouldQueue
                     $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
                 }
 
-                try {
-                    $this->sendEvent("валидация ответа", (int)$schema->id);
-                    (new SchemaValidator($schemaResult))->validate();
-                } catch (Throwable $e) {
-                    $error = $e->getMessage();
+                $this->sendEvent("валидация ответа", (int)$schema->id);
+                $error = (new SchemaValidator($schemaResult))->validate();
+
+                if($error !== '') {
+                    logger()->debug('generation error', [
+                            'error'  => $error,
+                            'try'    => $tries,
+                            'schema' => $schemaResult
+                        ]
+                    );
 
                     $messages[] = [
                         'role'    => 'assistant',
@@ -83,13 +87,6 @@ class CorrectSchemaJob implements ShouldQueue
                         'role'    => 'user',
                         'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."
                     ];
-
-                    logger()->debug('generation error', [
-                            'error'  => $error,
-                            'try'    => $tries,
-                            'schema' => $schemaResult
-                        ]
-                    );
 
                     $isValidSchema = false;
                 }

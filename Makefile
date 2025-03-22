@@ -69,3 +69,8 @@ npm-host:
 #app
 admin:
 	cd admins && tar -xvf admin.tar.gz && chown -R ivan:ivan admin && cd admin && cp .env.example .env && make build && make install
+clear: clear-dir clear-file
+clear-dir:
+	sudo rm -rf admins/admin
+clear-file:
+	rm admins/admin.tar.gz

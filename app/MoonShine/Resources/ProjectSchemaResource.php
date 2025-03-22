@@ -123,14 +123,10 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeCreating(mixed $item): mixed
     {
-        $item->error = '';
-        try {
-            (new SchemaValidator(request()->input('schema')))
-                ->validate();
-        }catch (\Throwable $e) {
-            $item->error = $e->getMessage();
-            $item->status_id = SchemaStatus::ERROR;
-        }
+        $item->error = (new SchemaValidator(request()->input('schema')))
+            ->validate();
+
+        $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 
         return $item;
     }
@@ -140,19 +136,10 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeUpdating(mixed $item): mixed
     {
-        $item->error = '';
-        try {
-            (new SchemaValidator(request()->input('schema')))
-                ->validate();
+        $item->error = (new SchemaValidator(request()->input('schema')))
+            ->validate();
 
-            if($item->status_id === SchemaStatus::ERROR) {
-                $item->error = '';
-                $item->status_id = SchemaStatus::SUCCESS;
-            }
-        }catch (\Throwable $e) {
-            $item->error = $e->getMessage();
-            $item->status_id = SchemaStatus::ERROR;
-        }
+        $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 
         return $item;
     }

@@ -53,7 +53,6 @@ class GenerateSchemaJob implements ShouldQueue
             do {
                 $tries++;
                 $isValidSchema = true;
-                $error = '';
 
                 $event = $tries === 1
                     ? "выполнение запроса..."
@@ -77,13 +76,16 @@ class GenerateSchemaJob implements ShouldQueue
                     $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
                 }
 
-                try {
-                    $this->sendEvent("валидация ответа", (int)$schema->id);
-                    (new SchemaValidator($schemaResult))->validate();
-                } catch (Throwable $e) {
-                    $error = $e->getMessage();
+                $this->sendEvent("валидация ответа", (int)$schema->id);
+                $error = (new SchemaValidator($schemaResult))->validate();
 
-                    logger()->debug('wrong schema', [$tries, $schemaResult]);
+                if($error !== '') {
+                    logger()->debug('generation error', [
+                            'try'    => $tries,
+                            'schema' => $schemaResult,
+                            'error'  => $error,
+                        ]
+                    );
 
                     $messages[] = [
                         'role'    => 'assistant',
@@ -94,18 +96,8 @@ class GenerateSchemaJob implements ShouldQueue
                         'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."
                     ];
 
-                    logger()->debug('generation error', [
-                            'error'  => $error,
-                            'try'    => $tries,
-                            'schema' => $schemaResult
-                        ]
-                    );
-
                     $isValidSchema = false;
                 }
-
-                logger()->debug('validate', [$isValidSchema, $tries, $isValidSchema === false && $tries < $this->generateTries]);
-
             } while ($isValidSchema === false && $tries < $this->generateTries);
 
             $this->sendEvent("сохранение", (int)$schema->id);

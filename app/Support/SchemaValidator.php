@@ -19,15 +19,13 @@ readonly class SchemaValidator
     ) {
     }
 
-    /**
-     * @throws SchemaValidationException
-     * @throws Throwable
-     */
-    public function validate(): void
+    public function validate(): string
     {
+        $errors = [];
+
         try {
             if (! json_validate($this->schema)) {
-                throw new InvalidArgumentException('Некорректная JSON схема');
+                return 'Некорректная JSON схема';
             }
 
             $data = json_decode($this->schema, true);
@@ -37,25 +35,25 @@ readonly class SchemaValidator
             $codeStructures = $factory->makeStructures();
 
             if($codeStructures->codeStructures() === []) {
-                throw new SchemaValidationException('Не удалось получить ни одного ресурса');
+                return 'Не удалось получить ни одного ресурса';
             }
 
             $packageFields = ['Markdown', 'TinyMce'];
 
             foreach ($codeStructures->codeStructures() as $index => $codeStructure) {
                 if($codeStructure->columns() === []) {
-                    throw new SchemaValidationException("В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля");
+                    $errors[] = "В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля";
                 }
 
                 if (!preg_match('/^[a-zA-Z]+$/', $codeStructure->entity()->raw())) {
-                    throw new SchemaValidationException("Ресурс '{$codeStructure->entity()->raw()}' - параметр ресурса name должен содержать только латинские буквы");
+                    $errors[] = "Ресурс '{$codeStructure->entity()->raw()}' - параметр ресурса name должен содержать только латинские буквы";
                 }
 
                 foreach ($codeStructure->columns() as $column) {
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
                             if(! str_contains($methodName, "(")) {
-                                throw new SchemaValidationException("{$column->column()} (resourceMethod - $methodName) - в методе ресурса должны быть указаны скобки, например $methodName()");
+                                $errors[] = "{$column->column()} (resourceMethod - $methodName) - в методе ресурса должны быть указаны скобки, например $methodName()";
                             }
                         }
                     }
@@ -63,18 +61,26 @@ readonly class SchemaValidator
                     if($column->getMigrationMethods() !== []) {
                         foreach ($column->getMigrationMethods() as $methodName) {
                             if(! str_contains($methodName, "(")) {
-                                throw new SchemaValidationException("{$column->column()} (migrationMethod - $methodName) - в методе миграции должны быть указаны скобки, например $methodName()");
+                                $errors[] = "{$column->column()} (migrationMethod - $methodName) - в методе миграции должны быть указаны скобки, например $methodName()";
                             }
                         }
                     }
 
                     if($column->type() === SqlTypeMap::BELONGS_TO) {
-                        $this->checkBelongsToOrder($index, $column, $codeStructures->codeStructures(), $codeStructure->entity()->ucFirstSingular());
+                        $belongsToError = $this->checkBelongsToOrder($index, $column, $codeStructures->codeStructures(), $codeStructure->entity()->ucFirstSingular());
+                        if($belongsToError !== '') {
+                            $errors[] = $belongsToError;
+                        }
                     }
 
                     $field = $column->getFieldClass();
                     if($field === null && $column->getResourceMethods() !== []) {
-                        throw new SchemaValidationException("{$codeStructure->entity()->singular()}({$column->column()}) - в элементе массива fields массив methods не может быть указан, если параметр field не задан");
+                        foreach ($column->getResourceMethods() as $method) {
+                            if(str_contains($method, 'default(')) {
+                                continue;
+                            }
+                            $errors[] = "{$codeStructure->entity()->singular()}({$column->column()}) - в элементе массива fields массив methods не может быть указан, если параметр field не задан";
+                        }
                     }
 
                     if($field === null) {
@@ -85,7 +91,7 @@ readonly class SchemaValidator
                         ! in_array($field, $packageFields)
                         && ! class_exists("\\MoonShine\\UI\\Fields\\$field")
                     ) {
-                        throw new SchemaValidationException("{$column->column()} - поля $field не существует в MoonShine");
+                        $errors[] = "{$column->column()} - поля $field не существует в MoonShine";
                     }
 
                     if($column->getResourceMethods() !== []) {
@@ -94,44 +100,49 @@ readonly class SchemaValidator
                             try {
                                 $class = new ReflectionClass("\\MoonShine\\UI\\Fields\\$field");
                                 if(! $class->hasMethod($method)) {
-                                    throw new SchemaValidationException("{$column->column()} - метод $method не существует для поля $field");
+                                    $errors[] = "{$column->column()} - метод $method не существует для поля $field";
                                 }
                             } catch (Throwable $e) {
-                                throw new SchemaValidationException("{$column->column()}->$methodName - ошибка проверки метода: " . $e->getMessage());
+                                $errors[] = "{$column->column()}->$methodName - ошибка проверки метода: " . $e->getMessage();
                             }
 
                         }
                     }
                 }
             }
-        } catch (SchemaValidationException $e) {
-            throw $e;
         } catch (Throwable $e) {
             $error = $e->getMessage();
             if($error === 'No resources array found.') {
-                throw new SchemaValidationException("В схеме отсутствует основной параметр 'resources'");
+                $errors[] = "В схеме отсутствует основной параметр 'resources'";
+            } else {
+                $errors[] = $e->getMessage();
             }
-
-            if(str_contains($error, "is not a valid backing value for enum DevLnk\MoonShineBuilder\Enums\SqlTypeMap")) {
-                $type = str_replace(" is not a valid backing value for enum DevLnk\MoonShineBuilder\Enums\SqlTypeMap", "", $error);
-                throw new SchemaValidationException("Типа $type не существует");
-            }
-
-            throw $e;
         }
 
+        if($errors === []) {
+            return '';
+        }
+
+        return implode(". ", $errors);
     }
 
     /**
      * @throws SchemaValidationException
      */
-    private function checkBelongsToOrder(int $index, ColumnStructure $column, array $codeStructures, string $checkName): void
+    private function checkBelongsToOrder(int $index, ColumnStructure $column, array $codeStructures, string $checkName): string
     {
+        $errors = [];
         $resourceName = str($column->relation()->table()->camel())->singular()->ucfirst()->value();
         foreach ($codeStructures as $checkIndex => $codeStructure) {
             if($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
-                throw new SchemaValidationException("Ресурс $resourceName должен быть выше $checkName в списке ресурсов");
+                $errors[] = "Ресурс $resourceName должен быть выше $checkName в списке ресурсов";
             }
         }
+
+        if($errors === []) {
+            return '';
+        }
+
+        return implode(". ", $errors);
     }
 }

@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     htop \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    vim \
     default-mysql-client
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*

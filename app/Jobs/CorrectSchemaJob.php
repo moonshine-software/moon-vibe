@@ -3,13 +3,8 @@
 namespace App\Jobs;
 
 use App\Contracts\SchemaGenerateContract;
-use MoonShine\Rush\Enums\HtmlReloadAction;
-use MoonShine\Rush\Services\Rush;
-use MoonShine\Support\Enums\Color;
-use MoonShine\UI\Components\Badge;
-use MoonShine\UI\Fields\Textarea;
+use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
-use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 use App\Support\SchemaValidator;
 use Illuminate\Foundation\Queue\Queueable;
@@ -19,8 +14,9 @@ class CorrectSchemaJob implements ShouldQueue
 {
     use Queueable;
 
-    private int $generateTries;
+    use GenerateSchemaTrait;
 
+    private int $generateTries;
 
     public function __construct(
         private readonly string $prompt,
@@ -41,9 +37,16 @@ class CorrectSchemaJob implements ShouldQueue
 
         try {
             $requestAdminAi = app(SchemaGenerateContract::class);
+
+            $mainPrompt = file_get_contents(base_path('promt.md'));
+
+            $mainPrompt = "# Режим исправления" . PHP_EOL . $mainPrompt;
+
             $messages = [
-                ['role' => 'system', 'content' => 'Исправление схемы'],
-                ['role' => 'user', 'content' => $this->prompt]
+                ['role' => 'system', 'content' => $mainPrompt],
+                ['role' => 'user', 'content' => $schema->project->description],
+                ['role' => 'assistant', 'content' => $schema->schema],
+                ['role' => 'user', 'content' => $this->prompt],
             ];
 
             $tries = 0;
@@ -59,16 +62,7 @@ class CorrectSchemaJob implements ShouldQueue
                 $this->sendEvent($event, (int) $schema->id);
                 $schemaResult = $requestAdminAi->generate($messages, 'fix', (int) $schema->id);
 
-                if (str_starts_with($schemaResult, '```json')) {
-                    $schemaResult = preg_replace('/^```json\s*/', '', $schemaResult);
-                    $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
-                }
-                if (str_starts_with($schemaResult, '```')) {
-                    $schemaResult = preg_replace('/^```\s*/', '', $schemaResult);
-                    $schemaResult = preg_replace('/\s*```$/', '', $schemaResult);
-                }
-
-                $this->sendEvent("валидация ответа", (int)$schema->id);
+                $this->sendEvent("валидация ответа", (int) $schema->id);
                 $error = (new SchemaValidator($schemaResult))->validate();
 
                 if($error !== '') {
@@ -92,76 +86,15 @@ class CorrectSchemaJob implements ShouldQueue
                 }
             } while ($isValidSchema === false && $tries < $this->generateTries);
 
-            $this->sendEvent("сохранение", (int)$schema->id);
+            $this->saveSchema($schema, $error, $schemaResult);
 
-            $status = $error === '' ? SchemaStatus::SUCCESS
-                : SchemaStatus::ERROR;
-
-            $schema->status_id = $status;
-            $schema->schema = $schemaResult;
-            $schema->error = $error !== '' ? $error : null;
-            $schema->save();
-
-            $badge = $status === SchemaStatus::ERROR
-                ? Badge::make('Ошибка: ' . $schema->error, Color::RED)
-                    ->customAttributes([
-                        'class' => 'schema-id-' . $schema->id
-                    ])
-                : Badge::make(
-                    $schema->status_id->toString(),
-                    $schema->status_id->color()
-                )->customAttributes([
-                    'class' => 'schema-id-' . $schema->id
-                ]);
-            Rush::events()->htmlReload(
-                '.schema-id-' . $schema->id,
-                (string)$badge,
-                HtmlReloadAction::OUTER_HTML
-            );
-
-            $textarea = Textarea::make('Json схема', 'schema')
-                ->customAttributes([
-                    'class' => 'schema-edit-id-' . $schema->id,
-                    'rows'  => 20,
-                ])->setValue($schema->schema);
-            Rush::events()->htmlReload(
-                '.schema-edit-id-' . $schema->id,
-                (string) $textarea,
-                HtmlReloadAction::OUTER_HTML
-            );
         } catch (Throwable $e) {
             $this->schemaError($e, $schema, $schemaResult);
         }
     }
 
-    private function sendEvent(string $event, int $schemaId): void
-    {
-        Rush::events()->htmlReload(
-            '.schema-id-' . $schemaId,
-            (string) Badge::make('Генерация: ' .  $event)->customAttributes([
-                'class' => 'schema-id-' . $schemaId
-            ]),
-            HtmlReloadAction::OUTER_HTML
-        );
-    }
-
     public function failed(Throwable $e): void
     {
-        $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
-        if($schema === null) {
-            report($e);
-            return;
-        }
-        $this->schemaError($e, $schema);
-    }
-
-    private function schemaError(Throwable $e, ProjectSchema $schema, ?string $schemaResult = null): void
-    {
-        $schema->status_id = SchemaStatus::ERROR;
-        $schema->schema = $schemaResult;
-        $schema->error = "Ошибка сервера: " . $e->getMessage();
-        $schema->save();
-        $this->sendEvent("Ошибка сервера: " . $e->getMessage(), (int) $schema->id);
-        report($e);
+        $this->failedJob($e, $this->schemaId);
     }
 }

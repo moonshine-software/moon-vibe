@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use DevLnk\MoonShineBuilder\Support\TypeMap;
 use Throwable;
 use ReflectionClass;
 use InvalidArgumentException;
@@ -73,24 +74,31 @@ readonly class SchemaValidator
                         }
                     }
 
-                    $field = $column->getFieldClass();
-                    if($field === null && $column->getResourceMethods() !== []) {
-                        foreach ($column->getResourceMethods() as $method) {
-                            if(str_contains($method, 'default(')) {
-                                continue;
-                            }
-                            $errors[] = "{$codeStructure->entity()->singular()}({$column->column()}) - в элементе массива fields массив methods не может быть указан, если параметр field не задан";
-                        }
-                    }
 
-                    if($field === null) {
+                    if(in_array($column->getFieldClass(), $packageFields)) {
                         continue;
                     }
 
-                    if(
-                        ! in_array($field, $packageFields)
-                        && ! class_exists("\\MoonShine\\UI\\Fields\\$field")
-                    ) {
+                    $typeMap = new TypeMap();
+                    $field = $column->getFieldClass()
+                        ? $typeMap->fieldClassFromAlias($column->getFieldClass())
+                        : $typeMap->getMoonShineFieldFromSqlType($column->type())
+                    ;
+
+//                    if($field === null && $column->getResourceMethods() !== []) {
+//                        foreach ($column->getResourceMethods() as $method) {
+//                            if(str_contains($method, 'default(')) {
+//                                continue;
+//                            }
+//                            $errors[] = "{$codeStructure->entity()->singular()}({$column->column()}) - в элементе массива fields массив methods не может быть указан, если параметр field не задан";
+//                        }
+//                    }
+//
+//                    if($field === null) {
+//                        continue;
+//                    }
+
+                    if(! class_exists($field)) {
                         $errors[] = "{$column->column()} - поля $field не существует в MoonShine";
                     }
 
@@ -98,14 +106,13 @@ readonly class SchemaValidator
                         foreach ($column->getResourceMethods() as $methodName) {
                             $method = strstr($methodName, '(', true);
                             try {
-                                $class = new ReflectionClass("\\MoonShine\\UI\\Fields\\$field");
+                                $class = new ReflectionClass($field);
                                 if(! $class->hasMethod($method)) {
                                     $errors[] = "{$column->column()} - метод $method не существует для поля $field";
                                 }
                             } catch (Throwable $e) {
                                 $errors[] = "{$column->column()}->$methodName - ошибка проверки метода: " . $e->getMessage();
                             }
-
                         }
                     }
                 }

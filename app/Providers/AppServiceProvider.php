@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Api\DeepSeek;
 use App\Contracts\SchemaGenerateContract;
 use App\Services\Centrifugo;
 use App\Services\CutCodeAgent;

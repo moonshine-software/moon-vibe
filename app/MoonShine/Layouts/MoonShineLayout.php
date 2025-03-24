@@ -104,7 +104,7 @@ final class MoonShineLayout extends CompactLayout
         parent::colors($colorManager);
 
         $colorManager
-            ->primary('linear-gradient(90deg,#282e35,#252c33,#242a31)')
+            ->primary('#454b51')
         ;
     }
 

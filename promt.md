@@ -233,17 +233,6 @@
   ]
 }
 ```
-- Значение column у параметра fields типа BelongsTo должно обязательно заканчиваться на _id для построения корректной BelongsTo связи в Laravel, например:
-```json
-{
-    "name": "Категория",
-    "type": "BelongsTo",
-    "column": "category_id",
-    "relation": {
-        "table": "categories"
-    }
-}
-```
 - Ресурс пользователей, например User, создавать не нужно, он по умолчанию создан и называется MoonShineUserResource. Таблица пользователей уже создана и она называется moonshine_users. Привязка пользователей к ресурсу осуществляется, например, следующим образом через тип поля BelongsTo:
 ```json
 {
@@ -256,7 +245,50 @@
   "model_class": "\\MoonShine\\Laravel\\Models\\MoonshineUser"
 }
 ```
-- Представь ответ в отформатированном виде с переносом строк и отступами
+- Обязательно! Старайся по возможности всегда заполнить значение column у ресурса. Это ссылка на одно из его полей, которое характеризует имя ресурса, например name, title, и подобные, например в следующем примере `"column": "title"` ссылается на field c `"column": "title"`:
+```json
+{
+    "name": "Task",
+    "menuName": "Задачи",
+    "column": "title",
+    "fields": [
+        {
+            "column": "id",
+            "type": "id"
+        },
+        {
+            "column": "title",
+            "type": "string",
+            "name": "Название",
+            "hasFilter": true
+        }
+    ]
+}
+```
+Еще пример с `"column": "name"`
+```json
+{
+  "name": "Category",
+  "menuName": "Категория",
+  "column": "name",
+  "fields": [
+    {
+      "column": "id",
+      "type": "id"
+    },
+    {
+      "column": "name",
+      "type": "string",
+      "name": "Имя"
+    },
+    {
+      "column": "description",
+      "type": "string",
+      "name": "Описание"
+    }
+  ]
+}
+```
 
 ## Инструкции по формированию полей fields
 - Не используй поля Markdown и TinyMce, вместо них используй Textarea
@@ -287,7 +319,17 @@
     ]
 }
 ```
-
+- Значение column у параметра fields типа BelongsTo должно обязательно заканчиваться на _id для построения корректной BelongsTo связи в Laravel, например:
+```json
+{
+    "name": "Категория",
+    "type": "BelongsTo",
+    "column": "category_id",
+    "relation": {
+        "table": "categories"
+    }
+}
+```
 ## Примеры
 Проект с категориями, продуктами и комментариями
 ```json

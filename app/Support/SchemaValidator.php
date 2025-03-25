@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructure;
 use DevLnk\MoonShineBuilder\Support\TypeMap;
 use Throwable;
 use ReflectionClass;
-use InvalidArgumentException;
-use App\Exceptions\SchemaValidationException;
 use DevLnk\MoonShineBuilder\Enums\SqlTypeMap;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\ColumnStructure;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
@@ -74,6 +73,16 @@ readonly class SchemaValidator
                         }
                     }
 
+                    if($column->type() === SqlTypeMap::HAS_MANY) {
+                        $hasManyError = $this->checkHasMany(
+                            $column,
+                            $codeStructures->codeStructures()
+                        );
+                        if($hasManyError !== '') {
+                            $errors[] = $hasManyError;
+                        }
+                    }
+
                     if(in_array($column->getFieldClass(), $packageFields)) {
                         continue;
                     }
@@ -119,9 +128,6 @@ readonly class SchemaValidator
         return implode(". ", $errors);
     }
 
-    /**
-     * @throws SchemaValidationException
-     */
     private function checkBelongsTo(
         int $index,
         ColumnStructure $column,
@@ -140,10 +146,35 @@ readonly class SchemaValidator
             $errors[] = "Поле {$column->column()} ресурса $checkName должно заканчиваться на _id для построения корректной связи";
         }
 
-        if($errors === []) {
-            return '';
+//        if($column->relation()->table()->raw() === 'moonshine_users' && $column->column() !== 'moonshine_user_id') {
+//            $errors[] = "Поле {$column->column()} ресурса $checkName должно иметь значение column: moonshine_user_id";
+//        }
+
+        return $errors === [] ? '' : implode(". ", $errors);
+    }
+
+    public function checkHasMany(
+        ColumnStructure $column,
+        array $codeStructures
+    ): string {
+        $errors = [];
+
+        $relationTable = $column->relation()->table()->raw();
+
+        $isValidTable = false;
+
+        /** @var CodeStructure $codeStructure */
+        foreach ($codeStructures as $codeStructure) {
+            if($codeStructure->table() === $relationTable) {
+                $isValidTable = true;
+                break;
+            }
         }
 
-        return implode(". ", $errors);
+        if(! $isValidTable) {
+            $errors[] = "Для таблицы $relationTable должен быть создан ресурс";
+        }
+
+        return $errors === [] ? '' : implode(". ", $errors);
     }
 }

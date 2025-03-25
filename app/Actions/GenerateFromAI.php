@@ -21,6 +21,7 @@ readonly class GenerateFromAI
 
         $schema = $project->schemas()->create([
             'status_id' => SchemaStatus::PENDING,
+            'first_prompt' => $prompt,
             'schema' => null
         ]);
 

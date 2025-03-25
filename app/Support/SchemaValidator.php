@@ -68,12 +68,11 @@ readonly class SchemaValidator
                     }
 
                     if($column->type() === SqlTypeMap::BELONGS_TO) {
-                        $belongsToError = $this->checkBelongsToOrder($index, $column, $codeStructures->codeStructures(), $codeStructure->entity()->ucFirstSingular());
+                        $belongsToError = $this->checkBelongsTo($index, $column, $codeStructures->codeStructures(), $codeStructure->entity()->ucFirstSingular());
                         if($belongsToError !== '') {
                             $errors[] = $belongsToError;
                         }
                     }
-
 
                     if(in_array($column->getFieldClass(), $packageFields)) {
                         continue;
@@ -84,19 +83,6 @@ readonly class SchemaValidator
                         ? $typeMap->fieldClassFromAlias($column->getFieldClass())
                         : $typeMap->getMoonShineFieldFromSqlType($column->type())
                     ;
-
-//                    if($field === null && $column->getResourceMethods() !== []) {
-//                        foreach ($column->getResourceMethods() as $method) {
-//                            if(str_contains($method, 'default(')) {
-//                                continue;
-//                            }
-//                            $errors[] = "{$codeStructure->entity()->singular()}({$column->column()}) - в элементе массива fields массив methods не может быть указан, если параметр field не задан";
-//                        }
-//                    }
-//
-//                    if($field === null) {
-//                        continue;
-//                    }
 
                     if(! class_exists($field)) {
                         $errors[] = "{$column->column()} - поля $field не существует в MoonShine";
@@ -136,14 +122,22 @@ readonly class SchemaValidator
     /**
      * @throws SchemaValidationException
      */
-    private function checkBelongsToOrder(int $index, ColumnStructure $column, array $codeStructures, string $checkName): string
-    {
+    private function checkBelongsTo(
+        int $index,
+        ColumnStructure $column,
+        array $codeStructures,
+        string $checkName
+    ): string {
         $errors = [];
         $resourceName = str($column->relation()->table()->camel())->singular()->ucfirst()->value();
         foreach ($codeStructures as $checkIndex => $codeStructure) {
             if($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
                 $errors[] = "Ресурс $resourceName должен быть выше $checkName в списке ресурсов";
             }
+        }
+
+        if($column->column() !== '' && ! str_contains($column->column(), '_id')) {
+            $errors[] = "Поле {$column->column()} ресурса $checkName должно заканчиваться на _id для построения корректной связи";
         }
 
         if($errors === []) {

@@ -12,6 +12,7 @@ class ProjectSchema extends Model
     protected $fillable = [
 		'project_id',
 		'schema',
+		'first_prompt',
         'status_id',
 		'error',
     ];

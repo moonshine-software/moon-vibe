@@ -41,7 +41,7 @@ class CorrectSchemaJob implements ShouldQueue
 
             $messages = [
                 ['role' => 'system', 'content' => $mainPrompt],
-                ['role' => 'user', 'content' => $schema->project->description],
+                ['role' => 'user', 'content' => $schema->first_prompt],
                 ['role' => 'assistant', 'content' => $schema->schema],
                 ['role' => 'user', 'content' => $this->prompt],
             ];

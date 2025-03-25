@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Jobs\CorrectSchemaJob;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
+use MoonShine\Laravel\MoonShineAuth;
 
 readonly class CorrectFromAI
 {   
@@ -20,6 +21,12 @@ readonly class CorrectFromAI
         $schema->status_id = SchemaStatus::PENDING;
         $schema->save();
 
-        dispatch(new CorrectSchemaJob($prompt, $schema->id));
+        $user = MoonShineAuth::getGuard()->user();
+
+        dispatch(new CorrectSchemaJob(
+            $prompt,
+            $schema->id,
+            $user->getGenerationSetting('attempts', 5)
+        ));
     }
 }

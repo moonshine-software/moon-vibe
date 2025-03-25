@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Models\Project;
 use App\Jobs\GenerateSchemaJob;
 use App\Enums\SchemaStatus;
+use MoonShine\Laravel\MoonShineAuth;
 
 readonly class GenerateFromAI
 {   
@@ -23,7 +24,13 @@ readonly class GenerateFromAI
             'schema' => null
         ]);
 
-        dispatch(new GenerateSchemaJob($prompt, $schema->id));
+        $user = MoonShineAuth::getGuard()->user();
+
+        dispatch(new GenerateSchemaJob(
+            $prompt,
+            $schema->id,
+            $user->getGenerationSetting('attempts', 5)
+        ));
 
         return $project->id;
     }

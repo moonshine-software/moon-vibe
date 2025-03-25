@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\MoonShine\Pages\ProfilePage;
+use App\MoonShine\Pages\SettingsPage;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
@@ -35,7 +35,7 @@ class MoonShineServiceProvider extends ServiceProvider
             ])
             ->pages([
                 ...$config->getPages(),
-                ProfilePage::class
+                SettingsPage::class
             ])
         ;
     }

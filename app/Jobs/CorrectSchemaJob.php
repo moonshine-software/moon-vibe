@@ -16,14 +16,11 @@ class CorrectSchemaJob implements ShouldQueue
 
     use GenerateSchemaTrait;
 
-    private int $generateTries;
-
     public function __construct(
         private readonly string $prompt,
         private readonly int $schemaId,
+        private readonly int $generateTries
     ) {
-        // TODO config
-        $this->generateTries = 5;
     }
 
     public function handle(): void

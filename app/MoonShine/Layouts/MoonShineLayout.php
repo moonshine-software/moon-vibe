@@ -7,6 +7,7 @@ namespace App\MoonShine\Layouts;
 use App\Models\Project;
 use App\Models\ProjectSchema;
 use App\MoonShine\Pages\Dashboard;
+use App\MoonShine\Pages\SettingsPage;
 use App\MoonShine\Resources\ProjectSchemaResource;
 use MoonShine\AssetManager\InlineCss;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
@@ -37,6 +38,7 @@ use MoonShine\UI\Components\{Breadcrumbs,
     Layout\TopBar,
     Layout\Wrapper,
     When};
+use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\ProjectResource;
 use MoonShine\Rush\Services\Rush;
@@ -72,7 +74,7 @@ final class MoonShineLayout extends CompactLayout
         return [
             MenuItem::make('Генерация', Dashboard::class),
             MenuItem::make('Проекты', ProjectResource::class)->badge(fn() => Project::query()->count()),
-            MenuItem::make('Профиль', \App\MoonShine\Pages\ProfilePage::class),
+            MenuItem::make('Настройки', SettingsPage::class),
         ];
     }
 

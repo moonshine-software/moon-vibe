@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\MoonShineUser;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -12,12 +13,9 @@ use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Forms\LoginForm;
 use MoonShine\Laravel\Http\Middleware\Authenticate;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
-use MoonShine\Laravel\Layouts\AppLayout;
-use MoonShine\Laravel\Models\MoonshineUser;
-use MoonShine\Laravel\Pages\Dashboard;
 use MoonShine\Laravel\Pages\ErrorPage;
 use MoonShine\Laravel\Pages\LoginPage;
-use MoonShine\Laravel\Pages\ProfilePage;
+
 
 return [
     'title' => env('MOONSHINE_TITLE', 'Ms-Builder'),
@@ -62,7 +60,7 @@ return [
     'auth' => [
         'enabled' => true,
         'guard' => 'moonshine',
-        'model' => MoonshineUser::class,
+        'model' => MoonShineUser::class,
         'middleware' => Authenticate::class,
         'pipelines' => [],
     ],
@@ -73,6 +71,7 @@ return [
         'password' => 'password',
         'name' => 'name',
         'avatar' => 'avatar',
+        'settings' => 'settings',
     ],
 
     // Layout, pages, forms
@@ -85,7 +84,7 @@ return [
 
     'pages' => [
         'dashboard' => App\MoonShine\Pages\Dashboard::class,
-        'profile' => ProfilePage::class,
+        'profile' => App\MoonShine\Pages\SettingsPage::class,
         'login' => LoginPage::class,
         'error' => ErrorPage::class,
     ],

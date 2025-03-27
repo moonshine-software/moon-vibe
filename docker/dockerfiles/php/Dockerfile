@@ -97,6 +97,7 @@ CMD ["php-fpm"]
 
 FROM build AS worker
 COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
+RUN sed -i "s/\"USER\"/$user/" /etc/supervisor/supervisord.conf
 RUN rm -rf /docker
 CMD ["/bin/sh", "-c", "supervisord -c /etc/supervisor/supervisord.conf"]
 

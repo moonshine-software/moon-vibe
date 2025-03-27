@@ -146,9 +146,13 @@ readonly class SchemaValidator
             $errors[] = "Поле {$column->column()} ресурса $checkName должно заканчиваться на _id для построения корректной связи";
         }
 
-//        if($column->relation()->table()->raw() === 'moonshine_users' && $column->column() !== 'moonshine_user_id') {
-//            $errors[] = "Поле {$column->column()} ресурса $checkName должно иметь значение column: moonshine_user_id";
-//        }
+        if(
+            $column->relation()->table()->raw() === 'moonshine_users'
+            && $column->getModelClass() === "\\MoonShine\\Laravel\\Models\\MoonshineUser"
+            && $column->column() !== 'moonshine_user_id'
+        ) {
+            $errors[] = "Поле {$column->column()} ресурса $checkName должно иметь значение column: moonshine_user_id";
+        }
 
         return $errors === [] ? '' : implode(". ", $errors);
     }

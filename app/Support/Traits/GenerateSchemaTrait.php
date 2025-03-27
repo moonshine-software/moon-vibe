@@ -8,7 +8,9 @@ use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 use MoonShine\Rush\Enums\HtmlReloadAction;
 use MoonShine\Rush\Services\Rush;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Color;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Fields\Textarea;
 use Throwable;
@@ -45,16 +47,18 @@ trait GenerateSchemaTrait
             HtmlReloadAction::OUTER_HTML
         );
 
-        $textarea = Textarea::make('Json схема', 'schema')
-            ->customAttributes([
-                'class' => 'schema-edit-id-' . $schema->id,
-                'rows'  => 20,
-            ])->setValue($schema->schema);
-        Rush::events()->htmlReload(
-            '.schema-edit-id-' . $schema->id,
-            (string) $textarea,
-            HtmlReloadAction::OUTER_HTML
-        );
+        Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
+
+//        $textarea = Textarea::make('Json схема', 'schema')
+//            ->customAttributes([
+//                'class' => 'schema-edit-id-' . $schema->id,
+//                'rows'  => 20,
+//            ])->setValue($schema->schema);
+//        Rush::events()->htmlReload(
+//            '.schema-edit-id-' . $schema->id,
+//            (string) $textarea,
+//            HtmlReloadAction::OUTER_HTML
+//        );
     }
 
     private function sendEvent(string $event, int $schemaId): void

@@ -133,7 +133,8 @@ final class MoonShineLayout extends CompactLayout
                             ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
                     ]),
-                    Rush::components()->htmlReload()
+                    Rush::components()->htmlReload(),
+                    Rush::components()->jsEvent(),
                 ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([

@@ -38,8 +38,6 @@ readonly class SchemaValidator
                 return 'Не удалось получить ни одного ресурса';
             }
 
-            $packageFields = ['Markdown', 'TinyMce'];
-
             foreach ($codeStructures->codeStructures() as $index => $codeStructure) {
                 if($codeStructure->columns() === []) {
                     $errors[] = "В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля";
@@ -81,10 +79,6 @@ readonly class SchemaValidator
                         if($hasManyError !== '') {
                             $errors[] = $hasManyError;
                         }
-                    }
-
-                    if(in_array($column->getFieldClass(), $packageFields)) {
-                        continue;
                     }
 
                     $typeMap = new TypeMap();

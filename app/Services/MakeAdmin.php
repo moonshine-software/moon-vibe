@@ -22,6 +22,8 @@ readonly class MakeAdmin
             ->cloneRepository()
             ->installDependencies()
             ->installMoonshineBuilder()
+            ->installMarkdown()
+            ->installTinyMce()
             ->publishMoonshineBuilder()
             ->createBuildsDirectory()
             ->copyBuildFile()
@@ -31,7 +33,7 @@ readonly class MakeAdmin
             ->archiveDirectory()
         ;
 
-        $this->removeAdminDirectory();
+        //$this->removeAdminDirectory();
 
         return $path;
     }
@@ -83,6 +85,35 @@ readonly class MakeAdmin
         );
     }
 
+    private function installMarkdown(): self
+    {
+        $fileContent = file_get_contents($this->file);
+        if( ! str_contains($fileContent, '"Markdown"')) {
+            return $this;
+        }
+
+        return $this->runProcess(
+            ['composer', 'require', 'moonshine/easymde'],
+            'Failed to install Markdown',
+            $this->adminPath
+        );
+    }
+
+    private function installTinyMce(): self
+    {
+        $fileContent = file_get_contents($this->file);
+        if( ! str_contains($fileContent, '"TinyMce"')) {
+            dd('f');
+            return $this;
+        }
+
+        return $this->runProcess(
+            ['composer', 'require', 'moonshine/tinymce'],
+            'Failed to install TinyMce',
+            $this->adminPath
+        );
+    }
+
     private function publishMoonshineBuilder(): self
     {
         return $this->runProcess(
@@ -111,9 +142,6 @@ readonly class MakeAdmin
     private function buildAdmin(): self
     {
         $filename = basename($this->file);
-        
-        logger()->info('php artisan moonshine:build ' . $filename . ' --json', ['path' => $this->adminPath]);
-        
         return $this->runProcess(
             ['php', 'artisan', 'moonshine:build', $filename, '--type=json'],
             'Failed to build JSON',

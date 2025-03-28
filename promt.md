@@ -4,204 +4,212 @@
 Начало MAIN_SCHEMA:
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "MoonShine builder json schema",
-  "description": "MoonShine builder json schema",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "resources"
-  ],
-  "properties": {
-    "resources": {
-      "type": "array",
-      "description": "Resources list",
-      "items": {
-        "type": "object",
-        "required": [
-          "name",
-          "fields"
-        ],
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Resource name"
-          },
-          "menuName": {
-            "type": "string",
-            "description": "Name in menu"
-          },
-          "column": {
-            "type": "string",
-            "description": "Column property in a resource"
-          },
-          "withModel": {
-            "type": "boolean",
-            "description": "Generate a model?"
-          },
-          "withMigration": {
-            "type": "boolean",
-            "description": "Generate a migration?"
-          },
-          "withResource": {
-            "type": "boolean",
-            "description": "Generate a resource?"
-          },
-          "table": {
-            "type": "string"
-          },
-          "timestamps": {
-            "type": "boolean"
-          },
-          "soft_deletes": {
-            "type": "boolean"
-          },
-          "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "MoonShine builder json schema",
+    "description": "MoonShine builder json schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "resources"
+    ],
+    "properties": {
+        "resources": {
             "type": "array",
-            "description": "Field schema",
+            "description": "Resources list",
             "items": {
-              "type": "object",
-              "required": [
-                "column",
-                "type"
-              ],
-              "properties": {
-                "column": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "hasFilter" : {
-                  "type": "boolean"
-                },
-                "default": {
-                  "description": "Default value for migration and resource"
-                },
-                "methods": {
-                  "type": "array",
-                  "description": "MoonShine field Methods",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "migration": {
-                  "type": "object",
-                  "properties": {
-                    "options": {
-                      "type": "array",
-                      "description": "Column migration options"
+                "type": "object",
+                "required": [
+                    "name",
+                    "fields"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Resource name"
                     },
-                    "methods": {
-                      "type": "array",
-                      "description": "Migration methods",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "relation": {
-                  "type": "object",
-                  "properties": {
+                    "menuName": {
+                        "type": "string",
+                        "description": "Name in menu"
+                    },
+                    "column": {
+                        "type": "string",
+                        "description": "Column property in a resource"
+                    },
+                    "withModel": {
+                        "type": "boolean",
+                        "description": "Generate a model?"
+                    },
+                    "withMigration": {
+                        "type": "boolean",
+                        "description": "Generate a migration?"
+                    },
+                    "withResource": {
+                        "type": "boolean",
+                        "description": "Generate a resource?"
+                    },
                     "table": {
-                      "type": "string"
+                        "type": "string"
                     },
-                    "foreign_key": {
-                      "type": "string"
+                    "timestamps": {
+                        "type": "boolean"
+                    },
+                    "soft_deletes": {
+                        "type": "boolean"
+                    },
+                    "fields": {
+                        "type": "array",
+                        "description": "Field schema",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "column",
+                                "type"
+                            ],
+                            "properties": {
+                                "column": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "hasFilter" : {
+                                    "type": "boolean"
+                                },
+                                "default": {
+                                    "description": "Default value for migration and resource"
+                                },
+                                "nullable" : {
+                                    "description": "Whether the nullable field is added the corresponding method to migration",
+                                    "type": "boolean"
+                                },
+                                "required" : {
+                                    "description": "Whether the field is mandatory. required will set in the rules",
+                                    "type": "boolean"
+                                },
+                                "methods": {
+                                    "type": "array",
+                                    "description": "MoonShine field Methods",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "migration": {
+                                    "type": "object",
+                                    "properties": {
+                                        "options": {
+                                            "type": "array",
+                                            "description": "Column migration options"
+                                        },
+                                        "methods": {
+                                            "type": "array",
+                                            "description": "Migration methods",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "relation": {
+                                    "type": "object",
+                                    "properties": {
+                                        "table": {
+                                            "type": "string"
+                                        },
+                                        "foreign_key": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "model_class": {
+                                    "type": "string",
+                                    "description": "If the model is not in the app directory"
+                                },
+                                "resource_class": {
+                                    "type": "string",
+                                    "description": "If the resource is not in the default directory"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "description": "Field type",
+                                    "oneOf": [
+                                        {"const": "id"},
+                                        {"const": "bigInteger"},
+                                        {"const": "mediumInteger"},
+                                        {"const": "integer"},
+                                        {"const": "smallInteger"},
+                                        {"const": "tinyInteger"},
+                                        {"const": "unsignedBigInteger"},
+                                        {"const": "unsignedMediumInteger"},
+                                        {"const": "unsignedInteger"},
+                                        {"const": "unsignedSmallInteger"},
+                                        {"const": "unsignedTinyInteger"},
+                                        {"const": "decimal"},
+                                        {"const": "boolean"},
+                                        {"const": "double"},
+                                        {"const": "float"},
+                                        {"const": "string"},
+                                        {"const": "char"},
+                                        {"const": "json"},
+                                        {"const": "jsonb"},
+                                        {"const": "text"},
+                                        {"const": "longText"},
+                                        {"const": "mediumText"},
+                                        {"const": "tinyText"},
+                                        {"const": "uuid"},
+                                        {"const": "timestamp"},
+                                        {"const": "dateTime"},
+                                        {"const": "year"},
+                                        {"const": "date"},
+                                        {"const": "time"},
+                                        {"const": "BelongsTo"},
+                                        {"const": "BelongsToMany"},
+                                        {"const": "HasOne"},
+                                        {"const": "HasMany"}
+                                    ]
+                                },
+                                "field": {
+                                    "type": "string",
+                                    "description": "Field class",
+                                    "oneOf": [
+                                        {"const": "Checkbox"},
+                                        {"const": "Code"},
+                                        {"const": "Color"},
+                                        {"const": "Date"},
+                                        {"const": "DateRange"},
+                                        {"const": "Email"},
+                                        {"const": "Enum"},
+                                        {"const": "File"},
+                                        {"const": "Hidden"},
+                                        {"const": "HiddenIds"},
+                                        {"const": "ID"},
+                                        {"const": "Image"},
+                                        {"const": "Json"},
+                                        {"const": "Markdown"},
+                                        {"const": "Number"},
+                                        {"const": "Password"},
+                                        {"const": "PasswordRepeat"},
+                                        {"const": "Phone"},
+                                        {"const": "Position"},
+                                        {"const": "Preview"},
+                                        {"const": "Range"},
+                                        {"const": "RangeSlider"},
+                                        {"const": "Select"},
+                                        {"const": "Slug"},
+                                        {"const": "Switcher"},
+                                        {"const": "Template"},
+                                        {"const": "Text"},
+                                        {"const": "Textarea"},
+                                        {"const": "TinyMce"},
+                                        {"const": "Url"}
+                                    ]
+                                }
+                            }
+                        }
                     }
-                  }
-                },
-                "model_class": {
-                  "type": "string",
-                  "description": "If the model is not in the app directory"
-                },
-                "resource_class": {
-                  "type": "string",
-                  "description": "If the resource is not in the default directory"
-                },
-                "type": {
-                  "type": "string",
-                  "description": "Field type",
-                  "oneOf": [
-                    {"const": "id"},
-                    {"const": "bigInteger"},
-                    {"const": "mediumInteger"},
-                    {"const": "integer"},
-                    {"const": "smallInteger"},
-                    {"const": "tinyInteger"},
-                    {"const": "unsignedBigInteger"},
-                    {"const": "unsignedMediumInteger"},
-                    {"const": "unsignedInteger"},
-                    {"const": "unsignedSmallInteger"},
-                    {"const": "unsignedTinyInteger"},
-                    {"const": "decimal"},
-                    {"const": "boolean"},
-                    {"const": "double"},
-                    {"const": "float"},
-                    {"const": "string"},
-                    {"const": "char"},
-                    {"const": "json"},
-                    {"const": "jsonb"},
-                    {"const": "text"},
-                    {"const": "longText"},
-                    {"const": "mediumText"},
-                    {"const": "tinyText"},
-                    {"const": "uuid"},
-                    {"const": "timestamp"},
-                    {"const": "dateTime"},
-                    {"const": "year"},
-                    {"const": "date"},
-                    {"const": "time"},
-                    {"const": "BelongsTo"},
-                    {"const": "BelongsToMany"},
-                    {"const": "HasOne"},
-                    {"const": "HasMany"}
-                  ]
-                },
-                "field": {
-                  "type": "string",
-                  "description": "Field class",
-                  "oneOf": [
-                    {"const": "Checkbox"},
-                    {"const": "Code"},
-                    {"const": "Color"},
-                    {"const": "Date"},
-                    {"const": "DateRange"},
-                    {"const": "Email"},
-                    {"const": "Enum"},
-                    {"const": "File"},
-                    {"const": "Hidden"},
-                    {"const": "HiddenIds"},
-                    {"const": "ID"},
-                    {"const": "Image"},
-                    {"const": "Json"},
-                    {"const": "Markdown"},
-                    {"const": "Number"},
-                    {"const": "Password"},
-                    {"const": "PasswordRepeat"},
-                    {"const": "Phone"},
-                    {"const": "Position"},
-                    {"const": "Preview"},
-                    {"const": "Range"},
-                    {"const": "RangeSlider"},
-                    {"const": "Select"},
-                    {"const": "Slug"},
-                    {"const": "Switcher"},
-                    {"const": "Template"},
-                    {"const": "Text"},
-                    {"const": "Textarea"},
-                    {"const": "TinyMce"},
-                    {"const": "Url"}
-                  ]
                 }
-              }
             }
-          }
         }
-      }
     }
-  }
 }
 ```
 конец MAIN_SCHEMA.

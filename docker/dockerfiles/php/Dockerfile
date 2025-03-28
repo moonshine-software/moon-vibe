@@ -96,6 +96,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
 
 FROM build AS worker
+RUN apt-get install -y supervisor
 COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
 RUN sed -i "s/\"USER\"/$user/" /etc/supervisor/supervisord.conf
 RUN rm -rf /docker

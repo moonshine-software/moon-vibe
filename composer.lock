@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "418bf7aa290931c16b3fa1874501ff4a",
+    "content-hash": "ae307427d44730a3a53af4f2ba421cb0",
     "packages": [
         {
             "name": "brick/math",
@@ -697,16 +697,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.9.2",
+            "version": "7.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b"
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d281ed313b989f213357e3be1a179f02196ac99b",
-                "reference": "d281ed313b989f213357e3be1a179f02196ac99b",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
+                "reference": "7b2f29fe81dc4da0ca0ea7d42107a0845946ea77",
                 "shasum": ""
             },
             "require": {
@@ -803,7 +803,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.9.2"
+                "source": "https://github.com/guzzle/guzzle/tree/7.9.3"
             },
             "funding": [
                 {
@@ -819,20 +819,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-24T11:22:20+00:00"
+            "time": "2025-03-27T13:37:11+00:00"
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "2.0.4",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455"
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
-                "reference": "f9c436286ab2892c7db7be8c8da4ef61ccf7b455",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/7c69f28996b0a6920945dd20b3857e499d9ca96c",
+                "reference": "7c69f28996b0a6920945dd20b3857e499d9ca96c",
                 "shasum": ""
             },
             "require": {
@@ -886,7 +886,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/promises/issues",
-                "source": "https://github.com/guzzle/promises/tree/2.0.4"
+                "source": "https://github.com/guzzle/promises/tree/2.2.0"
             },
             "funding": [
                 {
@@ -902,20 +902,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-17T10:06:22+00:00"
+            "time": "2025-03-27T13:27:01+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201"
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
-                "reference": "a70f5c95fb43bc83f07c9c948baa0dc1829bf201",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/c2270caaabe631b3b44c85f99e5a04bbb8060d16",
+                "reference": "c2270caaabe631b3b44c85f99e5a04bbb8060d16",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1002,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.7.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.7.1"
             },
             "funding": [
                 {
@@ -1018,7 +1018,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T11:15:46+00:00"
+            "time": "2025-03-27T12:30:47+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
@@ -2482,6 +2482,70 @@
                 "rush",
                 "web socket"
             ]
+        },
+        {
+            "name": "moonshine/tinymce",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonshine-software/tinymce.git",
+                "reference": "e7f23d52976a65f23941ac3a62ddc34636a73eac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonshine-software/tinymce/zipball/e7f23d52976a65f23941ac3a62ddc34636a73eac",
+                "reference": "e7f23d52976a65f23941ac3a62ddc34636a73eac",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.2|^8.3"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "^3.0",
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.0.1",
+                "rector/rector": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoonShine\\TinyMce\\Providers\\TinyMceServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoonShine\\TinyMce\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danil Shutsky",
+                    "email": "info@cutcode.ru",
+                    "homepage": "https://cutcode.dev"
+                }
+            ],
+            "description": "TinyMce editor for MoonShine",
+            "homepage": "https://moonshine-laravel.com",
+            "keywords": [
+                "moonshine",
+                "tinymce"
+            ],
+            "support": {
+                "issues": "https://github.com/moonshine-software/tinymce/issues",
+                "source": "https://github.com/moonshine-software/tinymce"
+            },
+            "time": "2025-01-14T09:00:43+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -6639,16 +6703,16 @@
     "packages-dev": [
         {
             "name": "dev-lnk/moonshine-builder",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dev-lnk/moonshine-builder.git",
-                "reference": "d384f40204b06a1cce01668bf52d5ec8a76a8ff4"
+                "reference": "415a5218298eacf8970544f14a59fbda4647fcec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/d384f40204b06a1cce01668bf52d5ec8a76a8ff4",
-                "reference": "d384f40204b06a1cce01668bf52d5ec8a76a8ff4",
+                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/415a5218298eacf8970544f14a59fbda4647fcec",
+                "reference": "415a5218298eacf8970544f14a59fbda4647fcec",
                 "shasum": ""
             },
             "require": {
@@ -6697,9 +6761,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dev-lnk/moonshine-builder/issues",
-                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.1"
+                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.2"
             },
-            "time": "2025-03-18T12:48:01+00:00"
+            "time": "2025-03-28T09:47:57+00:00"
         },
         {
             "name": "fakerphp/faker",

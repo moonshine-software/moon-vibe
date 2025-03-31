@@ -51,7 +51,7 @@ class AboutPage extends Page
         return [
             Box::make([
                 Div::make([
-                    Preview::make()->setValue("<h1>Цель.</h1><br>Данное приложение позволяет по описанию проекта сгенерировать схему админ-панели MoonShine и быстро развернуть базовый, рабочий вариант на своем окружении.<br><br><h1>Как работает прилложение.</h1><br>Данный проект позволяет с помощью ИИ создать схему для пакета <a href='https://github.com/dev-lnk/moonshine-builder' class='link'>MoonShineBuilder</a>, который сгенерирует ресурсы, модели и миграции в админ-панели MoonShine.<br><br>После генерации схемы вы можете выполнить построение проекта, который будет упакован в tar архив. В данном архиве будет содержаться проект Laravel, с предустановленным MoonShine и построенными сущностями. За основу проекта берется <a href='https://github.com/dev-lnk/moonshine-blank' class='link'>репозиторий</a> из <a href='" . toPage(SettingsPage::class). "' class='link'>настроек</a>, но вы можете указать свой.")
+                    Preview::make()->setValue(__('moonshine.about.content'))
                 ])
             ])->customAttributes([
                 'style' => 'width: 50%; margin: 0 auto;'

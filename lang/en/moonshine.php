@@ -32,6 +32,9 @@ return [
         'submit' => 'Submit',
         'prompt_placeholder' => 'Describe your project...',
     ],
+    'about' => [
+        'content' => "<h1>Purpose.</h1><br>This application allows you to generate a MoonShine admin panel schema based on a project description and quickly deploy a basic, working version in your environment.<br><br><h1>How the application works.</h1><br>This project uses AI to create a schema for the <a href='https://github.com/dev-lnk/moonshine-builder' class='link'>MoonShineBuilder</a> package, which generates resources, models, and migrations in the MoonShine admin panel.<br><br>After generating the schema, you can build the project, which will be packaged in a tar archive. This archive will contain a Laravel project with pre-installed MoonShine and built entities. The project is based on the <a href='https://github.com/dev-lnk/moonshine-blank' class='link'>repository</a> from the <a href='/page/settings-page' class='link'>settings</a>, but you can specify your own.",
+    ],
     'project' => [
         'schemas' => 'Schemas',
         'create' => 'Create Project',

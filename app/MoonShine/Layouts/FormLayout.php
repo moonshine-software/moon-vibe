@@ -29,7 +29,12 @@ final class FormLayout extends MoonShineLayout
                             Flash::make(),
                             Components::make($this->getPage()->getComponents()),
                         ])->class('authentication-content'),
-                    ])->class('authentication'),
+                    ])
+                        ->class('authentication')
+                        ->customAttributes([
+                            'style' => 'padding: inherit; background-image: url(/images/back.png); background-size: cover; background-position: center;'
+                        ])
+                    ,
                 ]),
             ])
                 ->customAttributes([

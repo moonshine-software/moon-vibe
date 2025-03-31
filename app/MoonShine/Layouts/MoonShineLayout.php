@@ -161,7 +161,8 @@ class MoonShineLayout extends CompactLayout
                 ':class' => "asideMenuOpen && '_is-opened'",
                 'style' => 'margin-top: 10rem'
             ]),
-        ])->collapsed();
+        ])
+            ->collapsed();
     }
 
     protected function getProfileComponent(bool $sidebar = false): Profile

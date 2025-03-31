@@ -6,6 +6,7 @@ namespace App\MoonShine\Layouts;
 
 use App\Models\Project;
 use App\Models\ProjectSchema;
+use App\MoonShine\Pages\AboutPage;
 use App\MoonShine\Pages\Dashboard;
 use App\MoonShine\Pages\SettingsPage;
 use App\MoonShine\Resources\ProjectSchemaResource;
@@ -75,6 +76,7 @@ class MoonShineLayout extends CompactLayout
             MenuItem::make(__('moonshine.menu.generation'), Dashboard::class),
             MenuItem::make(__('moonshine.menu.projects'), ProjectResource::class)->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count()),
             MenuItem::make(__('moonshine.menu.settings'), SettingsPage::class),
+            MenuItem::make(__('moonshine.menu.about'), AboutPage::class),
         ];
     }
 

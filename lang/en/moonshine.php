@@ -17,6 +17,7 @@ return [
         'generation' => 'Generation',
         'projects' => 'Projects',
         'settings' => 'Settings',
+        'about' => 'About',
     ],
     'settings' => [
         'profile' => 'Profile',

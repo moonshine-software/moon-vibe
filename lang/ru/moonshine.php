@@ -17,6 +17,7 @@ return [
         'generation' => 'Генерация',
         'projects' => 'Проекты',
         'settings' => 'Настройки',
+        'about' => 'О проекте',
     ],
     'settings' => [
         'profile' => 'Профиль',

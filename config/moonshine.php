@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AppAuthenticate;
 use App\Models\MoonShineUser;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -11,7 +12,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Forms\LoginForm;
-use MoonShine\Laravel\Http\Middleware\Authenticate;
 use MoonShine\Laravel\Http\Middleware\ChangeLocale;
 use MoonShine\Laravel\Pages\ErrorPage;
 use MoonShine\Laravel\Pages\LoginPage;
@@ -61,7 +61,7 @@ return [
         'enabled' => true,
         'guard' => 'moonshine',
         'model' => MoonShineUser::class,
-        'middleware' => Authenticate::class,
+        'middleware' => AppAuthenticate::class,
         'pipelines' => [],
     ],
 

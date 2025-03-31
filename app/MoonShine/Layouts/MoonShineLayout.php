@@ -43,7 +43,7 @@ use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\ProjectResource;
 use MoonShine\Rush\Services\Rush;
 
-final class MoonShineLayout extends CompactLayout
+class MoonShineLayout extends CompactLayout
 {
     /**
      * @return list<AssetElementContract>
@@ -162,6 +162,11 @@ final class MoonShineLayout extends CompactLayout
                 'style' => 'margin-top: 10rem'
             ]),
         ])->collapsed();
+    }
+
+    protected function getProfileComponent(bool $sidebar = false): Profile
+    {
+        return Profile::make(logOutRoute: route('logout'), withBorder: $sidebar);
     }
 
     protected function getHeaderComponent(): Header

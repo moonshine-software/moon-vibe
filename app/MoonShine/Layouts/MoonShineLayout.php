@@ -73,7 +73,7 @@ class MoonShineLayout extends CompactLayout
     {
         return [
             MenuItem::make('Генерация', Dashboard::class),
-            MenuItem::make('Проекты', ProjectResource::class)->badge(fn() => Project::query()->count()),
+            MenuItem::make('Проекты', ProjectResource::class)->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count()),
             MenuItem::make('Настройки', SettingsPage::class),
         ];
     }

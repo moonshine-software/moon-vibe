@@ -15,8 +15,7 @@ use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
-use MoonShine\Support\AlpineJs;
-use MoonShine\Support\Enums\JsEvent;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\UI\Components\FormBuilder;
@@ -58,6 +57,11 @@ class ProjectResource extends ModelResource
                 ];
             }),
         ];
+    }
+
+    protected function modifyQueryBuilder(Builder $builder): Builder
+    {
+        return $builder->where('moonshine_user_id', auth('moonshine')->user()->id);
     }
 
     public function formFields(): iterable

@@ -67,7 +67,7 @@ class LoginPage extends Page
 
             Flex::make([
                 ActionButton::make(__('Create account'), route('register'))->primary(),
-                Link::make(route('forgot'), __('Forgot password'))
+                //Link::make(route('forgot'), __('Forgot password'))
             ])->justifyAlign('start')
         ];
     }

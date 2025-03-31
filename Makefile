@@ -68,9 +68,7 @@ npm-host:
 
 #app
 admin:
-	cd admins && tar -xvf admin.tar.gz && chown -R ivan:ivan admin && cd admin && cp .env.example .env && make build && make install
-clear: clear-dir clear-file
+	tar -xvf storage/app/private/builds/1/app/project.tar.gz -C "storage" && chown -R $(DOCKER_USER):$(DOCKER_USER) storage/project && cd storage/project && cp .env.example .env && make build && make install
+clear: clear-dir
 clear-dir:
-	sudo rm -rf admins/admin
-clear-file:
-	rm admins/admin.tar.gz
+	sudo rm -rf storage/project

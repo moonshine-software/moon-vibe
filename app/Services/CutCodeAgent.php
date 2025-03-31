@@ -18,7 +18,7 @@ class CutCodeAgent implements SchemaGenerateContract
     {
         $message = array_pop($messages);
 
-        logger()->debug('cut code agent', [$mode, $message['content']]);
+        //logger()->debug('cut code agent', [$mode, $message['content']]);
 
         $data = [
             'prompt' => $message['content'],

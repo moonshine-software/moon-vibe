@@ -36,7 +36,7 @@ class DeepSeek implements SchemaGenerateContract
 
         $result = $response->json();
 
-        logger()->debug('DeepSeek response', $result);
+//        logger()->debug('DeepSeek response', $result);
 
         return $result['choices'][0]['message']['content'];
     }

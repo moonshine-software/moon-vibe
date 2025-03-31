@@ -68,21 +68,21 @@ class ProjectResource extends ModelResource
     {
         return [
             ...$this->indexFields(),
-            HasMany::make('Схемы', 'schemas', resource: ProjectSchemaResource::class)
+            HasMany::make(__('moonshine.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
-                    ActionButton::make('Создать проект',
+                    ActionButton::make(__('moonshine.project.create'),
                         url: fn($model) => route('build', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
                             '',
-                            'Выполнить построение проекта?',
+                            __('moonshine.project.build_confirm'),
                         )
                     ,
-                    ActionButton::make('Исправить',
+                    ActionButton::make(__('moonshine.project.correct'),
                         url: fn($model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
-                            'Исправление схемы',
+                            __('moonshine.project.correction'),
                             formBuilder: fn(FormBuilder $builder, ProjectSchema $schema) => $builder
                                 ->fields([
                                     Preview::make('', formatted: function () use ($schema) {
@@ -98,7 +98,7 @@ class ProjectResource extends ModelResource
                                         }
                                     }),
                                     Divider::make(),
-                                    Textarea::make('Запрос', 'prompt')->customAttributes([
+                                    Textarea::make(__('moonshine.project.prompt'), 'prompt')->customAttributes([
                                         'rows' => 6,
                                     ])
                                 ])

@@ -94,12 +94,12 @@ class SettingsPage extends Page
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
         $generateFields = [
-            Number::make('Максимальное количество попыток генерации', 'attempts')
+            Number::make(__('moonshine.settings.max_attempts'), 'attempts')
                 ->default($user->settings['generation']['attempts'] ?? 5),
         ];
 
         $buildFields = [
-            Text::make('Базовый репозиторий', 'repository')
+            Text::make(__('moonshine.settings.repository'), 'repository')
                 ->default(
                     $user->settings['build']['repository'] ?? 'https://github.com/dev-lnk/moonshine-blank.git'
                 ),
@@ -108,9 +108,9 @@ class SettingsPage extends Page
         return [
             Box::make([
                 Tabs::make([
-                    Tab::make('Профиль', $userFields),
-                    Tab::make('Генерация', $generateFields),
-                    Tab::make('Развертывание', $buildFields),
+                    Tab::make(__('moonshine.settings.profile'), $userFields),
+                    Tab::make(__('moonshine.settings.generation'), $generateFields),
+                    Tab::make(__('moonshine.settings.deployment'), $buildFields),
                 ]),
             ]),
         ];

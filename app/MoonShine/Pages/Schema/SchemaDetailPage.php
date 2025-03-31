@@ -22,7 +22,7 @@ class SchemaDetailPage extends DetailPage
         $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
 
         return [
-            Preview::make('Схема')->setValue($simpleSchema->generate())
+            Preview::make(__('moonshine.schema.preview'))->setValue($simpleSchema->generate())
         ];
     }
 }

@@ -30,7 +30,7 @@ trait GenerateSchemaTrait
         $schema->save();
 
         $badge = $status === SchemaStatus::ERROR
-            ? Badge::make('Ошибка: ' . $schema->error, Color::RED)
+            ? Badge::make(__('moonshine.schema.error') . ': ' . $schema->error, Color::RED)
                 ->customAttributes([
                     'class' => 'schema-id-' . $schema->id
                 ])
@@ -65,7 +65,7 @@ trait GenerateSchemaTrait
     {
         Rush::events()->htmlReload(
             '.schema-id-' . $schemaId,
-            (string) Badge::make('Генерация: ' .  $event)->customAttributes([
+            (string) Badge::make(__('moonshine.schema.generation') . ': ' .  $event)->customAttributes([
                 'class' => 'schema-id-' . $schemaId
             ]),
             HtmlReloadAction::OUTER_HTML
@@ -86,9 +86,9 @@ trait GenerateSchemaTrait
     {
         $schema->status_id = SchemaStatus::ERROR;
         $schema->schema = $schemaResult;
-        $schema->error = "Ошибка сервера";
+        $schema->error = __("moonshine.schema.server_error");
         $schema->save();
-        $this->sendEvent("Ошибка сервера", (int) $schema->id);
+        $this->sendEvent(__("moonshine.schema.server_error"), (int) $schema->id);
         report($e);
     }
 }

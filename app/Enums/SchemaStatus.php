@@ -31,4 +31,13 @@ enum SchemaStatus: int
             self::ERROR => Color::RED,
         };
     }
+
+    public function label(): string
+    {
+        return match($this) {
+            self::PENDING => __('moonshine.schema.generation'),
+            self::SUCCESS => __('moonshine.schema.success'),
+            self::ERROR => __('moonshine.schema.error'),
+        };
+    }
 }

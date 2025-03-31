@@ -37,7 +37,7 @@ class CorrectSchemaJob implements ShouldQueue
 
             $mainPrompt = file_get_contents(base_path('promt.md'));
 
-            $mainPrompt = "# Режим исправления" . PHP_EOL . $mainPrompt;
+            $mainPrompt = "# " . __('moonshine.schema.correction') . PHP_EOL . $mainPrompt;
 
             $messages = [
                 ['role' => 'system', 'content' => $mainPrompt],

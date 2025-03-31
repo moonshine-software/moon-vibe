@@ -63,7 +63,7 @@ class ProjectSchemaResource extends ModelResource
     public function indexFields(): iterable
     {
         return [
-            Preview::make('Статус', formatted: function (ProjectSchema $schema) {
+            Preview::make(__('moonshine.schema.status'), formatted: function (ProjectSchema $schema) {
                 if($schema->status_id === SchemaStatus::ERROR) {
                     return (string) Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([
                         'class' => 'schema-id-' . $schema->id
@@ -93,7 +93,7 @@ class ProjectSchemaResource extends ModelResource
         return [
             Box::make([
                 ID::make('id'),
-                BelongsTo::make('Проект', 'project', resource: ProjectResource::class),
+                BelongsTo::make(__('moonshine.schema.project'), 'project', resource: ProjectResource::class),
                 Textarea::make('', 'schema')->changeFill(function(ProjectSchema $data, Textarea $field){
                     $field->customAttributes([
                         'class' => 'schema-edit-id-' . $data->id,

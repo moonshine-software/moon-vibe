@@ -22,12 +22,13 @@ class Dashboard extends Page
 	{
 		return [
             FormBuilder::make(route('ai-request.request'), fields: [
-                Text::make('Название проекта', 'project_name'),
-                Textarea::make('Запрос', 'prompt')->customAttributes([
+                Text::make(__('moonshine.dashboard.project_name'), 'project_name'),
+                Textarea::make(__('moonshine.dashboard.prompt'), 'prompt')->customAttributes([
+                    'placeholder' => __('moonshine.dashboard.prompt_placeholder'),
                     'rows' => 6,
                 ])
             ])
-                ->submit('Отправить')
+                ->submit(__('moonshine.dashboard.submit'))
         ];
 	}
 }

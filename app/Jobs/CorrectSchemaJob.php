@@ -52,8 +52,8 @@ class CorrectSchemaJob implements ShouldQueue
                 $isValidSchema = true;
 
                 $event = $tries === 1
-                    ? "исправление схемы..."
-                    : "исправление схемы, попытка $tries..."
+                    ? "correction of the schema..."
+                    : "correction of the scheme, an attempt $tries..."
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);

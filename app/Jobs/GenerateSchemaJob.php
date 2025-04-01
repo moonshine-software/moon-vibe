@@ -49,7 +49,7 @@ class GenerateSchemaJob implements ShouldQueue
 
                 $event = $tries === 1
                     ? "request..."
-                    : "request, repeat $tries..."
+                    : "request, an attempt $tries..."
                 ;
 
                 $mode = $tries === 1 ? 'gen' : 'fix';

@@ -108,7 +108,7 @@ class ProjectSchemaResource extends ModelResource
     public function detailFields(): iterable
     {
         return [
-            Preview::make('Схема', formatted: function (ProjectSchema $schema) {
+            Preview::make(__('moonshine.schema.preview'), formatted: function (ProjectSchema $schema) {
                 if($schema->schema === null) {
                     return '';
                 }

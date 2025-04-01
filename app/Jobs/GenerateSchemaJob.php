@@ -48,8 +48,8 @@ class GenerateSchemaJob implements ShouldQueue
                 $isValidSchema = true;
 
                 $event = $tries === 1
-                    ? "выполнение запроса..."
-                    : "выполнение запроса, повтор $tries..."
+                    ? "request..."
+                    : "request, repeat $tries..."
                 ;
 
                 $mode = $tries === 1 ? 'gen' : 'fix';
@@ -59,7 +59,7 @@ class GenerateSchemaJob implements ShouldQueue
 
                 $schemaResult = $this->correctSchemaFormat($schemaResult);
 
-                $this->sendEvent("валидация ответа", (int) $schema->id);
+                $this->sendEvent("Validation of the response", (int) $schema->id);
                 $error = (new SchemaValidator($schemaResult))->validate();
 
                 if($error !== '') {

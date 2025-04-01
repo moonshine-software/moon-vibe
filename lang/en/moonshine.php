@@ -2,7 +2,7 @@
 
 return [
     'schema' => [
-        'generation' => 'Generation...',
+        'generation' => 'Generation',
         'success' => 'Success',
         'error' => 'Error',
         'server_error' => 'Server Error',
@@ -31,6 +31,7 @@ return [
         'prompt' => 'Request',
         'submit' => 'Submit',
         'prompt_placeholder' => 'Describe your project...',
+        'types' => 'Types',
         'templates' => 'Templates',
         'example-1' => 'Example 1',
         'example-2' => 'Example 2',
@@ -45,5 +46,6 @@ return [
         'build_confirm' => 'Execute project build?',
         'correct' => 'Correct',
         'correction' => 'Schema Correction',
+        'prompt' => 'Prompt'
     ],
 ]; 

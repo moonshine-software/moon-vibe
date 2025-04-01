@@ -2,12 +2,12 @@
 
 return [
     'schema' => [
-        'generation' => 'Генерация...',
+        'generation' => 'Генерация',
         'success' => 'Успешно',
         'error' => 'Ошибка',
         'server_error' => 'Ошибка сервера',
         'saving' => 'сохранение',
-        'correction' => 'исправление схемы...',
+        'correction' => 'Исправление схемы',
         'json_schema' => 'Json схема',
         'preview' => 'Схема',
         'status' => 'Статус',
@@ -31,6 +31,7 @@ return [
         'prompt' => 'Запрос',
         'submit' => 'Отправить',
         'prompt_placeholder' => 'Опишите ваш проект...',
+        'types' => 'Типы',
         'templates' => 'Шаблоны',
         'example-1' => 'Пример 1',
         'example-2' => 'Пример 2',
@@ -45,5 +46,6 @@ return [
         'build_confirm' => 'Выполнить построение проекта?',
         'correct' => 'Исправить',
         'correction' => 'Исправление схемы',
+        'prompt' => 'Запрос'
     ],
 ]; 

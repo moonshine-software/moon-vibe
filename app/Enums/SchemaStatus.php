@@ -17,9 +17,9 @@ enum SchemaStatus: int
     public function toString(): string
     {
         return match ($this) {
-            self::PENDING => 'Генерация...',
-            self::SUCCESS => 'Успешно',
-            self::ERROR => 'Ошибка',
+            self::PENDING => __('moonshine.schema.generation'),
+            self::SUCCESS => __('moonshine.schema.success'),
+            self::ERROR => __('moonshine.schema.error'),
         };
     }
 

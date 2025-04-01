@@ -26,9 +26,10 @@ class Dashboard extends Page
      */
     protected function components(): iterable
 	{
-        $templates = Str::markdown(Storage::disk('local')->get('generate/template-ru.md'));
+        $types = Str::markdown(Storage::disk('local')->get('generate/types-ru.md'));
         $example1 = Str::markdown(Storage::disk('local')->get('generate/example1-ru.md'));
         $example2 = Str::markdown(Storage::disk('local')->get('generate/example2-ru.md'));
+        $example3 = Str::markdown(Storage::disk('local')->get('generate/example3-ru.md'));
 
 
 		return [
@@ -44,9 +45,9 @@ class Dashboard extends Page
             Divider::make(),
 
             Tabs::make([
-                Tab::make(__('moonshine.dashboard.templates'), [
+                Tab::make(__('moonshine.dashboard.types'), [
                     Box::make([
-                        FlexibleRender::make($templates),
+                        FlexibleRender::make($types),
                     ])
                 ]),
                 Tab::make(__('moonshine.dashboard.example-1'), [
@@ -61,7 +62,7 @@ class Dashboard extends Page
                 ]),
                 Tab::make(__('moonshine.dashboard.example-3'), [
                     Box::make([
-                        FlexibleRender::make('HTML'),
+                        FlexibleRender::make($example3),
                     ])
                 ])
             ])

@@ -53,6 +53,11 @@ readonly class SchemaValidator
                     $errors[] = $relationError;
                 }
 
+                $pivotError = $this->checkPivotTable($codeStructure);
+                if($pivotError !== '') {
+                    $errors[] = $pivotError;
+                }
+
                 foreach ($codeStructure->columns() as $column) {
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
@@ -126,6 +131,29 @@ readonly class SchemaValidator
         }
 
         return implode(". ", $errors);
+    }
+
+    public function checkPivotTable(CodeStructure $codeStructure): string
+    {
+        if(! str_contains($codeStructure->entity()->raw(), 'Pivot')) {
+            return '';
+        }
+
+        $pivotTables = explode("_", $codeStructure->table());
+
+        if(count($pivotTables) !== 2) {
+            return '';
+        }
+
+        $newPivotTables = $pivotTables;
+
+        sort($newPivotTables);
+
+        if($newPivotTables !== $pivotTables) {
+            return "Ошибка в ресурсе {$codeStructure->entity()->ucFirstSingular()}, pivot таблица задана не по конвенции laravel (таблицы в алфавитном порядке)";
+        }
+
+        return '';
     }
 
     private function checkBelongsTo(

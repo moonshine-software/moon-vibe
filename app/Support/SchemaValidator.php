@@ -49,8 +49,8 @@ readonly class SchemaValidator
                 }
 
                 // PHP 8 Error
-                if($codeStructure->entity()->raw() === 'Match') {
-                    $errors[] = "Ресурс не может называться Match";
+                if($codeStructure->entity()->ucFirstSingular() === 'Match') {
+                    $errors[] = "Ресурс не может иметь параметр name:Match";
                 }
 
                 $relationError = $this->checkRelation($codeStructure->columns(), $codeStructure->entity()->ucFirstSingular());

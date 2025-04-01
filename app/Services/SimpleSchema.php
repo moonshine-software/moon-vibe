@@ -24,8 +24,12 @@ readonly class SimpleSchema
         foreach ($this->codeStructureList->codeStructures() as $codeStructure) {
             $result .= str('<li>')
                 ->when($withColumns, fn($str) => $str->append('<b>'))
-                ->append($codeStructure->menuName())
+                ->append("{$codeStructure->entity()->ucFirstSingular()}")
                 ->when($withColumns, fn($str) => $str->append('</b>'))
+                ->append(' - ')
+                ->append("menu: <b>{$codeStructure->menuName()}</b>, ")
+                ->append("column: <b>{$codeStructure->getColumnName()}</b>, ")
+                ->append("table: <b>{$codeStructure->table()}</b>, ")
             ;
             if($withColumns) {
                 $result .= '<ul style="margin-left: 2rem">';

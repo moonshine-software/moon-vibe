@@ -48,17 +48,6 @@ trait GenerateSchemaTrait
         );
 
         Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
-
-//        $textarea = Textarea::make('Json схема', 'schema')
-//            ->customAttributes([
-//                'class' => 'schema-edit-id-' . $schema->id,
-//                'rows'  => 20,
-//            ])->setValue($schema->schema);
-//        Rush::events()->htmlReload(
-//            '.schema-edit-id-' . $schema->id,
-//            (string) $textarea,
-//            HtmlReloadAction::OUTER_HTML
-//        );
     }
 
     private function sendEvent(string $event, int $schemaId): void

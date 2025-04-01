@@ -41,7 +41,7 @@ readonly class SimpleSchema
                     $result .= str('<li>')
                         ->append("\t")
                         ->append("<b>{$column->name()}</b>")
-                        ->append(': ')
+                        ->append(' - ')
                         ->append("column: <b>{$column->column()}</b>, ")
                         ->append("type: <b>{$column->type()->value}</b>, ")
                         ->append("field: <b>$field</b>")

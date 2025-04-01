@@ -48,6 +48,11 @@ readonly class SchemaValidator
                     $errors[] = "Ресурс '{$codeStructure->entity()->raw()}' - параметр ресурса name должен содержать только латинские буквы";
                 }
 
+                // PHP 8 Error
+                if($codeStructure->entity()->raw() === 'Match') {
+                    $errors[] = "Ресурс не может называться Match";
+                }
+
                 $relationError = $this->checkRelation($codeStructure->columns(), $codeStructure->entity()->ucFirstSingular());
                 if($relationError !== '') {
                     $errors[] = $relationError;

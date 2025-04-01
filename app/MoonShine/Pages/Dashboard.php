@@ -28,6 +28,7 @@ class Dashboard extends Page
 	{
         $templates = Str::markdown(Storage::disk('local')->get('generate/template-ru.md'));
         $example1 = Str::markdown(Storage::disk('local')->get('generate/example1-ru.md'));
+        $example2 = Str::markdown(Storage::disk('local')->get('generate/example2-ru.md'));
 
 
 		return [
@@ -55,7 +56,7 @@ class Dashboard extends Page
                 ]),
                 Tab::make(__('moonshine.dashboard.example-2'), [
                     Box::make([
-                        FlexibleRender::make('HTML'),
+                        FlexibleRender::make($example2),
                     ])
                 ]),
                 Tab::make(__('moonshine.dashboard.example-3'), [

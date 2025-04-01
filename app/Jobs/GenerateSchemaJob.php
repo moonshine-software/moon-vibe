@@ -57,8 +57,7 @@ class GenerateSchemaJob implements ShouldQueue
                 $this->sendEvent($event, (int) $schema->id);
                 $schemaResult = $requestAdminAi->generate($messages, $mode, (int) $schema->id);
 
-//                sleep(70);
-//                $schemaResult = '{"resources": [{"name": "resource1"}, {"name": "resource2"}]}';
+                $schemaResult = $this->correctSchemaFormat($schemaResult);
 
                 $this->sendEvent("валидация ответа", (int) $schema->id);
                 $error = (new SchemaValidator($schemaResult))->validate();

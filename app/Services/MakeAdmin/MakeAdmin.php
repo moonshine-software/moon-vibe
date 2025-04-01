@@ -75,7 +75,7 @@ readonly class MakeAdmin
         $process->run();
         
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException($errorMessage . ': ' . $process->getErrorOutput());
+            throw new \RuntimeException($errorMessage . ': ' . $process->getOutput()  . '(' . $process->getErrorOutput() . ')');
         }
         
         return $this;
@@ -126,7 +126,6 @@ readonly class MakeAdmin
     {
         $fileContent = file_get_contents($this->directories->schemaFile);
         if( ! str_contains($fileContent, '"TinyMce"')) {
-            dd('f');
             return $this;
         }
 

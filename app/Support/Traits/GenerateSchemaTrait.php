@@ -91,4 +91,19 @@ trait GenerateSchemaTrait
         $this->sendEvent(__("moonshine.schema.server_error"), (int) $schema->id);
         report($e);
     }
+
+    private function correctSchemaFormat(string $schema): string
+    {
+        // Если всё-таки ии не понял, какой формат нужен
+        if (str_starts_with($schema, '```json')) {
+            $schema = preg_replace('/^```json\s*/', '', $schema);
+            $schema = preg_replace('/\s*```$/', '', $schema);
+        }
+        if (str_starts_with($schema, '```')) {
+            $schema = preg_replace('/^```\s*/', '', $schema);
+            $schema = preg_replace('/\s*```$/', '', $schema);
+        }
+
+        return $schema;
+    }
 }

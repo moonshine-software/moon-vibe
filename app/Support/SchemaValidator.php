@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Support;
 
 use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructure;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\RelationStructure;
 use DevLnk\MoonShineBuilder\Support\TypeMap;
 use Throwable;
 use ReflectionClass;
@@ -45,6 +46,11 @@ readonly class SchemaValidator
 
                 if (!preg_match('/^[a-zA-Z]+$/', $codeStructure->entity()->raw())) {
                     $errors[] = "Ресурс '{$codeStructure->entity()->raw()}' - параметр ресурса name должен содержать только латинские буквы";
+                }
+
+                $relationError = $this->checkRelation($codeStructure->columns(), $codeStructure->entity()->ucFirstSingular());
+                if($relationError !== '') {
+                    $errors[] = $relationError;
                 }
 
                 foreach ($codeStructure->columns() as $column) {
@@ -171,6 +177,31 @@ readonly class SchemaValidator
 
         if(! $isValidTable) {
             $errors[] = "Для таблицы $relationTable должен быть создан ресурс";
+        }
+
+        return $errors === [] ? '' : implode(". ", $errors);
+    }
+
+    /**
+     * @param list<ColumnStructure> $columnStructures
+     * @param string                $checkName
+     *
+     * @return string
+     */
+    private function checkRelation(array $columnStructures, string $checkName): string
+    {
+        $errors = [];
+
+        $relationModelMethods = [];
+
+        foreach ($columnStructures as $column) {
+            if($column->relation() === null) {
+                continue;
+            }
+            if(in_array($column->getModelRelationName(), $relationModelMethods)) {
+                $errors[$column->getModelRelationName()] = "Ошибка, в ресурсе $checkName у двух отношений одинаковое имя {$column->getModelRelationName()}, необходимо задать уникальное имя отношения для каждого поля, с помощью параметра model_relation_name внутри параметра relation";
+            }
+            $relationModelMethods[] = $column->getModelRelationName();
         }
 
         return $errors === [] ? '' : implode(". ", $errors);

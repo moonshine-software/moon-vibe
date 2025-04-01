@@ -59,6 +59,8 @@ class CorrectSchemaJob implements ShouldQueue
                 $this->sendEvent($event, (int) $schema->id);
                 $schemaResult = $requestAdminAi->generate($messages, 'fix', (int) $schema->id);
 
+                $schemaResult = $this->correctSchemaFormat($schemaResult);
+
                 $this->sendEvent("валидация ответа", (int) $schema->id);
                 $error = (new SchemaValidator($schemaResult))->validate();
 

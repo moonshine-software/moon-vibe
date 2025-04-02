@@ -1,12 +1,5 @@
-@import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source "../**/*.blade.php";
-@source "../**/*.js";
-@source "../**/*.vue";
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+.authentication-content {
+    -webkit-box-shadow: -1px 3px 25px 2px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: -1px 3px 25px 2px rgba(34, 60, 80, 0.2);
+    box-shadow: -1px 3px 25px 2px rgba(34, 60, 80, 0.2);
 }

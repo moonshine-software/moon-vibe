@@ -11,6 +11,7 @@ use App\Services\CutCodeAgent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
 use MoonShine\Rush\Contracts\RushBroadcastContract;
 
@@ -34,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RushBroadcastContract::class, Centrifugo::class);
 
         moonShineAssets()->add([new Js(Vite::asset('resources/ts/app.ts'))]);
+        moonShineAssets()->add([new Css(Vite::asset('resources/css/app.css'))]);
 
         //$this->app->bind(SchemaGenerateContract::class, DeepSeek::class);
         $this->app->bind(SchemaGenerateContract::class, CutCodeAgent::class);

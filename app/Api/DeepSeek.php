@@ -17,7 +17,7 @@ class DeepSeek implements SchemaGenerateContract
 
     public function __construct()
     {
-        $this->token = "sk-fe05fd67fe1648238f3283c423737691";
+        $this->token = config('app.deep-seek-token');
 
         $this->model = 'deepseek-reasoner';
     }

@@ -1,7 +1,4 @@
-<?php
-?>
-
-<table class="table">
+<table>
     <thead>
         <tr>
             <th>Available types</th>

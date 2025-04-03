@@ -40,9 +40,10 @@ class Dashboard extends Page
                     'rows' => 12,
                 ])
             ])
-                ->submit(__('moonshine.dashboard.submit'))
-                ->submitN
-                ,
+                ->submit(__('moonshine.dashboard.submit'), [
+                    'class' => 'btn-primary btn-lg',
+                ])
+            ,
 
             Divider::make(),
 

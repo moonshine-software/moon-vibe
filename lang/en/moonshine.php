@@ -29,7 +29,7 @@ return [
     'dashboard' => [
         'project_name' => 'Project Name',
         'prompt' => 'Request',
-        'submit' => 'Submit',
+        'submit' => 'Start generating a scheme',
         'prompt_placeholder' => 'Describe your project...',
         'types' => 'Types',
         'templates' => 'Templates',

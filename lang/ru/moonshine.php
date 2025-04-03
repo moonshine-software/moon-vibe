@@ -29,7 +29,7 @@ return [
     'dashboard' => [
         'project_name' => 'Название проекта',
         'prompt' => 'Запрос',
-        'submit' => 'Отправить',
+        'submit' => 'Начать генерацию схемы',
         'prompt_placeholder' => 'Опишите ваш проект...',
         'types' => 'Типы',
         'templates' => 'Шаблоны',

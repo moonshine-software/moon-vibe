@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages;
 
-
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\UI\Fields\Text;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Fields\Textarea;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\FlexibleRender;
+use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\Contracts\UI\ComponentContract;
 
-#[\MoonShine\MenuManager\Attributes\SkipMenu]
 class Dashboard extends Page
 {
     /**
@@ -26,11 +24,13 @@ class Dashboard extends Page
      */
     protected function components(): iterable
 	{
-        $types = Str::markdown(Storage::disk('local')->get('generate/types-ru.md'));
-        $example1 = Str::markdown(Storage::disk('local')->get('generate/example1-ru.md'));
-        $example2 = Str::markdown(Storage::disk('local')->get('generate/example2-ru.md'));
-        $example3 = Str::markdown(Storage::disk('local')->get('generate/example3-ru.md'));
 
+        $lang = App::getLocale();
+
+        $types = View::make("generate-page.examples.{$lang}.types");
+        $example1 = View::make("generate-page.examples.{$lang}.example-1");
+        $example2 = View::make("generate-page.examples.{$lang}.example-2");
+        $example3 = View::make("generate-page.examples.{$lang}.example-3");
 
 		return [
             FormBuilder::make(route('ai-request.request'), fields: [
@@ -40,7 +40,9 @@ class Dashboard extends Page
                     'rows' => 12,
                 ])
             ])
-                ->submit(__('moonshine.dashboard.submit')),
+                ->submit(__('moonshine.dashboard.submit'))
+                ->submitN
+                ,
 
             Divider::make(),
 

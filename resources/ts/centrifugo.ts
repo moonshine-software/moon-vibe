@@ -28,9 +28,7 @@ document.addEventListener("moonshine:init", async () => {
         localStorage.setItem('token', token)
     }
 
-    console.log('centrifuge', token)
-
-    const centrifuge = new Centrifuge("ws://localhost:8000/connection/websocket", {
+    const centrifuge = new Centrifuge("ws://localhost:" + import.meta.env.VITE_CENTRIFUGO_PORT + "/connection/websocket", {
         token: token
     });
 

@@ -79,7 +79,7 @@ services:
       - ./docker/volumes/Centrifugo:/centrifugo
     command: centrifugo -c config.json --port=8000 --admin
     ports:
-      - "${CENTRIFUGO_PORT}:8000"
+      - "${VITE_CENTRIFUGO_PORT}:${CENTRIFUGO_PORT}"
     ulimits:
       nofile:
         soft: 65535

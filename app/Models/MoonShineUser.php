@@ -26,17 +26,21 @@ class MoonShineUser extends BaseMoonShineUser
     protected static function booted(): void
     {
         static::saving(static function (self $model) {
-            if($model->hasAttribute('attempts') && $model->hasAttribute('repository')) {
+            if(
+                $model->hasAttribute('attempts')
+                //&& $model->hasAttribute('repository')
+            ) {
                 $settings['generation'] = [
                     'attempts' => $model->getAttribute('attempts'),
                 ];
 
                 $settings['build'] = [
-                    'repository' => $model->getAttribute('repository')
+                    //'repository' => $model->getAttribute('repository')
+                    'repository' => 'https://github.com/dev-lnk/moonshine-blank.git'
                 ];
 
                 unset($model->attributes['attempts']);
-                unset($model->attributes['repository']);
+                //unset($model->attributes['repository']);
 
                 $model->settings = $settings;
             }

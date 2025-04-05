@@ -48,4 +48,25 @@ return [
         'correction' => 'Исправление схемы',
         'prompt' => 'Запрос'
     ],
+    'build' => [
+        'cloning_repository' => 'Клонирование',
+        'installing_dependencies' => 'Установка зависимостей',
+        'installing_moonshine_builder' => 'Установка moonshine-builder',
+        'installing_markdown' => 'Установка Markdown',
+        'installing_tinymce' => 'Установка TinyMce',
+        'publishing_moonshine_builder' => 'Публикация moonshine-builder',
+        'creating_builds_directory' => 'Создание директории builds',
+        'copying_file' => 'Копирование файла',
+        'building_administrator' => 'Сборка администратора',
+        'optimization' => 'Оптимизация',
+        'removing_vendor_directory' => 'Удаление директории vendor',
+        'archiving_directory' => 'Архивация директории',
+        'removing_directory' => 'Удаление директории',
+        'component_title' => 'Сборка проекта',
+        'status' => [
+            'in_progress' => 'В процессе',
+            'error' => 'Ошибка',
+            'completed' => 'Завершено',
+        ],
+    ],
 ]; 

@@ -14,9 +14,10 @@ Route::controller(AiController::class)
         Route::post('correct/{schemaId}', 'correct')->name('correct');
     });
 
-Route::controller(BuildController::class)->prefix('/build')
+Route::controller(BuildController::class)->prefix('/build')->name('build')
     ->group(function() {
-        Route::post('{schemaId}', 'index')->name('build');
+        Route::post('{schemaId}', 'index');
+        Route::get('{buildId}/download', 'download')->name('.download');
     });
 
 require __DIR__.'/auth.php';

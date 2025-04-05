@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use App\Models\Project;
-
-use App\Models\ProjectSchema;
-use App\Services\SimpleSchema;
 use Closure;
-use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
-use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Laravel\Enums\Action;
-use MoonShine\Laravel\Fields\Relationships\HasMany;
-use MoonShine\Laravel\Resources\ModelResource;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+
+use App\Models\Project;
+use App\Models\ProjectSchema;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\ListOf;
-use MoonShine\UI\Components\ActionButton;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\Layout\Divider;
-use MoonShine\UI\Fields\Preview;
-use MoonShine\UI\Fields\StackFields;
 use MoonShine\UI\Fields\Text;
+use App\Services\SimpleSchema;
+use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Textarea;
+use MoonShine\Laravel\Enums\Action;
+use MoonShine\UI\Fields\StackFields;
+use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\ActionButton;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\UI\Components\Layout\Divider;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Laravel\Resources\ModelResource;
+use App\MoonShine\Pages\Project\ProjectFormPage;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 
 /**
  * @extends ModelResource<Project>
@@ -43,6 +48,15 @@ class ProjectResource extends ModelResource
             Action::UPDATE,
             Action::DELETE,
         ]);
+    }
+    
+    protected function pages(): array
+    {
+        return [
+            IndexPage::class,
+            ProjectFormPage::class,
+            DetailPage::class,
+        ];
     }
 
     public function indexFields(): iterable
@@ -73,6 +87,7 @@ class ProjectResource extends ModelResource
                     ActionButton::make(__('moonshine.project.create'),
                         url: fn($model) => route('build', ['schemaId' => $model->getKey()])
                     )
+                        ->async(HttpMethod::POST)
                         ->withConfirm(
                             '',
                             __('moonshine.project.build_confirm'),
@@ -107,6 +122,11 @@ class ProjectResource extends ModelResource
                 ->searchable(false)
                 ->creatable(),
         ];
+    }
+
+    protected function formButtons(): ListOf
+    {
+        return new ListOf(ActionButtonContract::class, []);
     }
 
     public function modifyListComponent(ComponentContract $component): ComponentContract

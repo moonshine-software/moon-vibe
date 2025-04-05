@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\MakeAdmin;
 
+use Closure;
 use Symfony\Component\Process\Process;
 
 readonly class MakeAdmin
@@ -13,6 +14,7 @@ readonly class MakeAdmin
     public function __construct(
         private string $schema,
         private string $path,
+        private ?Closure $alertFunction = null,
     ) {
         $this->directories = new ProjectDirectoryDTO(
             path: $this->path,
@@ -84,6 +86,8 @@ readonly class MakeAdmin
     private function cloneRepository(): self
     {
         // TODO github config
+        $this->alert(__('moonshine.build.cloning_repository'), 7);
+        
         return $this->runProcess(
             ['git', 'clone', 'https://github.com/dev-lnk/moonshine-blank.git', $this->directories->appProjectDirectory],
             'Failed to clone repository'
@@ -92,6 +96,8 @@ readonly class MakeAdmin
 
     private function installDependencies(): self
     {
+        $this->alert(__('moonshine.build.installing_dependencies'), 14);
+    
         return $this->runProcess(
             ['composer', 'install'],
             'Failed to install dependencies',
@@ -101,6 +107,8 @@ readonly class MakeAdmin
 
     private function installMoonshineBuilder(): self
     {
+        $this->alert(__('moonshine.build.installing_moonshine_builder'), 21);
+
         return $this->runProcess(
             ['composer', 'require', 'dev-lnk/moonshine-builder', '--dev'],
             'Failed to install moonshine-builder',
@@ -110,6 +118,8 @@ readonly class MakeAdmin
 
     private function installMarkdown(): self
     {
+        $this->alert(__('moonshine.build.installing_markdown'), 28);
+
         $fileContent = file_get_contents($this->directories->schemaFile);
         if( ! str_contains($fileContent, '"Markdown"')) {
             return $this;
@@ -124,6 +134,8 @@ readonly class MakeAdmin
 
     private function installTinyMce(): self
     {
+        $this->alert(__('moonshine.build.installing_tinymce'), 35);
+
         $fileContent = file_get_contents($this->directories->schemaFile);
         if( ! str_contains($fileContent, '"TinyMce"')) {
             return $this;
@@ -138,6 +150,8 @@ readonly class MakeAdmin
 
     private function publishMoonshineBuilder(): self
     {
+        $this->alert(__('moonshine.build.publishing_moonshine_builder'), 42);
+
         return $this->runProcess(
             ['php', 'artisan', 'vendor:publish', '--tag=moonshine-builder'],
             'Failed to publish moonshine-builder',
@@ -147,6 +161,8 @@ readonly class MakeAdmin
 
     private function createBuildsDirectory(): self
     {
+        $this->alert(__('moonshine.build.creating_builds_directory'), 49);
+
         return $this->runProcess(
             ['mkdir', '-p', $this->directories->appProjectDirectory . '/builds'],
             'Failed to create builds directory'
@@ -155,6 +171,8 @@ readonly class MakeAdmin
 
     private function copyBuildFile(): self
     {
+        $this->alert(__('moonshine.build.copying_file'), 56);
+
         return $this->runProcess(
             ['cp', $this->directories->schemaFile, $this->directories->appProjectDirectory . '/builds/'],
             'Failed to copy file'
@@ -163,6 +181,8 @@ readonly class MakeAdmin
 
     private function buildAdmin(): self
     {
+        $this->alert(__('moonshine.build.building_administrator'), 63);
+
         $filename = basename($this->directories->schemaFile);
 
         return $this->runProcess(
@@ -174,6 +194,8 @@ readonly class MakeAdmin
 
     private function optimize(): self
     {
+        $this->alert(__('moonshine.build.optimization'), 70);
+
         return $this->runProcess(
             ['php', 'artisan', 'optimize'],
             'Failed to optimize',
@@ -183,6 +205,8 @@ readonly class MakeAdmin
 
     private function removeVendorDirectory(): self
     {
+        $this->alert(__('moonshine.build.removing_vendor_directory'), 77);
+
         $vendorPath = $this->directories->appProjectDirectory . '/vendor';
         if (is_dir($vendorPath)) {
             $this->runProcess(
@@ -204,6 +228,8 @@ readonly class MakeAdmin
 
     public function archiveDirectory(): string
     {
+        $this->alert(__('moonshine.build.archiving_directory'), 84);
+
         $archiveFile = $this->directories->appArchiveFile;
 
         $adminDirPath = $this->directories->appProjectDirectory;
@@ -222,9 +248,18 @@ readonly class MakeAdmin
 
     private function removeAdminDirectory(): self
     {
+        $this->alert(__('moonshine.build.removing_directory'), 90);
+
         return $this->runProcess(
             ['rm', '-rf', $this->directories->appProjectDirectory],
             'Failed to remove admin directory'
         );
+    }
+
+    private function alert(string $message, int $percent): void
+    {
+        if($this->alertFunction) {
+            \call_user_func($this->alertFunction, $message, $percent);
+        }
     }
 }

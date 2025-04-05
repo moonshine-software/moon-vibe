@@ -2,33 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Build;
+use App\Jobs\ProcessBuildJob;
 use App\Models\ProjectSchema;
-use App\Services\MakeAdmin\MakeAdmin;
-use App\Support\SchemaValidator;
+use App\MoonShine\Components\ProjectBuildComponent;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
-use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use MoonShine\Support\Enums\ToastType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use MoonShine\Laravel\Http\Controllers\MoonShineController;
+use App\Enums\BuildStatus;
 
 class BuildController extends MoonShineController
 {
-    public function index(int $schemaId): BinaryFileResponse|RedirectResponse
+    public function index(int $schemaId): JsonResponse
     {
         $projectSchema = ProjectSchema::query()->where('id', $schemaId)->first();
 
-        $errors = (new SchemaValidator($projectSchema->schema))->validate();
-        if($errors !== '') {
-            return back();
+        if (! $projectSchema) {
+            return $this->json('Схема проекта не найдена', messageType: ToastType::ERROR);
         }
 
-        $makeAdmin = new MakeAdmin(
-            $projectSchema->schema,
-            Storage::disk('local')->path('builds/' . $this->auth()->id())
-        );
+        Build::query()->where('moonshine_user_id', $this->auth()->id())->delete();
 
-        $path = $makeAdmin->handle();
+        $build = Build::create([
+            'project_schema_id' => $projectSchema->id,
+            'moonshine_user_id' => $this->auth()->id(),
+            'status_id' => BuildStatus::IN_PROGRESS,
+        ]);
 
-        return response()->download($path);
+        dispatch(new ProcessBuildJob($build));
+
+        return $this->json()
+            ->htmlData(
+                (string) ProjectBuildComponent::fromBuild($build),
+                '#build-component-' . $projectSchema->project->id
+            )
+        ;
+    }
+    
+    public function download(int $buildId): BinaryFileResponse|RedirectResponse
+    {
+        $build = Build::query()->where('id', $buildId)->first();
+        
+        if ($build === null) {
+            return back()->with('error', 'Сборка не найдена');
+        }
+        
+        if ($build->status_id !== BuildStatus::COMPLETED) {
+            return back()->with('error', 'Сборка еще не готова или завершилась с ошибкой');
+        }
+        
+        if (! file_exists($build->file_path)) {
+            return back()->with('error', 'Файл сборки не найден');
+        }
+        
+        return response()->download($build->file_path);
     }
 }

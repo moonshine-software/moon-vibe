@@ -48,4 +48,25 @@ return [
         'correction' => 'Schema Correction',
         'prompt' => 'Prompt'
     ],
+    'build' => [
+        'cloning_repository' => 'Cloning rep.',
+        'installing_dependencies' => 'Installing dependencies',
+        'installing_moonshine_builder' => 'Installing moonshine-builder',
+        'installing_markdown' => 'Installing Markdown',
+        'installing_tinymce' => 'Installing TinyMce',
+        'publishing_moonshine_builder' => 'Publishing moonshine-builder',
+        'creating_builds_directory' => 'Creating builds directory',
+        'copying_file' => 'Copying file',
+        'building_administrator' => 'Building administrator',
+        'optimization' => 'Optimization',
+        'removing_vendor_directory' => 'Removing vendor directory',
+        'archiving_directory' => 'Archiving directory',
+        'removing_directory' => 'Removing directory',
+        'component_title' => 'Project assembly',
+        'status' => [
+            'in_progress' => 'In progress',
+            'error' => 'Error',
+            'completed' => 'Completed',
+        ],
+    ],
 ]; 

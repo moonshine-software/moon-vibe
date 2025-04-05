@@ -98,19 +98,17 @@ class SettingsPage extends Page
                 ->default($user->settings['generation']['attempts'] ?? 5),
         ];
 
-        $buildFields = [
-            Text::make(__('moonshine.settings.repository'), 'repository')
-                ->default(
-                    $user->settings['build']['repository'] ?? 'https://github.com/dev-lnk/moonshine-blank.git'
-                ),
-        ];
-
         return [
             Box::make([
                 Tabs::make([
                     Tab::make(__('moonshine.settings.profile'), $userFields),
                     Tab::make(__('moonshine.settings.generation'), $generateFields),
-                    Tab::make(__('moonshine.settings.deployment'), $buildFields),
+//                    Tab::make(__('moonshine.settings.deployment'), [
+//                        Text::make(__('moonshine.settings.repository'), 'repository')
+//                            ->default(
+//                                $user->settings['build']['repository'] ?? 'https://github.com/dev-lnk/moonshine-blank.git'
+//                            ),
+//                    ]),
                 ]),
             ]),
         ];

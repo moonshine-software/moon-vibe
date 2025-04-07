@@ -40,7 +40,7 @@ class AboutPage extends Page
 
     public function getTitle(): string
     {
-        return __('moonshine.menu.about');
+        return __('app.menu.about');
     }
 
     /**
@@ -51,7 +51,7 @@ class AboutPage extends Page
         return [
             Box::make([
                 Div::make([
-                    Preview::make()->setValue(__('moonshine.about.content'))
+                    Preview::make()->setValue(__('app.about.content'))
                 ])
             ])->customAttributes([
                 'style' => 'width: 50%; margin: 0 auto;'

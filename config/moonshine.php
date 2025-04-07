@@ -48,7 +48,7 @@ return [
         ShareErrorsFromSession::class,
         VerifyCsrfToken::class,
         SubstituteBindings::class,
-        ChangeLocale::class,
+        \App\Http\Middleware\LangMiddleware::class,
     ],
 
     // Storage
@@ -72,6 +72,7 @@ return [
         'name' => 'name',
         'avatar' => 'avatar',
         'settings' => 'settings',
+        'lang' => 'lang',
     ],
 
     // Layout, pages, forms

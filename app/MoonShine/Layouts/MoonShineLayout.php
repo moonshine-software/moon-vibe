@@ -73,16 +73,16 @@ class MoonShineLayout extends CompactLayout
     protected function menu(): array
     {
         return [
-            MenuItem::make(__('moonshine.menu.generation'), Dashboard::class)
+            MenuItem::make(__('app.menu.generation'), Dashboard::class)
                 ->icon('rocket-launch'),
-            MenuItem::make(__('moonshine.menu.projects'), ProjectResource::class)
+            MenuItem::make(__('app.menu.projects'), ProjectResource::class)
                 ->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count())
                 ->icon('square-3-stack-3d')
             ,
-            MenuItem::make(__('moonshine.menu.settings'), SettingsPage::class)
+            MenuItem::make(__('app.menu.settings'), SettingsPage::class)
                 ->icon('cog-8-tooth')
             ,
-            MenuItem::make(__('moonshine.menu.about'), AboutPage::class)
+            MenuItem::make(__('app.menu.about'), AboutPage::class)
                 ->icon('information-circle')
             ,
         ];

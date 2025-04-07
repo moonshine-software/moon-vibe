@@ -82,22 +82,22 @@ class ProjectResource extends ModelResource
     {
         return [
             ...$this->indexFields(),
-            HasMany::make(__('moonshine.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
+            HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
-                    ActionButton::make(__('moonshine.project.create'),
+                    ActionButton::make(__('app.project.create'),
                         url: fn($model) => route('build', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
                             '',
-                            __('moonshine.project.build_confirm'),
+                            __('app.project.build_confirm'),
                         )
                     ,
-                    ActionButton::make(__('moonshine.project.correct'),
+                    ActionButton::make(__('app.project.correct'),
                         url: fn($model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
-                            __('moonshine.project.correction'),
+                            __('app.project.correction'),
                             formBuilder: fn(FormBuilder $builder, ProjectSchema $schema) => $builder
                                 ->fields([
                                     Preview::make('', formatted: function () use ($schema) {
@@ -113,7 +113,7 @@ class ProjectResource extends ModelResource
                                         }
                                     }),
                                     Divider::make(),
-                                    Textarea::make(__('moonshine.project.prompt'), 'prompt')->customAttributes([
+                                    Textarea::make(__('app.project.prompt'), 'prompt')->customAttributes([
                                         'rows' => 6,
                                     ])
                                 ])

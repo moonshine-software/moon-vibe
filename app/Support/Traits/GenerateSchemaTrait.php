@@ -30,7 +30,7 @@ trait GenerateSchemaTrait
         $schema->save();
 
         $badge = $status === SchemaStatus::ERROR
-            ? Badge::make(__('moonshine.schema.error') . ': ' . $schema->error, Color::RED)
+            ? Badge::make(__('app.schema.error') . ': ' . $schema->error, Color::RED)
                 ->customAttributes([
                     'class' => 'schema-id-' . $schema->id
                 ])
@@ -54,7 +54,7 @@ trait GenerateSchemaTrait
     {
         Rush::events()->htmlReload(
             '.schema-id-' . $schemaId,
-            (string) Badge::make(__('moonshine.schema.generation') . ': ' .  $event)->customAttributes([
+            (string) Badge::make(__('app.schema.generation') . ': ' .  $event)->customAttributes([
                 'class' => 'schema-id-' . $schemaId
             ]),
             HtmlReloadAction::OUTER_HTML

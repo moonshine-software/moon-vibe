@@ -9,19 +9,19 @@ use App\MoonShine\Pages\Auth\ResetPasswordPage;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthenticateController::class)->group(function () {
-    Route::get('/login', 'form')->middleware('guest')->name('login');
-    Route::post('/login', 'authenticate')->middleware('guest')->name('authenticate');
+    Route::get('/login', 'form')->middleware(['guest', 'lang'])->name('login');
+    Route::post('/login', 'authenticate')->middleware(['guest', 'lang'])->name('authenticate');
     Route::get('/logout', 'logout')->middleware('moonshine')->name('logout');
 });
 
-Route::controller(ForgotController::class)->middleware('guest')->group(function () {
+Route::controller(ForgotController::class)->middleware(['guest', 'lang'])->group(function () {
     //Route::get('/forgot', 'form')->name('forgot');
     Route::post('/forgot', 'reset')->name('forgot.reset');
     Route::get('/reset-password/{token}', static fn (ResetPasswordPage $page) => $page)->name('password.reset');
     Route::post('/reset-password', 'updatePassword')->name('password.update');
 });
 
-Route::controller(RegisterController::class)->middleware('guest')->group(function () {
+Route::controller(RegisterController::class)->middleware(['guest', 'lang'])->group(function () {
     Route::get('/register', 'form')->name('register');
     Route::post('/register', 'store')->name('register.store');
 });

@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Api\DeepSeek;
-use App\Contracts\SchemaGenerateContract;
 use App\Services\Centrifugo;
 use App\Services\CutCodeAgent;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\ServiceProvider;
-use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
+use MoonShine\AssetManager\Css;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\ServiceProvider;
+use App\Contracts\SchemaGenerateContract;
 use MoonShine\Rush\Contracts\RushBroadcastContract;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**

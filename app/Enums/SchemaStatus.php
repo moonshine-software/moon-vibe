@@ -17,9 +17,9 @@ enum SchemaStatus: int
     public function toString(): string
     {
         return match ($this) {
-            self::PENDING => __('moonshine.schema.generation'),
-            self::SUCCESS => __('moonshine.schema.success'),
-            self::ERROR => __('moonshine.schema.error'),
+            self::PENDING => __('app.schema.generation'),
+            self::SUCCESS => __('app.schema.success'),
+            self::ERROR => __('app.schema.error'),
         };
     }
 
@@ -35,9 +35,9 @@ enum SchemaStatus: int
     public function label(): string
     {
         return match($this) {
-            self::PENDING => __('moonshine.schema.generation'),
-            self::SUCCESS => __('moonshine.schema.success'),
-            self::ERROR => __('moonshine.schema.error'),
+            self::PENDING => __('app.schema.generation'),
+            self::SUCCESS => __('app.schema.success'),
+            self::ERROR => __('app.schema.error'),
         };
     }
 }

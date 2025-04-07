@@ -15,9 +15,9 @@ enum BuildStatus: int
     public function toString(): string
     {
         return match ($this) {
-            self::IN_PROGRESS => __('moonshine.build.status.in_progress'),
-            self::ERROR => __('moonshine.build.status.error'),
-            self::COMPLETED => __('moonshine.build.status.completed'),
+            self::IN_PROGRESS => __('app.build.status.in_progress'),
+            self::ERROR => __('app.build.status.error'),
+            self::COMPLETED => __('app.build.status.completed'),
         };
     }
 

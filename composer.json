@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.10.1",
         "moonshine/easymde": "^1.0",
         "moonshine/moonshine": "^3.7",
+        "moonshine/ru": "^1.0",
         "moonshine/rush": "^2.0",
         "moonshine/tinymce": "^1.0",
         "openai-php/laravel": "^0.11.0"

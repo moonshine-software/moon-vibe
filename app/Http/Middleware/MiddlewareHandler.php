@@ -10,7 +10,7 @@ class MiddlewareHandler
 {
     /** @var array<string, class-string> */
     protected array $aliases = [
-
+        'lang' => LangMiddleware::class
     ];
 
     public function __invoke(Middleware $middleware): Middleware

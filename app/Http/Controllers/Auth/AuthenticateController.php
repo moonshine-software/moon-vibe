@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Requests\Auth\AuthenticateFormRequest;
-use App\MoonShine\Pages\Auth\LoginPage;
-use Illuminate\Http\RedirectResponse;
+use App\Support\ChangeLocale;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
+use App\MoonShine\Pages\Auth\LoginPage;
+use App\Http\Requests\Auth\AuthenticateFormRequest;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 
 class AuthenticateController extends MoonShineController
@@ -23,6 +25,12 @@ class AuthenticateController extends MoonShineController
             return back()->withErrors([
                 'email' => __('moonshine::auth.failed')
             ])->withInput();
+        }
+
+        $lang = $this->auth()->user()?->lang;
+
+        if($lang !== null) {
+            ChangeLocale::set($lang);
         }
 
         return redirect()->intended();

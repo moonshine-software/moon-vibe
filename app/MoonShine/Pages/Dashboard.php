@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages;
 
+use Illuminate\Support\Facades\Cookie;
 use MoonShine\UI\Fields\Text;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Components\Tabs;
@@ -24,7 +25,6 @@ class Dashboard extends Page
      */
     protected function components(): iterable
 	{
-
         $lang = App::getLocale();
 
         $types = View::make("generate-page.examples.{$lang}.types");
@@ -34,13 +34,13 @@ class Dashboard extends Page
 
 		return [
             FormBuilder::make(route('ai-request.request'), fields: [
-                Text::make(__('moonshine.dashboard.project_name'), 'project_name'),
-                Textarea::make(__('moonshine.dashboard.prompt'), 'prompt')->customAttributes([
-                    'placeholder' => __('moonshine.dashboard.prompt_placeholder'),
+                Text::make(__('app.dashboard.project_name'), 'project_name'),
+                Textarea::make(__('app.dashboard.prompt'), 'prompt')->customAttributes([
+                    'placeholder' => __('app.dashboard.prompt_placeholder'),
                     'rows' => 12,
                 ])
             ])
-                ->submit(__('moonshine.dashboard.submit'), [
+                ->submit(__('app.dashboard.submit'), [
                     'class' => 'btn-primary btn-lg',
                 ])
             ,
@@ -48,22 +48,22 @@ class Dashboard extends Page
             Divider::make(),
 
             Tabs::make([
-                Tab::make(__('moonshine.dashboard.types'), [
+                Tab::make(__('app.dashboard.types'), [
                     Box::make([
                         FlexibleRender::make($types),
                     ])
                 ]),
-                Tab::make(__('moonshine.dashboard.example-1'), [
+                Tab::make(__('app.dashboard.example-1'), [
                     Box::make([
                         FlexibleRender::make($example1),
                     ])
                 ]),
-                Tab::make(__('moonshine.dashboard.example-2'), [
+                Tab::make(__('app.dashboard.example-2'), [
                     Box::make([
                         FlexibleRender::make($example2),
                     ])
                 ]),
-                Tab::make(__('moonshine.dashboard.example-3'), [
+                Tab::make(__('app.dashboard.example-3'), [
                     Box::make([
                         FlexibleRender::make($example3),
                     ])

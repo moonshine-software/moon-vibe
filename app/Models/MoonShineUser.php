@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\ChangeLocale;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
 
 class MoonShineUser extends BaseMoonShineUser
@@ -16,7 +17,8 @@ class MoonShineUser extends BaseMoonShineUser
         'password',
         'name',
         'avatar',
-        'settings'
+        'settings',
+        'lang'
     ];
 
     protected $casts = [
@@ -44,6 +46,8 @@ class MoonShineUser extends BaseMoonShineUser
 
                 $model->settings = $settings;
             }
+
+            ChangeLocale::set((string) $model->getAttribute('lang'));
         });
     }
 

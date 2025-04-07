@@ -51,14 +51,14 @@ class ForgotPage extends Page
                             'autofocus' => true,
                             'autocomplete' => 'off',
                         ]),
-                ])->submit(__('Reset password'), [
+                ])->submit(__('app.auth.reset_password'), [
                     'class' => 'btn-primary btn-lg w-full',
                 ]),
 
             Divider::make(),
 
             Flex::make([
-                ActionButton::make(__('Log in'), route('login'))->primary(),
+                ActionButton::make(__('app.auth.log_in'), route('login'))->primary(),
             ])->justifyAlign('start')
         ];
     }

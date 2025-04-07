@@ -55,19 +55,19 @@ class LoginPage extends Page
                             'autocomplete' => 'username',
                         ]),
 
-                    Password::make(__('Password'), 'password')
+                    Password::make(__('app.auth.password'), 'password')
                         ->required(),
 
-                    Switcher::make(__('Remember me'), 'remember'),
-                ])->submit(__('Log in'), [
+                    Switcher::make(__('app.auth.remember_me'), 'remember'),
+                ])->submit(__('app.auth.log_in'), [
                     'class' => 'btn-primary btn-lg w-full',
                 ]),
 
             Divider::make(),
 
             Flex::make([
-                ActionButton::make(__('Create account'), route('register'))->primary(),
-                //Link::make(route('forgot'), __('Forgot password'))
+                ActionButton::make(__('app.auth.create_account'), route('register'))->primary(),
+                //Link::make(route('forgot'), __('app.auth.forgot_password'))
             ])->justifyAlign('start')
         ];
     }

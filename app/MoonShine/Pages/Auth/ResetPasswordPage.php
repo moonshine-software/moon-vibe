@@ -52,12 +52,12 @@ class ResetPasswordPage extends Page
                         ->required()
                         ->readonly(),
 
-                    Password::make(__('Password'), 'password')
+                    Password::make(__('app.auth.password'), 'password')
                         ->required(),
 
-                    PasswordRepeat::make(__('Repeat password'), 'password_confirmation')
+                    PasswordRepeat::make(__('app.auth.repeat_password'), 'password_confirmation')
                         ->required(),
-                ])->submit(__('Reset password'), [
+                ])->submit(__('app.auth.reset_password'), [
                     'class' => 'btn-primary btn-lg w-full',
                 ]),
         ];

@@ -40,7 +40,7 @@ class RegisterPage extends Page
                 ->class('authentication-form')
                 ->action(route('register.store'))
                 ->fields([
-                    Text::make(__('Name'), 'name')->required(),
+                    Text::make(__('app.auth.name'), 'name')->required(),
                     Text::make('E-mail', 'email')
                         ->required()
                         ->customAttributes([
@@ -48,15 +48,15 @@ class RegisterPage extends Page
                             'autocomplete' => 'off',
                         ]),
 
-                    Password::make(__('Password'), 'password')
+                    Password::make(__('app.auth.password'), 'password')
                         ->required(),
 
-                    PasswordRepeat::make(__('Repeat password'), 'password_confirmation')
+                    PasswordRepeat::make(__('app.auth.repeat_password'), 'password_confirmation')
                         ->required(),
-                ])->submit(__('Create account'), [
+                ])->submit(__('app.auth.create_account'), [
                     'class' => 'btn-primary btn-lg w-full',
                 ])->buttons([
-                    ActionButton::make(__('Log in'), route('login'))
+                    ActionButton::make(__('app.auth.log_in'), route('login'))
                 ])
         ];
     }

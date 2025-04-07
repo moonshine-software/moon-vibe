@@ -69,4 +69,14 @@ return [
             'completed' => 'Завершено',
         ],
     ],
+    'auth' => [
+        'password' => 'Пароль',
+        'remember_me' => 'Запомнить меня',
+        'log_in' => 'Войти',
+        'create_account' => 'Создать аккаунт',
+        'forgot_password' => 'Забыли пароль',
+        'name' => 'Имя',
+        'reset_password' => 'Сбросить пароль',
+        'repeat_password' => 'Повторите пароль',
+    ],
 ]; 

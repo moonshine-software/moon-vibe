@@ -69,4 +69,14 @@ return [
             'completed' => 'Completed',
         ],
     ],
+    'auth' => [
+        'password' => 'Password',
+        'remember_me' => 'Remember me',
+        'log_in' => 'Log in',
+        'create_account' => 'Create account',
+        'forgot_password' => 'Forgot password',
+        'name' => 'Name',
+        'reset_password' => 'Reset password',
+        'repeat_password' => 'Repeat password',
+    ],
 ]; 

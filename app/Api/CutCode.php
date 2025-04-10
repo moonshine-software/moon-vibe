@@ -14,7 +14,8 @@ class CutCode
 
     private string $model;
 
-    private string $url = 'https://n8n.cutcode99.ru/webhook/89c4613d-c1d3-4461-8cd1-32e1fc29665d';
+    //private string $url = 'https://n8n.cutcode99.ru/webhook/89c4613d-c1d3-4461-8cd1-32e1fc29665d';
+    private string $url = 'https://n8n.cutcode99.ru/webhook/66debfa5-bf76-4e4f-8d72-f2dbfca2910f';
 
     public function __construct()
     {

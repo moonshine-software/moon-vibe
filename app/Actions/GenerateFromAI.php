@@ -11,7 +11,7 @@ use MoonShine\Laravel\MoonShineAuth;
 
 readonly class GenerateFromAI
 {   
-    public function handle(string $projectName, string $prompt, int $userId): int
+    public function handle(string $projectName, string $prompt, int $userId, string $lang): int
     {
         $project = Project::query()->create([
             'name' => $projectName,
@@ -30,7 +30,8 @@ readonly class GenerateFromAI
         dispatch(new GenerateSchemaJob(
             $prompt,
             $schema->id,
-            $user->getGenerationSetting('attempts', 5)
+            $user->getGenerationSetting('attempts', 5),
+            $lang
         ));
 
         return $project->id;

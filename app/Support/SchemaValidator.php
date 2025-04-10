@@ -39,6 +39,8 @@ readonly class SchemaValidator
                 return 'Не удалось получить ни одного ресурса';
             }
 
+            $tableResourceMap = $this->getTableResourceMap($codeStructures->codeStructures());
+
             foreach ($codeStructures->codeStructures() as $index => $codeStructure) {
                 if($codeStructure->columns() === []) {
                     $errors[] = "В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля";
@@ -50,10 +52,15 @@ readonly class SchemaValidator
 
                 // PHP 8 Error
                 if($codeStructure->entity()->ucFirstSingular() === 'Match') {
-                    $errors[] = "Ресурс не может иметь параметр name:Match";
+                    $errors[] = "Ресурс не может иметь параметр name:Match. Необходимо изменить ресурс на Game, таблицу matches изменить на games, и обновить все существующие связи.";
                 }
 
-                $relationError = $this->checkRelation($codeStructure->columns(), $codeStructure->entity()->ucFirstSingular());
+                $relationError = $this->checkRelation(
+                    $codeStructure->columns(),
+                    $codeStructure->entity()->ucFirstSingular(),
+                    $tableResourceMap
+                );
+
                 if($relationError !== '') {
                     $errors[] = $relationError;
                 }
@@ -138,7 +145,20 @@ readonly class SchemaValidator
         return implode(". ", $errors);
     }
 
-    public function checkPivotTable(CodeStructure $codeStructure): string
+    /**
+     * @param array<int, CodeStructure> $codeStructures
+     * @return array<string, string>
+     */
+    private function getTableResourceMap(array $codeStructures): array
+    {
+        $result = [];
+        foreach ($codeStructures as $codeStructure) {
+            $result[$codeStructure->table()] = $codeStructure->entity()->raw();
+        }
+        return $result;
+    }
+
+    private function checkPivotTable(CodeStructure $codeStructure): string
     {
         if(! str_contains($codeStructure->entity()->raw(), 'Pivot')) {
             return '';
@@ -190,7 +210,7 @@ readonly class SchemaValidator
         return $errors === [] ? '' : implode(". ", $errors);
     }
 
-    public function checkHasMany(
+    private function checkHasMany(
         ColumnStructure $column,
         array $codeStructures
     ): string {
@@ -218,10 +238,11 @@ readonly class SchemaValidator
     /**
      * @param list<ColumnStructure> $columnStructures
      * @param string                $checkName
+     * @param array                 $tableResourceMap
      *
      * @return string
      */
-    private function checkRelation(array $columnStructures, string $checkName): string
+    private function checkRelation(array $columnStructures, string $checkName, array $tableResourceMap): string
     {
         $errors = [];
 
@@ -232,9 +253,25 @@ readonly class SchemaValidator
                 continue;
             }
             if(in_array($column->getModelRelationName(), $relationModelMethods)) {
-                $errors[$column->getModelRelationName()] = "Ошибка, в ресурсе $checkName у двух отношений одинаковое имя {$column->getModelRelationName()}, необходимо задать уникальное имя отношения для каждого поля, с помощью параметра model_relation_name внутри параметра relation";
+                $errorRelationName = "Ошибка, в ресурсе $checkName у двух отношений одинаковое имя {$column->getModelRelationName()}, необходимо задать уникальное имя отношения для каждого поля, с помощью параметра model_relation_name внутри параметра relation";
+                if(! in_array($errorRelationName, $errors)) {
+                    $errors[] = $errorRelationName;
+                }
             }
+
             $relationModelMethods[] = $column->getModelRelationName();
+
+            $tableName = $column->relation()->table()->raw();
+            if(
+                $tableName !== 'moonshine_users'
+                && ! isset($tableResourceMap[$tableName])
+            ) {
+                $errorTable = "Для ресурса $checkName у поля {$column->column()} задана таблица $tableName, у которой не создан ресурс";
+                if($column->type() === SqlTypeMap::BELONGS_TO_MANY) {
+                    $errorTable .= " Для поля BelongsToMany необходимо создать связывающий Pivot ресурс с необходимой таблицей.";
+                }
+                $errors[] = $errorTable;
+            }
         }
 
         return $errors === [] ? '' : implode(". ", $errors);

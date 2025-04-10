@@ -25,7 +25,8 @@ class AiController extends MoonShineController
         $projectId = $action->handle(
             $data['project_name'],
             $data['prompt'],
-            (int) auth('moonshine')->user()->id
+            (int) auth('moonshine')->user()->id,
+            app()->getLocale()
         );
 
         return toPage(
@@ -42,7 +43,7 @@ class AiController extends MoonShineController
             'prompt' => ['string', 'required']
         ]);
 
-        $action->handle($schemaId, $data['prompt']);
+        $action->handle($schemaId, $data['prompt'], app()->getLocale());
 
         return back();
     }

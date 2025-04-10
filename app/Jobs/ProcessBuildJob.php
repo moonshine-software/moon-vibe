@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\MoonShine\Components\ProjectBuildComponent;
+use App\Support\ChangeLocale;
 use Exception;
 use App\Models\Build;
 use Illuminate\Bus\Queueable;
@@ -12,6 +13,7 @@ use App\Services\MakeAdmin\MakeAdmin;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Enums\BuildStatus;
+use MoonShine\Laravel\Models\MoonshineUser;
 use MoonShine\Rush\Services\Rush;
 
 class ProcessBuildJob implements ShouldQueue
@@ -19,14 +21,19 @@ class ProcessBuildJob implements ShouldQueue
     use Queueable;
 
     public function __construct(
-        protected Build $build
-    ) {}
+        protected Build $build,
+        protected string $lang
+    ) {
+
+    }
 
     public function handle(): void
     {
+        ChangeLocale::set($this->lang, isSetCookie: false);
+
         try {
             $projectSchema = $this->build->projectSchema;
-            
+
             $errors = (new SchemaValidator($projectSchema->schema))->validate();
             if($errors !== '') {
                 $this->build->update([

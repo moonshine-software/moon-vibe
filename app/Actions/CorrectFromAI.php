@@ -11,7 +11,7 @@ use MoonShine\Laravel\MoonShineAuth;
 
 readonly class CorrectFromAI
 {   
-    public function handle(int $schemaId, string $prompt): void
+    public function handle(int $schemaId, string $prompt, string $lang): void
     {
         $schema = ProjectSchema::query()->where('id', $schemaId)->with('project')->first();
         if($schema === null) {
@@ -26,7 +26,8 @@ readonly class CorrectFromAI
         dispatch(new CorrectSchemaJob(
             $prompt,
             $schema->id,
-            $user->getGenerationSetting('attempts', 5)
+            $user->getGenerationSetting('attempts', 5),
+            $lang
         ));
     }
 }

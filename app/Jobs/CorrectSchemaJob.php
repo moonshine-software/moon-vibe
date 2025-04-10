@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Contracts\SchemaGenerateContract;
+use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
 use App\Models\ProjectSchema;
@@ -19,12 +20,16 @@ class CorrectSchemaJob implements ShouldQueue
     public function __construct(
         private readonly string $prompt,
         private readonly int $schemaId,
-        private readonly int $generateTries
+        private readonly int $generateTries,
+        private readonly string $lang,
     ) {
+
     }
 
     public function handle(): void
     {
+        ChangeLocale::set($this->lang, isSetCookie: false);
+
         $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
         if($schema === null) {
             return;
@@ -52,8 +57,8 @@ class CorrectSchemaJob implements ShouldQueue
                 $isValidSchema = true;
 
                 $event = $tries === 1
-                    ? "correction of the schema..."
-                    : "correction of the scheme, an attempt $tries..."
+                    ? __('app.schema.correct_job')
+                    : __('app.schema.correct_job_attempt', ['tries' => $tries])
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);

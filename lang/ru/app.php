@@ -12,6 +12,10 @@ return [
         'preview' => 'Схема',
         'status' => 'Статус',
         'project' => 'Проект',
+        'generate_job' => 'выполнение...',
+        'generate_job_attempt' => 'выполнение, попытка :tries...',
+        'correct_job' => 'исправление схемы...',
+        'correct_job_attempt' => 'исправление схемы, попытка :tries...',
     ],
     'menu' => [
         'generation' => 'Генерация',

@@ -31,7 +31,7 @@ class BuildController extends MoonShineController
             'status_id' => BuildStatus::IN_PROGRESS,
         ]);
 
-        dispatch(new ProcessBuildJob($build));
+        dispatch(new ProcessBuildJob($build, app()->getLocale()));
 
         return $this->json()
             ->htmlData(

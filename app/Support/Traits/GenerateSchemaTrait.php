@@ -12,7 +12,6 @@ use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Badge;
-use MoonShine\UI\Fields\Textarea;
 use Throwable;
 
 trait GenerateSchemaTrait

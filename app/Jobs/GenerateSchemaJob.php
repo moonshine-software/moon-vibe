@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Contracts\SchemaGenerateContract;
+use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
 use App\Models\ProjectSchema;
@@ -20,12 +21,16 @@ class GenerateSchemaJob implements ShouldQueue
         private readonly string $prompt,
         private readonly int $schemaId,
         private readonly int $generateTries,
+        private readonly string $lang,
     ) {
+
     }
 
     public function handle(): void
     {
-        $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
+        ChangeLocale::set($this->lang, isSetCookie: false);
+
+        $schema = ProjectSchema::query()->where('id', $this->schemaId)->with(['project'])->first();
         if($schema === null) {
             return;
         }
@@ -48,8 +53,8 @@ class GenerateSchemaJob implements ShouldQueue
                 $isValidSchema = true;
 
                 $event = $tries === 1
-                    ? "request..."
-                    : "request, an attempt $tries..."
+                    ? __('app.schema.generate_job')
+                    : __('app.schema.generate_job_attempt', ['tries' => $tries])
                 ;
 
                 $mode = $tries === 1 ? 'gen' : 'fix';

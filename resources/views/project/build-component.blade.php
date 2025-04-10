@@ -7,7 +7,7 @@
 @if($build)
     <x-moonshine::layout.box>
         <x-moonshine::layout.flex :justifyAlign="'start'">
-            <div>{{  __('moonshine.build.component_title') }}</div>
+            <div>{{  __('app.build.component_title') }}</div>
             <div style="width: 88%">
                 <x-moonshine::progress-bar
                     color="gray"

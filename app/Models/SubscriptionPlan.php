@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Models;
-use App\Enums\ResetPeriod;
+use App\Enums\SubscriptionPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,11 +12,11 @@ class SubscriptionPlan extends Model
     protected $fillable = [
 		'name',
 		'generations_limit',
-		'reset_period',
+		'period',
     ];
 
 	protected $casts = [
-		'reset_period' => ResetPeriod::class,
+		'period' => SubscriptionPeriod::class,
 	];
 
     public function users(): HasMany

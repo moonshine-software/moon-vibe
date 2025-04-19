@@ -21,7 +21,6 @@ class GenerateSchemaJob implements ShouldQueue
         private readonly string $prompt,
         private readonly int $schemaId,
         private readonly int $generateTries,
-        private readonly int $userId,
         private readonly string $lang,
     ) {
 
@@ -89,7 +88,7 @@ class GenerateSchemaJob implements ShouldQueue
                 }
             } while ($isValidSchema === false && $tries < $this->generateTries);
 
-            $this->saveSchema($schema, $error, $schemaResult, $this->userId);
+            $this->saveSchema($schema, $error, $schemaResult);
 
         } catch (Throwable $e) {
             $this->schemaError($e, $schema, $schemaResult);

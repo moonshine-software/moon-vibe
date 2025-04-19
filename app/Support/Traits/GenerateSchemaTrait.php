@@ -17,12 +17,10 @@ use App\Models\MoonShineUser;
 
 trait GenerateSchemaTrait
 {
-    private function saveSchema(ProjectSchema $schema, string $error, string $schemaResult, int $userId): void
+    private function saveSchema(ProjectSchema $schema, string $error, string $schemaResult): void
     {
         $this->sendEvent("сохранение", (int)$schema->id);
 
-        $this->updateUserGenerationsUsed($userId);
-        
         $status = $error === '' ? SchemaStatus::SUCCESS
             : SchemaStatus::ERROR;
 
@@ -50,17 +48,6 @@ trait GenerateSchemaTrait
         );
 
         Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
-    }
-
-    public function updateUserGenerationsUsed(int $userId): void
-    {
-        $user = MoonShineUser::query()->where('id', $userId)->first();
-        if($user === null) {
-            report(new \Exception('User not found'));
-            return;
-        }   
-        $user->generations_used++;
-        $user->save();
     }
 
     private function sendEvent(string $event, int $schemaId): void

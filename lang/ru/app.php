@@ -29,6 +29,7 @@ return [
         'max_attempts' => 'Максимальное количество попыток генерации',
         'repository' => 'Базовый репозиторий',
         'deployment' => 'Развертывание',
+        'language' => 'Язык',
     ],
     'dashboard' => [
         'project_name' => 'Название проекта',
@@ -86,4 +87,5 @@ return [
     'generations_left' => 'Осталось генераций: :generations',
     'generations_limit_exceeded' => 'Вы превысили лимит генераций.',
     'subscription_plan_not_found' => 'Подписка не найдена.',
+    'subscription_expired' => 'Ваша подписка истекла.',
 ]; 

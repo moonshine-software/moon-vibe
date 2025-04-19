@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('moonshine_users', function (Blueprint $table) {
@@ -19,13 +16,10 @@ return new class extends Migration
                 ->nullOnDelete();
                   
             $table->unsignedInteger('generations_used')->default(0)->after('subscription_plan_id');
-            $table->timestamp('subscription_end_date')->nullable()->after('generations_used');
+            $table->date('subscription_end_date')->nullable()->after('generations_used');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('moonshine_users', function (Blueprint $table) {

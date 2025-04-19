@@ -27,7 +27,6 @@ readonly class CorrectFromAI
             $prompt,
             $schema->id,
             $user->getGenerationSetting('attempts', 5),
-            $user->id,
             $lang
         ));
     }

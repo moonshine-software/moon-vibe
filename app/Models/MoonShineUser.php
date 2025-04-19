@@ -26,7 +26,8 @@ class MoonShineUser extends BaseMoonShineUser
     ];
 
     protected $casts = [
-        'settings' => 'json'
+        'settings' => 'json',
+        'subscription_end_date' => 'date',
     ];
 
     protected static function booted(): void
@@ -84,6 +85,10 @@ class MoonShineUser extends BaseMoonShineUser
 
     public function getGenerationsLeft(): int
     {
+        if($this->subscription_end_date <= now()) {
+            return 0;
+        }
+
         $subscriptionPlan = $this->subscriptionPlan;
         if($subscriptionPlan === null) {
             return 0;

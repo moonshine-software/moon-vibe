@@ -29,7 +29,6 @@ readonly class GenerateFromAI
         dispatch(new GenerateSchemaJob(
             $prompt,
             $schema->id,
-            $user->id,
             $user->getGenerationSetting('attempts', 5),
             $lang
         ));

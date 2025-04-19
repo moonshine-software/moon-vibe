@@ -77,7 +77,7 @@ class SettingsPage extends Page
                 ->allowedExtensions(['jpg', 'png', 'jpeg', 'gif'])
                 : null,
 
-            Select::make('Language', 'lang')->options([
+            Select::make(__('app.settings.language'), 'lang')->options([
                 'en' => 'English',
                 'ru' => 'Russian',
             ])->default('en'),

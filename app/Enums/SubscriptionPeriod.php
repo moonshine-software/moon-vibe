@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ResetPeriod: int
+enum SubscriptionPeriod: int
 {
     case MONTHLY = 1;
 
@@ -10,6 +10,13 @@ enum ResetPeriod: int
     {
         return match ($this) {
             self::MONTHLY => 'Monthly',
+        };
+    }
+
+    public function getPeriod(): string
+    {
+        return match ($this) {
+            self::MONTHLY => '1 MONTH',
         };
     }
 }

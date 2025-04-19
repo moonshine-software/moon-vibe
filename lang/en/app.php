@@ -29,6 +29,7 @@ return [
         'max_attempts' => 'Maximum number of generation attempts',
         'repository' => 'Base repository',
         'deployment' => 'Deployment',
+        'language' => 'Language',
     ],
     'dashboard' => [
         'project_name' => 'Project Name',
@@ -86,5 +87,6 @@ return [
     
     'generations_left' => 'Generations left: :generations',
     'generations_limit_exceeded' => 'You have exceeded the limit of generations.',
+    'subscription_expired' => 'Your subscription has expired.',
     'subscription_plan_not_found' => 'Subscription plan not found.',
 ]; 

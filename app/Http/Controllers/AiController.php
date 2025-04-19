@@ -14,18 +14,15 @@ use MoonShine\Laravel\Http\Controllers\MoonShineController;
 
 class AiController extends MoonShineController
 {
-    /**
-     * @throws Throwable
-     */
     public function index(GenerateFromAI $action): RedirectResponse
     {
         $data = request()->validate([
-            'prompt' => ['string', 'required'],
+            'prompt' => ['string', 'required', 'min:10'],
             'project_name' => ['string', 'required'],
         ]);
 
         try {
-            $this->validateSubscription();
+            $this->updateUserGenerationsUsed();
         } catch (UserPlanException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
             return back();
@@ -49,11 +46,11 @@ class AiController extends MoonShineController
     public function correct(int $schemaId, CorrectFromAI $action)
     {
         $data = request()->validate([
-            'prompt' => ['string', 'required']
+            'prompt' => ['string', 'required', 'min:5']
         ]);
 
         try {
-            $this->validateSubscription();
+            $this->updateUserGenerationsUsed();
         } catch (UserPlanException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
             return back();
@@ -64,7 +61,10 @@ class AiController extends MoonShineController
         return back();
     }
 
-    private function validateSubscription(): void
+    /**
+     * @throws UserPlanException
+     */
+    private function updateUserGenerationsUsed(): void
     {
         $user = auth('moonshine')->user();
 
@@ -72,9 +72,16 @@ class AiController extends MoonShineController
         if($subscriptionPlan === null) {
             throw new UserPlanException(__('app.subscription_plan_not_found'));
         } 
+        
+        if($user->subscription_end_date <= now()) {
+            throw new UserPlanException(__('app.subscription_expired'));
+        }
 
         if($user->generations_used >= $subscriptionPlan->generations_limit) {
             throw new UserPlanException(__('app.generations_limit_exceeded'));
         }
+
+        $user->generations_used++;
+        $user->save();
     }
 }

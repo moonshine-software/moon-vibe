@@ -61,3 +61,6 @@ Key Conventions
 9. Implement proper database transactions for data integrity.
 10. Use Laravel's built-in scheduling features for recurring tasks.
 
+For Agent mode
+For create migration run `make migration m=<migration_name>`
+

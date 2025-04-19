@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Support\ChangeLocale;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
 
 class MoonShineUser extends BaseMoonShineUser
@@ -16,9 +17,12 @@ class MoonShineUser extends BaseMoonShineUser
         'moonshine_user_role_id',
         'password',
         'name',
-        'avatar',
+        'avatar',       
         'settings',
-        'lang'
+        'lang',
+        'subscription_plan_id',
+        'generations_used',
+        'subscription_end_date',
     ];
 
     protected $casts = [
@@ -72,4 +76,18 @@ class MoonShineUser extends BaseMoonShineUser
         }
         return $this->settings['build'][$key];
     }
+
+    public function subscriptionPlan(): BelongsTo
+    {
+        return $this->belongsTo(SubscriptionPlan::class);
+    }
+
+    public function getGenerationsLeft(): int
+    {
+        $subscriptionPlan = $this->subscriptionPlan;
+        if($subscriptionPlan === null) {
+            return 0;
+        }
+        return $subscriptionPlan->generations_limit - $this->generations_used;
+    }       
 }

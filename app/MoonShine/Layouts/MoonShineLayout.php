@@ -43,6 +43,7 @@ use MoonShine\Laravel\Pages\ProfilePage;
 use MoonShine\MenuManager\MenuItem;
 use App\MoonShine\Resources\ProjectResource;
 use MoonShine\Rush\Services\Rush;
+use App\MoonShine\Resources\SubscriptionPlanResource;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -85,6 +86,7 @@ class MoonShineLayout extends CompactLayout
             MenuItem::make(__('app.menu.about'), AboutPage::class)
                 ->icon('information-circle')
             ,
+            //MenuItem::make('SubscriptionPlan', SubscriptionPlanResource::class),
         ];
     }
 

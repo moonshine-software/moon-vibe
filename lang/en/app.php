@@ -83,4 +83,8 @@ return [
         'reset_password' => 'Reset password',
         'repeat_password' => 'Repeat password',
     ],
+    
+    'generations_left' => 'Generations left: :generations',
+    'generations_limit_exceeded' => 'You have exceeded the limit of generations.',
+    'subscription_plan_not_found' => 'Subscription plan not found.',
 ]; 

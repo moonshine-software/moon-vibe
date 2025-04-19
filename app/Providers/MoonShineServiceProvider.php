@@ -15,6 +15,7 @@ use App\MoonShine\Resources\MoonShineUserResource;
 use App\MoonShine\Resources\MoonShineUserRoleResource;
 use App\MoonShine\Resources\ProjectResource;
 use App\MoonShine\Resources\ProjectSchemaResource;
+use App\MoonShine\Resources\SubscriptionPlanResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 MoonShineUserRoleResource::class,
                 ProjectResource::class,
                 ProjectSchemaResource::class,
+                SubscriptionPlanResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

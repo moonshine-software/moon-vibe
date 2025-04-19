@@ -7,24 +7,28 @@ namespace App\MoonShine\Resources;
 use Closure;
 
 use App\Models\Project;
+use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
-use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\Text;
 use App\Services\SimpleSchema;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Textarea;
+use MoonShine\Support\Enums\Color;
+use MoonShine\UI\Components\Badge;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\UI\Fields\StackFields;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\ActionButton;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Laravel\Resources\ModelResource;
 use App\MoonShine\Pages\Project\ProjectFormPage;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
@@ -80,6 +84,10 @@ class ProjectResource extends ModelResource
 
     public function formFields(): iterable
     {
+        /** @var MoonShineUser $user */
+        $user = auth('moonshine')->user();
+        $generationsLeft = $user->getGenerationsLeft();
+
         return [
             ...$this->indexFields(),
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
@@ -112,6 +120,12 @@ class ProjectResource extends ModelResource
                                             return '';
                                         }
                                     }),
+                                    FlexibleRender::make(
+                                        (string) Badge::make(
+                                            __('app.generations_left', ['generations' => $generationsLeft]),
+                                            $generationsLeft > 0 ? Color::GREEN : Color::RED
+                                        )
+                                    ),
                                     Divider::make(),
                                     Textarea::make(__('app.project.prompt'), 'prompt')->customAttributes([
                                         'rows' => 6,

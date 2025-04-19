@@ -83,4 +83,7 @@ return [
         'reset_password' => 'Сбросить пароль',
         'repeat_password' => 'Повторите пароль',
     ],
+    'generations_left' => 'Осталось генераций: :generations',
+    'generations_limit_exceeded' => 'Вы превысили лимит генераций.',
+    'subscription_plan_not_found' => 'Подписка не найдена.',
 ]; 

@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\Project;
-use App\Jobs\GenerateSchemaJob;
 use App\Enums\SchemaStatus;
-use MoonShine\Laravel\MoonShineAuth;
+use App\Models\MoonShineUser;
+use App\Jobs\GenerateSchemaJob;
+use App\Exceptions\UserPlanException;
 
 readonly class GenerateFromAI
 {   
-    public function handle(string $projectName, string $prompt, int $userId, string $lang): int
+    public function handle(string $projectName, string $prompt, MoonShineUser $user, string $lang): int
     {
         $project = Project::query()->create([
             'name' => $projectName,
             'description' => $prompt,
-            'moonshine_user_id' => $userId
+            'moonshine_user_id' => $user->id
         ]);
 
         $schema = $project->schemas()->create([
@@ -25,11 +26,10 @@ readonly class GenerateFromAI
             'schema' => null
         ]);
 
-        $user = MoonShineAuth::getGuard()->user();
-
         dispatch(new GenerateSchemaJob(
             $prompt,
             $schema->id,
+            $user->id,
             $user->getGenerationSetting('attempts', 5),
             $lang
         ));

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthenticateController;
+use App\Http\Controllers\Auth\CentrifugoController;
 use App\Http\Controllers\Auth\ForgotController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\MoonShine\Pages\Auth\ResetPasswordPage;
@@ -24,4 +25,8 @@ Route::controller(ForgotController::class)->middleware(['guest', 'lang'])->group
 Route::controller(RegisterController::class)->middleware(['guest', 'lang'])->group(function () {
     Route::get('/register', 'form')->name('register');
     Route::post('/register', 'store')->name('register.store');
+});
+
+Route::controller(CentrifugoController::class)->middleware('moonshine')->group(function () {
+    Route::post('/centrifugo/token', 'index')->name('centrifugo.token');
 });

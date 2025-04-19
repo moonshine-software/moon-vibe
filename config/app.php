@@ -125,6 +125,7 @@ return [
 
     'centrifugo' => [
         'api-key' => env('CENTRIFUGO_APIKEY'),
+        'secret' => env('CENTRIFUGO_SECRET'),
         'host' => env('CENTRIFUGO_URL'),
         'port' => env('CENTRIFUGO_PORT')
     ],

@@ -42,7 +42,7 @@ class MoonShineUserResource extends ModelResource
 
     protected string $column = 'name';
 
-    protected array $with = ['moonshineUserRole'];
+    protected array $with = ['moonshineUserRole', 'subscriptionPlan'];
 
     protected bool $simplePaginate = true;
 
@@ -74,6 +74,13 @@ class MoonShineUserResource extends ModelResource
             )->badge(Color::PURPLE),
 
             Text::make(__('moonshine::ui.resource.name'), 'name'),
+
+            BelongsTo::make(
+                'Тип подписки',
+                'subscriptionPlan',
+                formatted: static fn (SubscriptionPlan $model) => $model->name,
+                resource: SubscriptionPlanResource::class,
+            ),
 
             Email::make(__('moonshine::ui.resource.email'), 'email')
                 ->sortable(),

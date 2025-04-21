@@ -6,7 +6,19 @@ namespace App\Models;
 use App\Enums\SchemaStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
+/**
+ * @property int $id
+ * @property int $project_id
+ * @property string $schema
+ * @property string $first_prompt   
+ * @property SchemaStatus $status_id
+ * @property string $error
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Project $project
+ */ 
 class ProjectSchema extends Model
 {
     protected $fillable = [

@@ -3,11 +3,23 @@
 declare(strict_types=1);
 
 namespace App\Models;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use MoonShine\Laravel\Models\MoonshineUser;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property int $moonshine_user_id
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property MoonshineUser $moonshineUser
+ * @property Collection<ProjectSchema> $schemas
+ */
 class Project extends Model
 {
     protected $fillable = [

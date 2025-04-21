@@ -7,7 +7,25 @@ namespace App\Models;
 use App\Support\ChangeLocale;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
+use Carbon\Carbon; 
 
+/**
+ * @property int $id
+ * @property string $email
+ * @property int $moonshine_user_role_id
+ * @property string $password
+ * @property string $name
+ * @property string $avatar
+ * @property array $settings
+ * @property string $lang
+ * @property int $subscription_plan_id
+ * @property int $generations_used
+ * @property Carbon $subscription_end_date
+ * @property SubscriptionPlan $subscriptionPlan
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property MoonshineUserRole $role
+ */
 class MoonShineUser extends BaseMoonShineUser
 {
     protected $table = 'moonshine_users';

@@ -5,6 +5,9 @@ namespace App\MoonShine\Components;
 use App\Models\Build;
 use MoonShine\UI\Components\MoonShineComponent;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class ProjectBuildComponent extends MoonShineComponent
 {
     protected string $view = 'project.build-component';

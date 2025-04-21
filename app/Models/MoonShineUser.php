@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Role;
 use App\Support\ChangeLocale;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
@@ -12,7 +13,7 @@ use Carbon\Carbon;
 /**
  * @property int $id
  * @property string $email
- * @property int $moonshine_user_role_id
+ * @property Role $moonshine_user_role_id
  * @property string $password
  * @property string $name
  * @property string $avatar
@@ -46,6 +47,7 @@ class MoonShineUser extends BaseMoonShineUser
     protected $casts = [
         'settings' => 'json',
         'subscription_end_date' => 'date',
+        'moonshine_user_role_id' => Role::class,
     ];
 
     protected static function booted(): void
@@ -70,7 +72,9 @@ class MoonShineUser extends BaseMoonShineUser
                 $model->settings = $settings;
             }
 
-            ChangeLocale::set((string) $model->getAttribute('lang'));
+            if(auth('moonshine')->user()->id === $model->id) {
+                ChangeLocale::set((string) $model->getAttribute('lang'));
+            }
         });
     }
 

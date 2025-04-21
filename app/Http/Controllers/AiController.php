@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Throwable;
+
 use App\Actions\CorrectFromAI;
 use App\Actions\GenerateFromAI;
 use App\Exceptions\UserPlanException;

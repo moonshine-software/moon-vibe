@@ -11,6 +11,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\PasswordRepeat;
 use MoonShine\UI\Fields\Text;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @template-extends Page<null>
@@ -19,6 +20,10 @@ class RegisterPage extends Page
 {
     protected ?string $layout = FormLayout::class;
 
+    protected function booted(): void
+    {
+        throw new NotFoundHttpException();
+    }
 
     public function getBreadcrumbs(): array
     {

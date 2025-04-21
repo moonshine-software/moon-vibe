@@ -63,12 +63,11 @@ class LoginPage extends Page
                     'class' => 'btn-primary btn-lg w-full',
                 ]),
 
-            Divider::make(),
-
-            Flex::make([
-                ActionButton::make(__('app.auth.create_account'), route('register'))->primary(),
-                //Link::make(route('forgot'), __('app.auth.forgot_password'))
-            ])->justifyAlign('start')
+//            Divider::make(),
+//            Flex::make([
+//                ActionButton::make(__('app.auth.create_account'), route('register'))->primary(),
+//                Link::make(route('forgot'), __('app.auth.forgot_password'))
+//            ])->justifyAlign('start')
         ];
     }
 }

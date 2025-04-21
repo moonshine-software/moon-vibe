@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Enums\SubscriptionPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
 /**
@@ -15,7 +16,7 @@ use Carbon\Carbon;
  * @property SubscriptionPeriod $period
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property Collection<MoonShineUser> $users
+ * @property Collection<array-key, MoonShineUser> $users
  */
 class SubscriptionPlan extends Model
 {

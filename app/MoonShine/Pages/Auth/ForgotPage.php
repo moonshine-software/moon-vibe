@@ -12,6 +12,7 @@ use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\Layout\Divider;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Fields\Text;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @template-extends Page<null>
@@ -19,6 +20,11 @@ use MoonShine\UI\Fields\Text;
 class ForgotPage extends Page
 {
     protected ?string $layout = FormLayout::class;
+
+    protected function booted(): void
+    {
+        throw new NotFoundHttpException();
+    }
 
     /**
      * @return array<string, string>

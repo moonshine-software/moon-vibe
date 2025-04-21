@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\MoonShine\Resources;
+namespace App\MoonShine\Resources\Admin;
 
+use App\Enums\Role;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\Resources\ModelResource;
@@ -14,6 +15,7 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 #[Icon('bookmark')]
 #[Group('moonshine::ui.resource.system', 'users', translatable: true)]
@@ -42,6 +44,9 @@ class MoonShineUserRoleResource extends ModelResource
 
     protected function activeActions(): ListOf
     {
+        if(auth('moonshine')->user()->moonshine_user_role_id !== Role::ADMIN) {
+            throw new NotFoundHttpException();
+        }
         return parent::activeActions()->except(Action::VIEW);
     }
 

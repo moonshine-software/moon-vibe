@@ -4,46 +4,36 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Layouts;
 
+use App\Enums\Role;
 use App\Models\Project;
-use App\Models\ProjectSchema;
 use App\MoonShine\Pages\AboutPage;
 use App\MoonShine\Pages\Dashboard;
 use App\MoonShine\Pages\SettingsPage;
-use App\MoonShine\Resources\ProjectSchemaResource;
+use App\MoonShine\Resources\Admin\SubscriptionPlanResource;
+use App\MoonShine\Resources\ProjectResource;
 use MoonShine\AssetManager\InlineCss;
-use MoonShine\Contracts\AssetManager\AssetElementContract;
-use MoonShine\Laravel\Components\Fragment;
-use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\ColorManager\ColorManager;
+use MoonShine\Contracts\AssetManager\AssetElementContract;
 use MoonShine\Contracts\ColorManager\ColorManagerContract;
-use MoonShine\Laravel\Components\Layout\{Locales, Notifications, Profile, Search};
-use MoonShine\UI\Components\{Breadcrumbs,
-    Components,
-    Layout\Flash,
-    Layout\Div,
+use MoonShine\Laravel\Components\Fragment;
+use MoonShine\Laravel\Components\Layout\{Profile};
+use MoonShine\Laravel\Layouts\CompactLayout;
+use MoonShine\Laravel\Resources\MoonShineUserResource;
+use MoonShine\MenuManager\MenuGroup;
+use MoonShine\MenuManager\MenuItem;
+use MoonShine\Rush\Services\Rush;
+use MoonShine\UI\Components\{Components,
     Layout\Body,
-    Layout\Burger,
     Layout\Content,
-    Layout\Footer,
-    Layout\Head,
-    Layout\Favicon,
-    Layout\Assets,
-    Layout\Meta,
+    Layout\Div,
+    Layout\Flash,
     Layout\Header,
     Layout\Html,
     Layout\Layout,
-    Layout\Logo,
     Layout\Menu,
     Layout\Sidebar,
-    Layout\ThemeSwitcher,
-    Layout\TopBar,
     Layout\Wrapper,
     When};
-use MoonShine\Laravel\Pages\ProfilePage;
-use MoonShine\MenuManager\MenuItem;
-use App\MoonShine\Resources\ProjectResource;
-use MoonShine\Rush\Services\Rush;
-use App\MoonShine\Resources\SubscriptionPlanResource;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -86,7 +76,14 @@ class MoonShineLayout extends CompactLayout
             MenuItem::make(__('app.menu.about'), AboutPage::class)
                 ->icon('information-circle')
             ,
-            //MenuItem::make('SubscriptionPlan', SubscriptionPlanResource::class),
+
+            MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
+                MenuItem::make(
+                    static fn () => __('moonshine::ui.resource.admins_title'),
+                    MoonShineUserResource::class
+                ),
+                MenuItem::make('Подписки', SubscriptionPlanResource::class),
+            ])->canSee(static fn(): bool => auth()->user()->moonshine_user_role_id === Role::ADMIN),
         ];
     }
 

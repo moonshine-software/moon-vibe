@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\MoonShineUser;
-use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
+use Illuminate\Console\Command;
+use App\Services\Subscription\SubscriptionService;
 
 class RefreshSubscriptionsCommand extends Command
 {
     protected $signature = 'app:refresh-subscriptions';
+
+    public function __construct(
+        private SubscriptionService $subscriptionService,
+    ) {
+        parent::__construct();
+    }   
 
     public function handle(): int
     {
@@ -24,15 +31,7 @@ class RefreshSubscriptionsCommand extends Command
         }
 
         foreach ($users as $user) {
-            if($user->subscription_end_date > now()) {
-                continue;
-            }
-            
-            $newSubscriptionEndDate = now()->add("+ {$user->subscriptionPlan->period->getPeriod()}");
-
-            $user->subscription_end_date = $newSubscriptionEndDate;
-            $user->generations_used = 0;
-            $user->save();
+            $this->subscriptionService->refresh($user);
         }
 
         return self::SUCCESS;

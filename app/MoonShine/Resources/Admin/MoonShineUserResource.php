@@ -19,14 +19,17 @@ use MoonShine\Support\Attributes\Icon;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Collapse;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\Layout\Flex;
 use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Components\Tabs\Tab;
+use MoonShine\UI\Fields\Date;
 use MoonShine\UI\Fields\Email;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\PasswordRepeat;
+use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -82,6 +85,8 @@ class MoonShineUserResource extends ModelResource
                 resource: SubscriptionPlanResource::class,
             ),
 
+            Preview::make('Expiration Date', formatted: static fn (MoonshineUser $model) => $model->subscription_end_date?->format('d.m.Y')),
+
             Email::make(__('moonshine::ui.resource.email'), 'email')
                 ->sortable(),
         ];
@@ -94,6 +99,11 @@ class MoonShineUserResource extends ModelResource
 
     protected function formFields(): iterable
     {
+        $expirationField = FlexibleRender::make('');
+        if($this->getItem() !== null) {
+            $expirationField = Date::make('Expiration Date', 'subscription_end_date');
+        }
+
         return [
             Box::make([
                 Tabs::make([
@@ -114,6 +124,8 @@ class MoonShineUserResource extends ModelResource
                             formatted: static fn (SubscriptionPlan $model) => $model->name,
                             resource: SubscriptionPlanResource::class,
                         ),
+
+                        $expirationField,
 
                         Flex::make([
                             Text::make(__('moonshine::ui.resource.name'), 'name')
@@ -141,6 +153,24 @@ class MoonShineUserResource extends ModelResource
     }
 
     /**
+     * @param MoonShineUser $item
+     *
+     * @return mixed
+     */
+    protected function afterCreated(mixed $item): mixed
+    {
+        if(
+            request()->post('subscription_plan_id')
+            && $item->subscription_end_date === null
+        ) {
+            $item->subscription_end_date = now()->add("+ {$item->subscriptionPlan->period->getPeriod()}");
+            $item->save();
+        }
+
+        return $item;
+    }
+
+    /**
      * @return array{name: array|string, moonshine_user_role_id: array|string, email: array|string, password: array|string}
      */
     protected function rules($item): array
@@ -158,28 +188,6 @@ class MoonShineUserResource extends ModelResource
             'password' => $item->exists
                 ? 'sometimes|nullable|min:6|required_with:password_repeat|same:password_repeat'
                 : 'required|min:6|required_with:password_repeat|same:password_repeat',
-        ];
-    }
-
-    protected function search(): array
-    {
-        return [
-            'id',
-            'name',
-        ];
-    }
-
-    protected function filters(): iterable
-    {
-        return [
-            BelongsTo::make(
-                __('moonshine::ui.resource.role'),
-                'moonshineUserRole',
-                formatted: static fn (MoonshineUserRole $model) => $model->name,
-                resource: MoonShineUserRoleResource::class,
-            )->valuesQuery(static fn (Builder $q) => $q->select(['id', 'name'])),
-
-            Email::make('E-mail', 'email'),
         ];
     }
 }

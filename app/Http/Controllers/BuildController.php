@@ -4,41 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Build;
 use App\Jobs\ProcessBuildJob;
-use App\Models\ProjectSchema;
-use App\MoonShine\Components\ProjectBuildComponent;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use MoonShine\Support\Enums\ToastType;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use App\Enums\BuildStatus;
 
 class BuildController extends MoonShineController
 {
-    public function index(int $schemaId): JsonResponse
+    public function index(int $schemaId): Response
     {
-        $projectSchema = ProjectSchema::query()->where('id', $schemaId)->first();
+        dispatch(new ProcessBuildJob(
+            $schemaId,
+            (int) $this->auth()->user()->id,
+            app()->getLocale())
+        );
 
-        if (! $projectSchema) {
-            return $this->json('Схема проекта не найдена', messageType: ToastType::ERROR);
-        }
-
-        Build::query()->where('moonshine_user_id', $this->auth()->id())->delete();
-
-        $build = Build::create([
-            'project_schema_id' => $projectSchema->id,
-            'moonshine_user_id' => $this->auth()->id(),
-            'status_id' => BuildStatus::IN_PROGRESS,
-        ]);
-
-        dispatch(new ProcessBuildJob($build, app()->getLocale()));
-
-        return $this->json()
-            ->htmlData(
-                (string) ProjectBuildComponent::fromBuild($build),
-                '#build-component-' . $projectSchema->project->id
-            )
-        ;
+        return response()->noContent(200);
     }
     
     public function download(int $buildId): BinaryFileResponse|RedirectResponse

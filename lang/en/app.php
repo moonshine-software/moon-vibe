@@ -16,6 +16,7 @@ return [
         'generate_job_attempt' => 'request, an attempt :tries...',
         'correct_job' => 'correction of the schema...',
         'correct_job_attempt' => 'correction of the scheme, an attempt :tries...',
+        'already_pending' => 'You have a pending schema. Please wait for it to be generated.',
     ],
     'menu' => [
         'generation' => 'Generation',

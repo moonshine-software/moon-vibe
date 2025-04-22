@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\CorrectFromAI;
 use App\Actions\GenerateFromAI;
+use App\Exceptions\GenerateException;
 use App\Exceptions\UserPlanException;
 use Illuminate\Http\RedirectResponse;
 use MoonShine\Support\Enums\ToastType;
@@ -33,13 +34,18 @@ class AiController extends MoonShineController
 
         $subscriptionService->increaseGenerationsUsed(auth('moonshine')->user());
 
-        $projectId = $generateAction->handle(
-            $data['project_name'],
-            $data['prompt'],
-            auth('moonshine')->user(),
-            app()->getLocale()
-        );
-        
+        try {
+            $projectId = $generateAction->handle(
+                $data['project_name'],
+                $data['prompt'],
+                auth('moonshine')->user(),
+                app()->getLocale()
+            );
+        } catch (GenerateException $e) {
+            $this->toast($e->getMessage(), ToastType::ERROR);
+            return back();
+        }
+
         return toPage(
             FormPage::class,
             ProjectResource::class,

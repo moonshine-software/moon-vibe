@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages;
 
+use App\Models\MoonShineUser;
 use MoonShine\UI\Fields\Text;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Components\Tabs;
@@ -13,7 +14,6 @@ use MoonShine\UI\Components\Badge;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use MoonShine\UI\Components\Tabs\Tab;
-use Illuminate\Support\Facades\Cookie;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\FlexibleRender;

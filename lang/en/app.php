@@ -17,6 +17,7 @@ return [
         'correct_job' => 'correction of the schema...',
         'correct_job_attempt' => 'correction of the scheme, an attempt :tries...',
         'already_pending' => 'You have a pending schema. Please wait for it to be generated.',
+        'schema_not_found' => 'Schema not found.',
     ],
     'menu' => [
         'generation' => 'Generation',

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Actions\CorrectFromAI;
 use App\Actions\GenerateFromAI;
-use App\Actions\ValidatePendingSchemas;
 use App\Exceptions\GenerateException;
 use App\Exceptions\UserPlanException;
 use Illuminate\Http\RedirectResponse;
@@ -19,8 +17,7 @@ class AiController extends MoonShineController
 {
     public function index(
         GenerateFromAI $generateAction,
-        SubscriptionService $subscriptionService,
-        ValidatePendingSchemas $validatePendingSchemas
+        SubscriptionService $subscriptionService
     ): RedirectResponse {
         $data = request()->validate([
             'prompt' => ['string', 'required', 'min:10'],
@@ -34,21 +31,19 @@ class AiController extends MoonShineController
             return back();
         }
 
-        $subscriptionService->increaseGenerationsUsed(auth('moonshine')->user());
-
         try {
-            $validatePendingSchemas->handle(auth('moonshine')->user()->id);
+            $projectId = $generateAction->handle(
+                $data['project_name'],
+                $data['prompt'],
+                auth('moonshine')->user(),
+                app()->getLocale()
+            );
         } catch (GenerateException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
-            return back();
+            return back()->withInput();
         }
 
-        $projectId = $generateAction->handle(
-            $data['project_name'],
-            $data['prompt'],
-            auth('moonshine')->user(),
-            app()->getLocale()
-        );
+        $subscriptionService->increaseGenerationsUsed(auth('moonshine')->user());
 
         return toPage(
             FormPage::class,
@@ -62,7 +57,6 @@ class AiController extends MoonShineController
         int $schemaId,
         CorrectFromAI $correctAction,
         SubscriptionService $subscriptionService,
-        ValidatePendingSchemas $validatePendingSchemas
     ): RedirectResponse {
         $data = request()->validate([
             'prompt' => ['string', 'required', 'min:5']
@@ -76,15 +70,13 @@ class AiController extends MoonShineController
         }
 
         try {
-            $validatePendingSchemas->handle(auth('moonshine')->user()->id);
+            $correctAction->handle($schemaId, $data['prompt'], auth('moonshine')->user(), app()->getLocale());
         } catch (GenerateException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
             return back();
         }
 
         $subscriptionService->increaseGenerationsUsed(auth('moonshine')->user());
-
-        $correctAction->handle($schemaId, $data['prompt'], auth('moonshine')->user(), app()->getLocale());
 
         return back();
     }

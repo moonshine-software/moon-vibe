@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\SchemaStatus;
-use App\Exceptions\GenerateException;
 use Illuminate\Support\Facades\DB;
 
 class ValidatePendingSchemas
 {
-    /**
-     * @throws GenerateException
-     */
-    public function handle(int $userId): void
+    public function isPending(int $userId): bool
     {
         $results = DB::select('
             SELECT s.id
@@ -24,8 +20,6 @@ class ValidatePendingSchemas
             LIMIT 1
         ', [$userId, SchemaStatus::PENDING->value]);
 
-        if (count($results) > 0) {
-            throw new GenerateException(__('app.schema.already_pending'));
-        }
+        return count($results) > 0;
     }
 }

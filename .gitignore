@@ -2,8 +2,8 @@
 /node_modules
 /public/hot
 /public/storage
-/public/build
-/storage/*.key
+!manifest.json
+/public/build/assets
 /storage/pail
 /storage/project
 /vendor

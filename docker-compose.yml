@@ -85,21 +85,23 @@ services:
         soft: 65535
         hard: 65535
 
-#  scheduler:
-#    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
-#    build:
-#      args:
-#        user: ${DOCKER_USER}
-#        uid: 1000
-#      context: .
-#      dockerfile: ./docker/dockerfiles/php/Dockerfile
-#      target: scheduler
-#    volumes:
-#      - ./:${APP_PATH}
-#    restart: unless-stopped
-#    depends_on:
-#      - php
-#
+  scheduler:
+    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
+    build:
+      args:
+        user: ${DOCKER_USER}
+        uid: 1000
+        ms_user: ${MS_USER}
+        ms_pass: ${MS_PASS}
+      context: .
+      dockerfile: ./docker/dockerfiles/php/Dockerfile
+      target: scheduler
+    volumes:
+      - ./:${APP_PATH}
+    restart: unless-stopped
+    depends_on:
+      - php
+
   worker:
     container_name: ${COMPOSE_PROJECT_NAME}-worker
     build:

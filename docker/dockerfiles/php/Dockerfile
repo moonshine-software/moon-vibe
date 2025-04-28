@@ -1,4 +1,4 @@
-FROM php:8.4.4-fpm AS php
+FROM php:8.3.20-fpm AS php
 
 WORKDIR /var/www/app
 
@@ -98,7 +98,6 @@ CMD ["php-fpm"]
 FROM build AS worker
 RUN apt-get install -y supervisor
 COPY ./docker/dockerfiles/php/config/supervisord.conf /etc/supervisor/supervisord.conf
-RUN sed -i "s/\"USER\"/$user/" /etc/supervisor/supervisord.conf
 RUN rm -rf /docker
 CMD ["/bin/sh", "-c", "supervisord -c /etc/supervisor/supervisord.conf"]
 

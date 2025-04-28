@@ -1,0 +1,28 @@
+name: Docker Nginx
+
+on:
+    push:
+        tags:
+            - "*"
+
+env:
+    COMPOSE_PROJECT_NAME: admin-builder
+
+jobs:
+    docker-nginx:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Log in to GitHub Container Registry
+              run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            - name: Build Nginx
+              run: |
+                  docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-nginx:${{ github.ref_name }} -f docker/dockerfiles/nginx/Dockerfile .
+
+            - name: Push Nginx Docker Image
+              run: |
+                  docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-nginx:${{ github.ref_name }}

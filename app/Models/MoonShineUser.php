@@ -72,7 +72,7 @@ class MoonShineUser extends BaseMoonShineUser
                 $model->settings = $settings;
             }
 
-            if(auth('moonshine')->user()->id === $model->id) {
+            if($model->id !== null && auth('moonshine')->user()->id === $model->id) {
                 ChangeLocale::set((string) $model->getAttribute('lang'));
             }
         });

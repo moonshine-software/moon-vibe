@@ -3,7 +3,6 @@
 /public/hot
 /public/storage
 !manifest.json
-/public/build
 /storage/pail
 /storage/project
 /vendor

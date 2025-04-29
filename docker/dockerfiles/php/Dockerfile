@@ -1,4 +1,4 @@
-FROM php:8.3.20-fpm AS php
+FROM php:8.4.6-fpm AS php
 
 WORKDIR /var/www/app
 
@@ -83,7 +83,7 @@ RUN composer install --no-dev --no-scripts --prefer-dist --no-progress --no-inte
 
 COPY . .
 
-RUN composer dump-autoload --optimize && \
+RUN composer dump-autoload --optimize --no-scripts && \
     composer check-platform-reqs
 
 RUN chmod -R 775 ./storage ./bootstrap/cache

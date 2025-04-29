@@ -37,7 +37,7 @@ jobs:
 
             -   name: Build Nginx
                 run: |
-                    docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-nginx:${{ github.ref_name }} -f docker/dockerfiles/nginx/Dockerfile .
+                    docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-nginx:${{ github.ref_name }} --target=prod -f docker/dockerfiles/nginx/Dockerfile .
 
             -   name: Push Nginx Docker Image
                 run: |

@@ -20,7 +20,7 @@ jobs:
 
             -   name: Build MySQL Docker Image (prod)
                 run: |
-                    docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-db:${{ github.ref_name }} -f docker/dockerfiles/mysql/Dockerfile .
+                    docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.COMPOSE_PROJECT_NAME }}-db:${{ github.ref_name }} --build-arg db_root_pass=${{ secrets.DB_PASS }} -f docker/dockerfiles/mysql/Dockerfile .
 
             -   name: Push MySQL Docker Image
                 run: |

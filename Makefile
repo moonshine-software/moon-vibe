@@ -72,3 +72,5 @@ admin:
 clear: clear-dir
 clear-dir:
 	sudo rm -rf storage/project
+deploy:
+	git tag $(t) && git push origin $(t)

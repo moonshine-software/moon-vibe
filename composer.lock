@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e71af145e75d1de8f0d84390ceffffe7",
+    "content-hash": "f823d4b2a7fa9b5da98ed19253431b9f",
     "packages": [
         {
             "name": "brick/math",
@@ -186,6 +186,71 @@
                 }
             ],
             "time": "2024-06-27T19:04:03+00:00"
+        },
+        {
+            "name": "dev-lnk/moonshine-builder",
+            "version": "2.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dev-lnk/moonshine-builder.git",
+                "reference": "7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1",
+                "reference": "7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "^3.0",
+                "orchestra/testbench": "^9.0",
+                "phpstan/phpstan": "^1.11",
+                "phpunit/phpunit": "^11.0",
+                "symfony/yaml": "^7.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "DevLnk\\MoonShineBuilder\\Providers\\MoonShineBuilderProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "DevLnk\\MoonShineBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Levchenko",
+                    "email": "lkivanmail@gmail.com",
+                    "homepage": "https://github.com/dev-lnk"
+                }
+            ],
+            "description": "Project builder for MoonShine",
+            "keywords": [
+                "builder",
+                "moonshine"
+            ],
+            "support": {
+                "issues": "https://github.com/dev-lnk/moonshine-builder/issues",
+                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.5"
+            },
+            "time": "2025-04-08T09:42:11+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1108,16 +1173,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.10.2",
+            "version": "v12.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0f123cc857bc177abe4d417448d4f7164f71802a"
+                "reference": "050b2dfeaf6fff9e08e84b355822636492fb45f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0f123cc857bc177abe4d417448d4f7164f71802a",
-                "reference": "0f123cc857bc177abe4d417448d4f7164f71802a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/050b2dfeaf6fff9e08e84b355822636492fb45f4",
+                "reference": "050b2dfeaf6fff9e08e84b355822636492fb45f4",
                 "shasum": ""
             },
             "require": {
@@ -1319,7 +1384,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-04-24T14:11:20+00:00"
+            "time": "2025-04-29T20:18:16+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -6765,71 +6830,6 @@
     ],
     "packages-dev": [
         {
-            "name": "dev-lnk/moonshine-builder",
-            "version": "2.3.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dev-lnk/moonshine-builder.git",
-                "reference": "7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dev-lnk/moonshine-builder/zipball/7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1",
-                "reference": "7e029b2d7201d23ce03d9cfed53d315a1d1ef6a1",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2"
-            },
-            "conflict": {
-                "moonshine/moonshine": "<3.0"
-            },
-            "require-dev": {
-                "moonshine/moonshine": "^3.0",
-                "orchestra/testbench": "^9.0",
-                "phpstan/phpstan": "^1.11",
-                "phpunit/phpunit": "^11.0",
-                "symfony/yaml": "^7.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "DevLnk\\MoonShineBuilder\\Providers\\MoonShineBuilderProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/helpers.php"
-                ],
-                "psr-4": {
-                    "DevLnk\\MoonShineBuilder\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Levchenko",
-                    "email": "lkivanmail@gmail.com",
-                    "homepage": "https://github.com/dev-lnk"
-                }
-            ],
-            "description": "Project builder for MoonShine",
-            "keywords": [
-                "builder",
-                "moonshine"
-            ],
-            "support": {
-                "issues": "https://github.com/dev-lnk/moonshine-builder/issues",
-                "source": "https://github.com/dev-lnk/moonshine-builder/tree/2.3.5"
-            },
-            "time": "2025-04-08T09:42:11+00:00"
-        },
-        {
             "name": "fakerphp/faker",
             "version": "v1.24.1",
             "source": {
@@ -6965,20 +6965,20 @@
         },
         {
             "name": "hamcrest/hamcrest-php",
-            "version": "v2.0.1",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hamcrest/hamcrest-php.git",
-                "reference": "8c3d0a3f6af734494ad8f6fbbee0ba92422859f3"
+                "reference": "f8b1c0173b22fa6ec77a81fe63e5b01eba7e6487"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
-                "reference": "8c3d0a3f6af734494ad8f6fbbee0ba92422859f3",
+                "url": "https://api.github.com/repos/hamcrest/hamcrest-php/zipball/f8b1c0173b22fa6ec77a81fe63e5b01eba7e6487",
+                "reference": "f8b1c0173b22fa6ec77a81fe63e5b01eba7e6487",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3|^7.0|^8.0"
+                "php": "^7.4|^8.0"
             },
             "replace": {
                 "cordoval/hamcrest-php": "*",
@@ -6986,8 +6986,8 @@
                 "kodova/hamcrest-php": "*"
             },
             "require-dev": {
-                "phpunit/php-file-iterator": "^1.4 || ^2.0",
-                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5 || ^7.0"
+                "phpunit/php-file-iterator": "^1.4 || ^2.0 || ^3.0",
+                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5 || ^7.0 || ^8.0 || ^9.0"
             },
             "type": "library",
             "extra": {
@@ -7010,9 +7010,9 @@
             ],
             "support": {
                 "issues": "https://github.com/hamcrest/hamcrest-php/issues",
-                "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
+                "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.1.1"
             },
-            "time": "2020-07-09T08:09:16+00:00"
+            "time": "2025-04-30T06:54:44+00:00"
         },
         {
             "name": "iamcal/sql-parser",
@@ -7290,16 +7290,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.41.1",
+            "version": "v1.42.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "e5692510f1ef8e0f5096cde2b885d558f8d86592"
+                "reference": "2edaaf77f3c07a4099965bb3d7dfee16e801c0f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/e5692510f1ef8e0f5096cde2b885d558f8d86592",
-                "reference": "e5692510f1ef8e0f5096cde2b885d558f8d86592",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/2edaaf77f3c07a4099965bb3d7dfee16e801c0f6",
+                "reference": "2edaaf77f3c07a4099965bb3d7dfee16e801c0f6",
                 "shasum": ""
             },
             "require": {
@@ -7349,7 +7349,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2025-04-22T13:39:39+00:00"
+            "time": "2025-04-29T14:26:46+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -7436,16 +7436,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.13.0",
+            "version": "1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "024473a478be9df5fdaca2c793f2232fe788e414"
+                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/024473a478be9df5fdaca2c793f2232fe788e414",
-                "reference": "024473a478be9df5fdaca2c793f2232fe788e414",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/1720ddd719e16cf0db4eb1c6eca108031636d46c",
+                "reference": "1720ddd719e16cf0db4eb1c6eca108031636d46c",
                 "shasum": ""
             },
             "require": {
@@ -7484,7 +7484,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.0"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.1"
             },
             "funding": [
                 {
@@ -7492,7 +7492,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-12T12:17:51+00:00"
+            "time": "2025-04-29T12:36:36+00:00"
         },
         {
             "name": "nunomaduro/collision",

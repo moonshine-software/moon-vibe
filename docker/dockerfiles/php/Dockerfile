@@ -86,7 +86,8 @@ COPY . .
 RUN composer dump-autoload --optimize --no-scripts && \
     composer check-platform-reqs
 
-RUN chmod -R 775 ./storage ./bootstrap/cache
+RUN php artisan storage:link && \
+    chmod -R 775 ./storage ./bootstrap/cache
 
 FROM build AS prod
 COPY ./docker/dockerfiles/php/config/entrypoint-prod.sh /usr/local/bin/entrypoint.sh

@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Api\DeepSeek;
 use App\Services\Centrifugo;
 use App\Services\CutCodeAgent;
+use Illuminate\Support\Facades\URL;
 use MoonShine\AssetManager\Js;
 use MoonShine\AssetManager\Css;
 use Illuminate\Support\Facades\Vite;
@@ -31,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production')) {
+            $this->app['request']->server->set('HTTPS','on');
+            URL::forceHttps();
+        }
+
         Model::shouldBeStrict(! app()->isProduction());
 
         $this->app->bind(RushBroadcastContract::class, Centrifugo::class);

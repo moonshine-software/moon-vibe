@@ -24,7 +24,7 @@ document.addEventListener("moonshine:init", async () => {
     let token = await getOrCreateToken();
 
     const wsUrl = getWsURL()
-    const centrifuge = new Centrifuge("ws://localhost:" + import.meta.env.VITE_CENTRIFUGO_PORT + "/connection/websocket", {
+    const centrifuge = new Centrifuge(wsUrl, {
         token: token
     });
 

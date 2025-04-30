@@ -1,5 +1,4 @@
 import { Centrifuge, PublicationContext } from "centrifuge";
-import * as jose from "jose";
 import axios from "axios";
 
 declare global {
@@ -11,7 +10,6 @@ declare global {
     
     interface ImportMeta {
         env: {
-            VITE_CENTRIFUGO_SECRET: string;
             [key: string]: string;
         }
     }
@@ -25,6 +23,7 @@ document.addEventListener("moonshine:init", async () => {
 
     let token = await getOrCreateToken();
 
+    const wsUrl = getWsURL()
     const centrifuge = new Centrifuge("ws://localhost:" + import.meta.env.VITE_CENTRIFUGO_PORT + "/connection/websocket", {
         token: token
     });
@@ -83,4 +82,14 @@ async function getOrCreateToken(): Promise<string> {
         console.error('Failed to get Centrifugo token:', error);
         throw error;
     }
+}
+
+function getWsURL(): string {
+    const { hostname } = window.location;
+
+    if(hostname === 'admin-builder.getmoonshine.app') {
+        return 'wss://wss.admin-builder.getmoonshine.app/connection/websocket'
+    }
+
+    return import.meta.env.VITE_CENTRIFUGO_WS_URL;
 }

@@ -16,6 +16,7 @@ use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
+use App\MoonShine\Resources\LlmResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 ProjectResource::class,
                 ProjectSchemaResource::class,
                 SubscriptionPlanResource::class,
+                LlmResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

@@ -34,6 +34,7 @@ use MoonShine\UI\Components\{Components,
     Layout\Sidebar,
     Layout\Wrapper,
     When};
+use App\MoonShine\Resources\LlmResource;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -70,6 +71,9 @@ class MoonShineLayout extends CompactLayout
                 ->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count())
                 ->icon('square-3-stack-3d')
             ,
+            MenuItem::make(__('app.menu.llm'), LlmResource::class)
+                ->icon('cog-8-tooth')
+            ,
             MenuItem::make(__('app.menu.settings'), SettingsPage::class)
                 ->icon('cog-8-tooth')
             ,
@@ -84,6 +88,7 @@ class MoonShineLayout extends CompactLayout
                 ),
                 MenuItem::make('Подписки', SubscriptionPlanResource::class),
             ])->canSee(static fn(): bool => auth()->user()->moonshine_user_role_id === Role::ADMIN),
+            MenuItem::make('LargeLanguageModel', LlmResource::class),
         ];
     }
 

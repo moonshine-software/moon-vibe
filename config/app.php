@@ -129,6 +129,4 @@ return [
         'host' => env('CENTRIFUGO_URL'),
         'port' => env('CENTRIFUGO_PORT')
     ],
-
-    'deep-seek-token' => env('DEEP_SEEK_TOKEN', '')
 ];

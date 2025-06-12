@@ -8,7 +8,8 @@ use App\Enums\Role;
 use App\Support\ChangeLocale;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
-use Carbon\Carbon; 
+use Carbon\Carbon;
+use MoonShine\Laravel\Models\MoonshineUserRole;
 
 /**
  * @property int $id

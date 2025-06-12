@@ -20,14 +20,20 @@ readonly class GenerateFromAI
     /**
      * @throws GenerateException
      */
-    public function handle(string $projectName, string $prompt, MoonShineUser $user, string $lang): int
-    {
+    public function handle(
+        string $projectName,
+        int $llmId,
+        string $prompt,
+        MoonShineUser $user,
+        string $lang
+    ): int {
         if($this->validatePendingSchemas->isPending($user->id)) {
             throw new GenerateException(__('app.schema.already_pending'));
         }
 
         $project = Project::query()->create([
             'name' => $projectName,
+            'llm_id' => $llmId,
             'description' => $prompt,
             'moonshine_user_id' => $user->id
         ]);

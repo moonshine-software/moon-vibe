@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Contracts\SchemaGenerateContract;
+use App\Services\LlmBuilder;
 use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
@@ -38,7 +38,7 @@ class GenerateSchemaJob implements ShouldQueue
         $schemaResult = null;
 
         try {
-            $requestAdminAi = app(SchemaGenerateContract::class);
+            $llmApi = LlmBuilder::getLlm($schema->project->llm->llm->value, $schema->project->llm->model);
 
             $mainPrompt = file_get_contents(base_path('promt.md'));
 
@@ -57,10 +57,8 @@ class GenerateSchemaJob implements ShouldQueue
                     : __('app.schema.generate_job_attempt', ['tries' => $tries])
                 ;
 
-                $mode = $tries === 1 ? 'gen' : 'fix';
-
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $requestAdminAi->generate($messages, $mode, (int) $schema->id);
+                $schemaResult = $llmApi->generate($messages);
 
                 $schemaResult = $this->correctSchemaFormat($schemaResult);
 

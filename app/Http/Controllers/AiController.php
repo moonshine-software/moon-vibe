@@ -21,6 +21,7 @@ class AiController extends MoonShineController
     ): RedirectResponse {
         $data = request()->validate([
             'prompt' => ['string', 'required', 'min:10'],
+            'llm_id' => ['int', 'required'],
             'project_name' => ['string', 'required'],
         ]);
 
@@ -34,6 +35,7 @@ class AiController extends MoonShineController
         try {
             $projectId = $generateAction->handle(
                 $data['project_name'],
+                (int) $data['llm_id'],
                 $data['prompt'],
                 auth('moonshine')->user(),
                 app()->getLocale()

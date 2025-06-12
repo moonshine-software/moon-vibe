@@ -25,6 +25,7 @@ class Project extends Model
     protected $fillable = [
 		'name',
 		'description',
+		'llm_id',
 		'moonshine_user_id',
     ];
 
@@ -36,5 +37,10 @@ class Project extends Model
     public function moonshineUser(): BelongsTo
     {
         return $this->belongsTo(MoonshineUser::class, 'moonshine_user_id');
+    }
+
+    public function llm(): BelongsTo
+    {
+        return $this->belongsTo(LargeLanguageModel::class, 'llm_id');
     }
 }

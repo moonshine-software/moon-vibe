@@ -25,4 +25,9 @@ class LargeLanguageModel extends Model
     public $casts = [
         'llm' => Llm::class,
     ];
+
+    public function getInfo(): string
+    {
+        return "{$this->llm->toString()} ({$this->model})";
+    }
 }

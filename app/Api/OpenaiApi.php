@@ -9,10 +9,15 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenaiApi implements SchemaGenerateContract
 {
-    public function generate(array $messages, ?string $mode, ?int $schemaId): string
+    public function __construct(
+        private string $model,
+    ) {
+    }
+
+    public function generate(array $messages): string
     {
         $result = OpenAi::chat()->create([
-            'model' => 'gpt-3.5-turbo',
+            'model' => $this->model,
             'messages' => $messages,
         ]);
 

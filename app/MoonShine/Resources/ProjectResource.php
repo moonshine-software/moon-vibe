@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Models\LargeLanguageModel;
 use Closure;
 
 use App\Models\Project;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\Text;
 use App\Services\SimpleSchema;
@@ -41,7 +43,7 @@ class ProjectResource extends ModelResource
 {
     protected string $model = Project::class;
 
-	protected array $with = ['moonshineUser'];
+	protected array $with = ['moonshineUser', 'llm'];
 
     protected string $column = 'name';
 
@@ -90,6 +92,10 @@ class ProjectResource extends ModelResource
 
         return [
             ...$this->indexFields(),
+            BelongsTo::make('LLM', 'llm',
+                formatted: fn(LargeLanguageModel $item) => "{$item->llm->toString()} ($item->model)",
+                resource: LlmResource::class
+            )->nullable(),
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
                     ActionButton::make(__('app.project.create'),

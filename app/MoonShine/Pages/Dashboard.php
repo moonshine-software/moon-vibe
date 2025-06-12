@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\MoonShine\Pages;
 
 use App\Models\MoonShineUser;
+use App\Repositories\LlmRepository;
+use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
 use MoonShine\Laravel\Pages\Page;
 use MoonShine\UI\Components\Tabs;
@@ -37,7 +39,11 @@ class Dashboard extends Page
         /** @var MoonShineUser $user */
         $user = auth('moonshine')->user();
         $generationsLeft = $user->getGenerationsLeft();
-        
+
+        $llmRepository = new LlmRepository();
+        $llms = $llmRepository->getLlms();
+        $defaultId = $llmRepository->getDefaultLlmId();
+
 		return [
             FormBuilder::make(route('ai-request.request'), fields: [
                 FlexibleRender::make(
@@ -47,6 +53,12 @@ class Dashboard extends Page
                     )
                 ),
                 Text::make(__('app.dashboard.project_name'), 'project_name'),
+                Select::make('LLM', 'llm_id')
+                    ->options($llms)
+                    ->when(
+                        $defaultId !== null,
+                        fn (Select $select) => $select->default($defaultId)
+                    ),
                 Textarea::make(__('app.dashboard.prompt'), 'prompt')->customAttributes([
                     'placeholder' => __('app.dashboard.prompt_placeholder'),
                     'rows' => 12,

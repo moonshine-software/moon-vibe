@@ -9,20 +9,15 @@ use Illuminate\Support\Facades\Http;
 
 class DeepSeek implements SchemaGenerateContract
 {
-    private string $token;
-
-    private string $model;
-
     private string $url = 'https://api.deepseek.com/chat/completions';
 
-    public function __construct()
-    {
-        $this->token = config('app.deep-seek-token');
-
-        $this->model = 'deepseek-reasoner';
+    public function __construct(
+        private string $model,
+        private string $token
+    ) {
     }
 
-    public function request(array $messages): string
+    public function generate(array $messages): string
     {
         $response = Http::timeout(3600)
             ->withHeaders([
@@ -39,10 +34,5 @@ class DeepSeek implements SchemaGenerateContract
 //        logger()->debug('DeepSeek response', $result);
 
         return $result['choices'][0]['message']['content'];
-    }
-
-    public function generate(array $messages, ?string $mode, ?int $schemaId): string
-    {
-        return $this->request($messages);
     }
 }

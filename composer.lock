@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f823d4b2a7fa9b5da98ed19253431b9f",
+    "content-hash": "fdb29a97b9ad7b8aff2a16408616e246",
     "packages": [
         {
             "name": "brick/math",
@@ -2390,16 +2390,16 @@
         },
         {
             "name": "moonshine/moonshine",
-            "version": "3.13.6",
+            "version": "3.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moonshine-software/moonshine.git",
-                "reference": "c5d096e459954758aeb6ec438c38dd51f5a4e180"
+                "reference": "93a96b7379c6b494204a085e3082fb5a9afd7e5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moonshine-software/moonshine/zipball/c5d096e459954758aeb6ec438c38dd51f5a4e180",
-                "reference": "c5d096e459954758aeb6ec438c38dd51f5a4e180",
+                "url": "https://api.github.com/repos/moonshine-software/moonshine/zipball/93a96b7379c6b494204a085e3082fb5a9afd7e5b",
+                "reference": "93a96b7379c6b494204a085e3082fb5a9afd7e5b",
                 "shasum": ""
             },
             "require": {
@@ -2495,7 +2495,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-06-02T08:58:43+00:00"
+            "time": "2025-06-08T14:42:55+00:00"
         },
         {
             "name": "moonshine/ru",
@@ -8088,16 +8088,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.5.22",
+            "version": "11.5.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4cd72faaa8f811e4cc63040cba167757660a5538"
+                "reference": "86ebcd8a3dbcd1857d88505109b2a2b376501cde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4cd72faaa8f811e4cc63040cba167757660a5538",
-                "reference": "4cd72faaa8f811e4cc63040cba167757660a5538",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/86ebcd8a3dbcd1857d88505109b2a2b376501cde",
+                "reference": "86ebcd8a3dbcd1857d88505109b2a2b376501cde",
                 "shasum": ""
             },
             "require": {
@@ -8169,7 +8169,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.22"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.23"
             },
             "funding": [
                 {
@@ -8193,7 +8193,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-06-06T02:48:05+00:00"
+            "time": "2025-06-13T05:47:49+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -9314,7 +9314,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.3"
+        "php": "^8.4"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"

@@ -88,7 +88,7 @@ class ProjectResource extends ModelResource
     {
         /** @var MoonShineUser $user */
         $user = auth('moonshine')->user();
-        $generationsLeft = $user->getGenerationsLeft();
+        $generationLeftInfo = $user->getGenerationLeftInfo();
 
         return [
             ...$this->indexFields(),
@@ -128,8 +128,8 @@ class ProjectResource extends ModelResource
                                     }),
                                     FlexibleRender::make(
                                         (string) Badge::make(
-                                            __('app.generations_left', ['generations' => $generationsLeft]),
-                                            $generationsLeft > 0 ? Color::GREEN : Color::RED
+                                            __('app.generations_left', ['generations' => $generationLeftInfo['info']]),
+                                            $generationLeftInfo['color']
                                         )
                                     ),
                                     Divider::make(),

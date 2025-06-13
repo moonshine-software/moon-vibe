@@ -53,7 +53,6 @@ class SubscriptionService
         }
 
         // TODO Проверка, что можем продлить подписку. Пока все, кто есть в бд с подпиской, продлеваются сами
-
         $user->subscription_end_date = now()->add("+ {$user->subscriptionPlan->period->getPeriod()}");
         $user->generations_used = 0;
         $user->save();

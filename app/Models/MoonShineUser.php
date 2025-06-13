@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
 use Carbon\Carbon;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Support\Enums\Color;
 
 /**
  * @property int $id
@@ -106,8 +107,12 @@ class MoonShineUser extends BaseMoonShineUser
         return $this->belongsTo(SubscriptionPlan::class);
     }
 
-    public function getGenerationsLeft(): int
+    public function getGenerationsLeft(): false|int
     {
+        if($this->moonshine_user_role_id === Role::ADMIN) {
+            return false;
+        }
+
         if($this->subscription_end_date <= now()) {
             return 0;
         }
@@ -117,5 +122,14 @@ class MoonShineUser extends BaseMoonShineUser
             return 0;
         }
         return $subscriptionPlan->generations_limit - $this->generations_used;
-    }       
+    }
+
+    public function getGenerationLeftInfo(): array
+    {
+        $generationsLeft = $this->getGenerationsLeft();
+        return [
+            'info' => $generationsLeft === false ? '-' : (string) $generationsLeft,
+            'color' => ($generationsLeft === false || $generationsLeft > 0) ? Color::GREEN : Color::RED
+        ];
+    }
 }

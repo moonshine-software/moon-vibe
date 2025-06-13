@@ -38,7 +38,7 @@ class Dashboard extends Page
 
         /** @var MoonShineUser $user */
         $user = auth('moonshine')->user();
-        $generationsLeft = $user->getGenerationsLeft();
+        $generationLeftInfo = $user->getGenerationLeftInfo();
 
         $llmRepository = new LlmRepository();
         $llms = $llmRepository->getLlms();
@@ -48,8 +48,8 @@ class Dashboard extends Page
             FormBuilder::make(route('ai-request.request'), fields: [
                 FlexibleRender::make(
                     (string) Badge::make(
-                        __('app.generations_left', ['generations' => $generationsLeft]),
-                        $generationsLeft > 0 ? Color::GREEN : Color::RED
+                        __('app.generations_left', ['generations' => $generationLeftInfo['info']]),
+                        $generationLeftInfo['color']
                     )
                 ),
                 Text::make(__('app.dashboard.project_name'), 'project_name'),

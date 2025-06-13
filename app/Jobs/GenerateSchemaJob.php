@@ -2,15 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Repositories\ProjectRepository;
 use App\Services\LlmProviderBuilder;
 use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
-use App\Models\ProjectSchema;
 use App\Support\SchemaValidator;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+// TODO main logic to service
 class GenerateSchemaJob implements ShouldQueue
 {
     use Queueable;
@@ -26,11 +27,15 @@ class GenerateSchemaJob implements ShouldQueue
 
     }
 
-    public function handle(): void
-    {
-        ChangeLocale::set($this->lang, isSetCookie: false);
+    public function handle(
+        ChangeLocale $changeLocale,
+        ProjectRepository $projectRepository,
+        LlmProviderBuilder $llmProviderBuilder,
+    ): void {
+        $changeLocale::set($this->lang, isSetCookie: false);
 
-        $schema = ProjectSchema::query()->where('id', $this->schemaId)->with(['project'])->first();
+        $schema = $projectRepository->getSchema($this->schemaId);
+
         if($schema === null) {
             return;
         }
@@ -38,9 +43,9 @@ class GenerateSchemaJob implements ShouldQueue
         $schemaResult = null;
 
         try {
-            $api = LlmProviderBuilder::getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
+            $api = $llmProviderBuilder->getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
 
-            $mainPrompt = file_get_contents(base_path('promt.md'));
+            $mainPrompt = file_get_contents(base_path('prompt.md'));
 
             $messages = [
                 ['role' => 'system', 'content' => $mainPrompt],
@@ -63,6 +68,8 @@ class GenerateSchemaJob implements ShouldQueue
                 $schemaResult = $this->correctSchemaFormat($schemaResult);
 
                 $this->sendEvent("Validation of the response", (int) $schema->id);
+
+                // TODO SchemaValidator to handle
                 $error = (new SchemaValidator($schemaResult))->validate();
 
                 if($error !== '') {

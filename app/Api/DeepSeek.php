@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Api;
 
 use App\Contracts\SchemaGenerateContract;
+use App\Exceptions\GenerateException;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 class DeepSeek implements SchemaGenerateContract
@@ -17,6 +19,10 @@ class DeepSeek implements SchemaGenerateContract
     ) {
     }
 
+    /**
+     * @throws GenerateException
+     * @throws ConnectionException
+     */
     public function generate(array $messages): string
     {
         $response = Http::timeout(3600)
@@ -31,7 +37,20 @@ class DeepSeek implements SchemaGenerateContract
 
         $result = $response->json();
 
-//        logger()->debug('DeepSeek response', $result);
+        if(! isset($result['choices'][0])) {
+            logger()->error('DeepSeek error: empty choices', $result);
+            throw new GenerateException('DeepSeek error: empty choices');
+        }
+
+        if(! isset($result['choices'][0]['message'])) {
+            logger()->error('DeepSeek error: empty message', $result);
+            throw new GenerateException('DeepSeek error: empty message');
+        }
+
+        if(! isset($result['choices'][0]['message']['content'])) {
+            logger()->error('DeepSeek error: empty content', $result);
+            throw new GenerateException('DeepSeek error: empty content');
+        }
 
         return $result['choices'][0]['message']['content'];
     }

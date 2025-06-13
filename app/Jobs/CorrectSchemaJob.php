@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Contracts\SchemaGenerateContract;
+use App\Services\LlmProviderBuilder;
 use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
@@ -38,9 +39,9 @@ class CorrectSchemaJob implements ShouldQueue
         $schemaResult = null;
 
         try {
-            $requestAdminAi = app(SchemaGenerateContract::class);
+            $api = LlmProviderBuilder::getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
 
-            $mainPrompt = file_get_contents(base_path('promt.md'));
+            $mainPrompt = file_get_contents(base_path('prompt.md'));
 
             $mainPrompt = "# " . __('app.schema.correction') . PHP_EOL . $mainPrompt;
 
@@ -62,7 +63,7 @@ class CorrectSchemaJob implements ShouldQueue
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $requestAdminAi->generate($messages, 'fix', (int) $schema->id);
+                $schemaResult = $api->generate($messages);
 
                 $schemaResult = $this->correctSchemaFormat($schemaResult);
 

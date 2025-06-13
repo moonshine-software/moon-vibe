@@ -13,7 +13,7 @@ use App\Exceptions\GenerateException;
 class LlmProviderBuilder
 {
     /** @throws GenerateException */
-    public static function getProviderApi(int $llm, string $model): SchemaGenerateContract
+    public function getProviderApi(int $llm, string $model): SchemaGenerateContract
     {
         return match ($llm) {
             LlmProvider::OPEN_AI->value => new OpenaiApi($model),

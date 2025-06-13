@@ -74,7 +74,9 @@ trait GenerateSchemaTrait
     private function schemaError(Throwable $e, ProjectSchema $schema, ?string $schemaResult = null): void
     {
         $schema->status_id = SchemaStatus::ERROR;
-        $schema->schema = $schemaResult;
+        if(! empty($schemaResult)) {
+            $schema->schema = $schemaResult;
+        }
         $schema->error = __("moonshine.schema.server_error");
         $schema->save();
         $this->sendEvent(__("moonshine.schema.server_error"), (int) $schema->id);
@@ -83,7 +85,6 @@ trait GenerateSchemaTrait
 
     private function correctSchemaFormat(string $schema): string
     {
-        // Если всё-таки ии не понял, какой формат нужен
         if (str_starts_with($schema, '```json')) {
             $schema = preg_replace('/^```json\s*/', '', $schema);
             $schema = preg_replace('/\s*```$/', '', $schema);

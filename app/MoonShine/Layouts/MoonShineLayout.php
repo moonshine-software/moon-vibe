@@ -69,17 +69,13 @@ class MoonShineLayout extends CompactLayout
                 ->icon('rocket-launch'),
             MenuItem::make(__('app.menu.projects'), ProjectResource::class)
                 ->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count())
-                ->icon('square-3-stack-3d')
-            ,
+                ->icon('square-3-stack-3d'),
             MenuItem::make(__('app.menu.llm'), LlmResource::class)
-                ->icon('cog-8-tooth')
-            ,
+                ->icon('light-bulb'),
             MenuItem::make(__('app.menu.settings'), SettingsPage::class)
-                ->icon('cog-8-tooth')
-            ,
+                ->icon('cog-8-tooth'),
             MenuItem::make(__('app.menu.about'), AboutPage::class)
-                ->icon('information-circle')
-            ,
+                ->icon('information-circle'),
 
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
@@ -88,7 +84,6 @@ class MoonShineLayout extends CompactLayout
                 ),
                 MenuItem::make('Подписки', SubscriptionPlanResource::class),
             ])->canSee(static fn(): bool => auth()->user()->moonshine_user_role_id === Role::ADMIN),
-            MenuItem::make('LargeLanguageModel', LlmResource::class),
         ];
     }
 

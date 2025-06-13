@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('large_language_models', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('llm');
+            $table->unsignedTinyInteger('provider');
             $table->string('model');
             $table->boolean('is_default')->default(0);
         });

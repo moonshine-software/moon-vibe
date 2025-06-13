@@ -7,17 +7,17 @@ namespace App\Services;
 use App\Api\DeepSeek;
 use App\Api\OpenaiApi;
 use App\Contracts\SchemaGenerateContract;
-use App\Enums\Llm;
+use App\Enums\LlmProvider;
 use App\Exceptions\GenerateException;
 
-class LlmBuilder
+class LlmProviderBuilder
 {
     /** @throws GenerateException */
-    public static function getLlm(int $llm, string $model): SchemaGenerateContract
+    public static function getProviderApi(int $llm, string $model): SchemaGenerateContract
     {
         return match ($llm) {
-            Llm::OPEN_AI->value => new OpenaiApi($model),
-            Llm::DEEP_SEEK->value => new DeepSeek($model, config('llm.deep-seek-token')),
+            LlmProvider::OPEN_AI->value => new OpenaiApi($model),
+            LlmProvider::DEEP_SEEK->value => new DeepSeek($model, config('llm.deep-seek-token')),
             default => throw new GenerateException('Not found LLM for generation')
         };
     }

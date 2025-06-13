@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum Llm: int
+enum LlmProvider: int
 {
     case OPEN_AI = 1;
 

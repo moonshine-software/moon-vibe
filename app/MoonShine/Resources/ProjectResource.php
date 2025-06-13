@@ -93,7 +93,7 @@ class ProjectResource extends ModelResource
         return [
             ...$this->indexFields(),
             BelongsTo::make('LLM', 'llm',
-                formatted: fn(LargeLanguageModel $item) => "{$item->llm->toString()} ($item->model)",
+                formatted: fn(LargeLanguageModel $item) => "{$item->provider->toString()} ($item->model)",
                 resource: LlmResource::class
             )->nullable(),
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)

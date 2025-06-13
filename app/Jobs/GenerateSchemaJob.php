@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Services\LlmBuilder;
+use App\Services\LlmProviderBuilder;
 use App\Support\ChangeLocale;
 use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
@@ -38,7 +38,7 @@ class GenerateSchemaJob implements ShouldQueue
         $schemaResult = null;
 
         try {
-            $llmApi = LlmBuilder::getLlm($schema->project->llm->llm->value, $schema->project->llm->model);
+            $api = LlmProviderBuilder::getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
 
             $mainPrompt = file_get_contents(base_path('promt.md'));
 
@@ -58,7 +58,7 @@ class GenerateSchemaJob implements ShouldQueue
                 ;
 
                 $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $llmApi->generate($messages);
+                $schemaResult = $api->generate($messages);
 
                 $schemaResult = $this->correctSchemaFormat($schemaResult);
 

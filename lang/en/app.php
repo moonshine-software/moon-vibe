@@ -24,6 +24,7 @@ return [
         'projects' => 'Projects',
         'settings' => 'Settings',
         'about' => 'About',
+        'llm' => 'LLM',
     ],
     'settings' => [
         'profile' => 'Profile',

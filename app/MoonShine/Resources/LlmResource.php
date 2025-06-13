@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use App\Enums\Llm;
+use App\Enums\LlmProvider;
 use App\Models\LargeLanguageModel;
 
 use App\Repositories\LlmRepository;
@@ -31,25 +31,25 @@ class LlmResource extends ModelResource
     public function indexFields(): iterable
     {
         return [
-			ID::make('id'),
-			Enum::make('LLM', 'llm')->attach(Llm::class),
-			Text::make('Model', 'model'),
-			Switcher::make('Default', 'is_default'),
+            ID::make('id'),
+            Enum::make('Provider', 'provider')->attach(LlmProvider::class),
+            Text::make('Model', 'model'),
+            Switcher::make('Default', 'is_default'),
         ];
     }
 
     public function formFields(): iterable
     {
-        $default = Llm::OPEN_AI->value;
-        $llms = (new LlmRepository())->getAvailableLlms();
-        if($this->getItem() !== null && isset($llms[$this->getItem()->llm->value])) {
-            $default = $this->getItem()->llm->value;
+        $default = LlmProvider::OPEN_AI->value;
+        $llms = (new LlmRepository())->getAvailableProviders();
+        if($this->getItem() !== null && isset($llms[$this->getItem()->provider->value])) {
+            $default = $this->getItem()->provider->value;
         }
 
         return [
             Box::make([
                 ID::make('id'),
-                Select::make('LLM', 'llm')
+                Select::make('Provider', 'provider')
                     ->options($llms)
                     ->default($default)
                 ,
@@ -69,7 +69,7 @@ class LlmResource extends ModelResource
     public function rules(mixed $item): array
     {
         return [
-			'llm' => ['int', 'required'],
+			'provider' => ['int', 'required'],
 			'model' => ['string', 'required'],
         ];
     }

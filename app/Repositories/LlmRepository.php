@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Enums\Llm;
+use App\Enums\LlmProvider;
 use App\Models\LargeLanguageModel;
 use Illuminate\Support\Collection;
 
 class LlmRepository
 {
     /** @return array<int, string> */
-    public function getAvailableLlms(): array
+    public function getAvailableProviders(): array
     {
-        $appLlms = Llm::cases();
+        $appLlms = LlmProvider::cases();
 
-        $unsetNotAvailableLlms = function (int $key, Llm $llm) use (&$appLlms
+        $unsetNotAvailableLlms = function (int $key, LlmProvider $llm) use (&$appLlms
         ): void {
             if (empty(config($llm->configTokenKey()))) {
                 unset($appLlms[$key]);

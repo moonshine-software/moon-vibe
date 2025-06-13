@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Support;
 
 use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructure;
-use DevLnk\MoonShineBuilder\Services\CodeStructure\RelationStructure;
 use DevLnk\MoonShineBuilder\Support\TypeMap;
 use Throwable;
 use ReflectionClass;
@@ -15,21 +14,16 @@ use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 
 readonly class SchemaValidator
 {
-    public function __construct(
-        private string $schema
-    ) {
-    }
-
-    public function validate(): string
+    public function validate(string $schema): string
     {
         $errors = [];
 
         try {
-            if (! json_validate($this->schema)) {
+            if (! json_validate($schema)) {
                 return 'Некорректная JSON схема';
             }
 
-            $data = json_decode($this->schema, true);
+            $data = json_decode($schema, true);
 
             $factory = new StructureFromArray($data);
 

@@ -33,9 +33,9 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
     /**
      * @throws BuildException
      */
-    public function handle(): void
+    public function handle(ChangeLocale $changeLocale): void
     {
-        ChangeLocale::set($this->lang, isSetCookie: false);
+        $changeLocale->set($this->lang, isSetCookie: false);
 
         $projectSchema = ProjectSchema::query()->where('id', $this->schemaId)->first();
 
@@ -59,7 +59,7 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
         try {
             $projectSchema = $build->projectSchema;
 
-            $errors = (new SchemaValidator($projectSchema->schema))->validate();
+            $errors = (new SchemaValidator())->validate($projectSchema->schema);
             if($errors !== '') {
                 $build->update([
                     'status_id' => BuildStatus::ERROR,

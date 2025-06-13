@@ -20,7 +20,7 @@ class LangMiddleware
 
         $lang = Cookie::get('lang');
 
-        ChangeLocale::set($lang, isSetCookie: false);
+        (new ChangeLocale())->set($lang, isSetCookie: false);
 
         return $next($request);
     }

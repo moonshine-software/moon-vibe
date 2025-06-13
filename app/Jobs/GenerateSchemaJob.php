@@ -2,21 +2,16 @@
 
 namespace App\Jobs;
 
-use App\Repositories\ProjectRepository;
-use App\Services\LlmProviderBuilder;
+use App\Models\ProjectSchema;
+use App\Services\GenerateSchemaService;
 use App\Support\ChangeLocale;
-use App\Support\Traits\GenerateSchemaTrait;
 use Throwable;
-use App\Support\SchemaValidator;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-// TODO main logic to service
 class GenerateSchemaJob implements ShouldQueue
 {
     use Queueable;
-
-    use GenerateSchemaTrait;
 
     public function __construct(
         private readonly string $prompt,
@@ -29,79 +24,23 @@ class GenerateSchemaJob implements ShouldQueue
 
     public function handle(
         ChangeLocale $changeLocale,
-        ProjectRepository $projectRepository,
-        LlmProviderBuilder $llmProviderBuilder,
+        GenerateSchemaService $generateSchemaService,
     ): void {
-        $changeLocale::set($this->lang, isSetCookie: false);
-
-        $schema = $projectRepository->getSchema($this->schemaId);
-
-        if($schema === null) {
-            return;
-        }
-
-        $schemaResult = null;
-
-        try {
-            $api = $llmProviderBuilder->getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
-
-            $mainPrompt = file_get_contents(base_path('prompt.md'));
-
-            $messages = [
-                ['role' => 'system', 'content' => $mainPrompt],
-                ['role' => 'user', 'content' => $this->prompt]
-            ];
-
-            $tries = 0;
-            do {
-                $tries++;
-                $isValidSchema = true;
-
-                $event = $tries === 1
-                    ? __('app.schema.generate_job')
-                    : __('app.schema.generate_job_attempt', ['tries' => $tries])
-                ;
-
-                $this->sendEvent($event, (int) $schema->id);
-                $schemaResult = $api->generate($messages);
-
-                $schemaResult = $this->correctSchemaFormat($schemaResult);
-
-                $this->sendEvent("Validation of the response", (int) $schema->id);
-
-                // TODO SchemaValidator to handle
-                $error = (new SchemaValidator($schemaResult))->validate();
-
-                if($error !== '') {
-                    logger()->debug('generation error', [
-                            'try'    => $tries,
-                            'schema' => $schemaResult,
-                            'error'  => $error,
-                        ]
-                    );
-
-                    $messages[] = [
-                        'role'    => 'assistant',
-                        'content' => $schemaResult
-                    ];
-                    $messages[] = [
-                        'role'    => 'user',
-                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."
-                    ];
-
-                    $isValidSchema = false;
-                }
-            } while ($isValidSchema === false && $tries < $this->generateTries);
-
-            $this->saveSchema($schema, $error, $schemaResult);
-
-        } catch (Throwable $e) {
-            $this->schemaError($e, $schema, $schemaResult);
-        }
+        $changeLocale->set($this->lang, isSetCookie: false);
+        $generateSchemaService->generate($this->prompt, $this->schemaId, $this->generateTries);
     }
 
     public function failed(Throwable $e): void
     {
-        $this->failedJob($e, $this->schemaId);
+        /** @var GenerateSchemaService $generateSchemaService */
+        $generateSchemaService = app(GenerateSchemaService::class);
+
+        $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
+        if($schema === null) {
+            report($e);
+            return;
+        }
+
+        $generateSchemaService->schemaError($e, $schema);
     }
 }

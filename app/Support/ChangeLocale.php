@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class ChangeLocale
 {
-    public static function set(string $locale, bool $isSetCookie = true): void
+    public function set(string $locale, bool $isSetCookie = true): void
     {
         if($isSetCookie) {
             Cookie::queue('lang', $locale);

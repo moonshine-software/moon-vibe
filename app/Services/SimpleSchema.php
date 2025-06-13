@@ -34,11 +34,10 @@ readonly class SimpleSchema
             if($withColumns) {
                 $result .= '<ul style="margin-left: 2rem">';
                 foreach ($codeStructure->columns() as $column) {
-
                     $fieldClass = $column->getFieldClass()
                         ? $typeMap->fieldClassFromAlias($column->getFieldClass())
-                        : $typeMap->getMoonShineFieldFromSqlType($column->type())
-                    ;
+                        : $typeMap->getMoonShineFieldFromSqlType($column->type());
+
                     $fieldClassNamespace = explode("\\", $fieldClass);
                     $field = array_pop($fieldClassNamespace);
 

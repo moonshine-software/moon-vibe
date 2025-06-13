@@ -123,8 +123,8 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeCreating(mixed $item): mixed
     {
-        $item->error = (new SchemaValidator(request()->input('schema')))
-            ->validate();
+        $item->error = (new SchemaValidator())
+            ->validate(request()->input('schema'));
 
         $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 
@@ -136,8 +136,8 @@ class ProjectSchemaResource extends ModelResource
      */
     protected function beforeUpdating(mixed $item): mixed
     {
-        $item->error = (new SchemaValidator(request()->input('schema')))
-            ->validate();
+        $item->error = (new SchemaValidator())
+            ->validate(request()->input('schema'));
 
         $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Auth;
 use App\Support\ChangeLocale;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Cookie;
 use App\MoonShine\Pages\Auth\LoginPage;
 use App\Http\Requests\Auth\AuthenticateFormRequest;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
@@ -19,7 +18,7 @@ class AuthenticateController extends MoonShineController
         return $page;
     }
 
-    public function authenticate(AuthenticateFormRequest $request): RedirectResponse
+    public function authenticate(AuthenticateFormRequest $request, ChangeLocale $changeLocale): RedirectResponse
     {
         if(! $this->auth()->attempt($request->validated())) {
             return back()->withErrors([
@@ -30,7 +29,7 @@ class AuthenticateController extends MoonShineController
         $lang = $this->auth()->user()?->lang;
 
         if($lang !== null) {
-            ChangeLocale::set($lang);
+            $changeLocale->set($lang);
         }
 
         return redirect()->intended();

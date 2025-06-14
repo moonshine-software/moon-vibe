@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Enums\SchemaStatus;
 use App\Models\MoonShineUser;
 use App\Jobs\GenerateSchemaJob;
+use App\Models\ProjectSchema;
 
 readonly class GenerateFromAI
 {
@@ -38,6 +39,7 @@ readonly class GenerateFromAI
             'moonshine_user_id' => $user->id
         ]);
 
+        /** @var ProjectSchema $schema */
         $schema = $project->schemas()->create([
             'status_id' => SchemaStatus::PENDING,
             'first_prompt' => $prompt,

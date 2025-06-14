@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property MoonshineUser $moonshineUser
+ * @property LargeLanguageModel $llm
  * @property Collection<ProjectSchema> $schemas
  */
 class Project extends Model

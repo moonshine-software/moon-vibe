@@ -8,6 +8,9 @@ use App\Enums\LlmProvider;
 use App\Models\LargeLanguageModel;
 
 use App\Repositories\LlmRepository;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Enum;
@@ -17,7 +20,7 @@ use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Switcher;
 
 /**
- * @extends ModelResource<LargeLanguageModel>
+ * @extends ModelResource<LargeLanguageModel, IndexPage, FormPage, DetailPage>
  */
 class LlmResource extends ModelResource
 {

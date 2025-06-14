@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\MoonShineUser;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
 use phpcent\Client;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,7 @@ class CentrifugoController extends MoonShineController
     
     public function index()
     {
+        /** @var MoonShineUser $user */
         $user = $this->auth()->user();
         $userId = $user->id;
         
@@ -32,7 +34,7 @@ class CentrifugoController extends MoonShineController
         );
         
         $expiresAt = time() + self::TOKEN_EXPIRATION;
-        $token = $client->generateConnectionToken($userId, $expiresAt);
+        $token = $client->generateConnectionToken((string) $userId, $expiresAt);
         
         Cache::put($cacheKey, $token, self::TOKEN_EXPIRATION);
         

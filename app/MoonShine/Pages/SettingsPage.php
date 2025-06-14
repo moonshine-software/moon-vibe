@@ -135,10 +135,6 @@ class SettingsPage extends Page
     {
         $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
-        if (\is_null($user)) {
-            throw new LogicException('Model is required');
-        }
-
         return FormBuilder::make(action([ProfileController::class, 'store']))
             ->async()
             ->fields($this->fields())

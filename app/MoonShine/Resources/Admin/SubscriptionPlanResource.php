@@ -8,6 +8,9 @@ use App\Enums\Role;
 use App\Enums\SubscriptionPeriod;
 use App\Models\SubscriptionPlan;
 use MoonShine\Laravel\Enums\Action;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Layout\Box;
@@ -18,7 +21,7 @@ use MoonShine\UI\Fields\Text;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @extends ModelResource<SubscriptionPlan>
+ * @extends ModelResource<SubscriptionPlan, IndexPage, FormPage, DetailPage>
  */
 class SubscriptionPlanResource extends ModelResource
 {

@@ -117,6 +117,7 @@ class MoonShineUser extends BaseMoonShineUser
             return 0;
         }
 
+        /** @var SubscriptionPlan|null $subscriptionPlan */
         $subscriptionPlan = $this->subscriptionPlan;
         if($subscriptionPlan === null) {
             return 0;

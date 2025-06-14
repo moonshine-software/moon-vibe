@@ -30,7 +30,7 @@ use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Textarea;
 
 /**
- * @extends ModelResource<ProjectSchema>
+ * @extends ModelResource<ProjectSchema, IndexPage, FormPage, DetailPage>
  */
 class ProjectSchemaResource extends ModelResource
 {

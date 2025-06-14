@@ -10,6 +10,8 @@ use Closure;
 use App\Models\Project;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Support\ListOf;
 use MoonShine\UI\Fields\Fieldset;
@@ -32,11 +34,11 @@ use App\MoonShine\Pages\Project\ProjectFormPage;
 use MoonShine\Contracts\UI\ActionButtonContract;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Fields\Relationships\HasMany;
-use MoonShine\Contracts\Core\TypeCasts\DataWrapperContract;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use Throwable;
 
 /**
- * @extends ModelResource<Project>
+ * @extends ModelResource<Project, IndexPage, ProjectFormPage, DetailPage>
  */
 class ProjectResource extends ModelResource
 {
@@ -112,31 +114,38 @@ class ProjectResource extends ModelResource
                     )
                         ->withConfirm(
                             __('app.project.correction'),
-                            formBuilder: fn(FormBuilder $builder, ProjectSchema $schema) => $builder
-                                ->fields([
-                                    Preview::make('', formatted: function () use ($schema) {
-                                        if($schema->schema === null) {
-                                            return '';
-                                        }
-
-                                        try {
-                                            $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
-                                            return $simpleSchema->generate();
-                                        } catch (\Throwable) {
-                                            return '';
-                                        }
-                                    }),
-                                    FlexibleRender::make(
-                                        (string) Badge::make(
-                                            __('app.generations_left', ['generations' => $generationLeftInfo['info']]),
-                                            $generationLeftInfo['color']
-                                        )
-                                    ),
-                                    Divider::make(),
-                                    Textarea::make(__('app.project.prompt'), 'prompt')->customAttributes([
-                                        'rows' => 6,
-                                    ])
-                                ])
+                            formBuilder: function (
+                                FormBuilderContract $builder,
+                                ProjectSchema $schema
+                            ) use ($generationLeftInfo): FormBuilderContract {
+                                $builder
+                                    ->fields([
+                                        Preview::make('', formatted: function () use ($schema) {
+                                            if($schema->schema === null) {
+                                                return '';
+                                            }
+                                            try {
+                                                $simpleSchema = new SimpleSchema(
+                                                    new StructureFromArray(json_decode($schema->schema, true)
+                                                )->makeStructures());
+                                                return $simpleSchema->generate();
+                                            } catch (Throwable) {
+                                                return '';
+                                            }
+                                        }),
+                                        FlexibleRender::make(
+                                            (string) Badge::make(
+                                                __('app.generations_left', ['generations' => $generationLeftInfo['info']]),
+                                                $generationLeftInfo['color']
+                                            )
+                                        ),
+                                        Divider::make(),
+                                        Textarea::make(__('app.project.prompt'), 'prompt')->customAttributes([
+                                            'rows' => 6,
+                                        ])
+                                    ]);
+                                return $builder;
+                            },
                         )
                 ])
                 ->searchable(false)

@@ -127,6 +127,7 @@ readonly class MakeAdmin
     {
         $this->alert(__('app.build.installing_markdown'), 28);
 
+        /** @var string $fileContent */
         $fileContent = file_get_contents($this->directories->schemaFile);
         if( ! str_contains($fileContent, '"Markdown"')) {
             return $this;
@@ -143,6 +144,7 @@ readonly class MakeAdmin
     {
         $this->alert(__('app.build.installing_tinymce'), 35);
 
+        /** @var string $fileContent */
         $fileContent = file_get_contents($this->directories->schemaFile);
         if( ! str_contains($fileContent, '"TinyMce"')) {
             return $this;

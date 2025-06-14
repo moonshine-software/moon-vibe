@@ -99,6 +99,8 @@ readonly class SchemaValidator
                     }
 
                     $typeMap = new TypeMap();
+
+                    /** @var class-string $field */
                     $field = $column->getFieldClass()
                         ? $typeMap->fieldClassFromAlias($column->getFieldClass())
                         : $typeMap->getMoonShineFieldFromSqlType($column->type())
@@ -110,6 +112,7 @@ readonly class SchemaValidator
 
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
+                            /** @var string $method */
                             $method = strstr($methodName, '(', true);
                             try {
                                 $class = new ReflectionClass($field);
@@ -243,7 +246,7 @@ readonly class SchemaValidator
     }
 
     /**
-     * @param list<ColumnStructure> $columnStructures
+     * @param array<int, ColumnStructure> $columnStructures
      * @param string                $checkName
      * @param array<string, string> $tableResourceMap
      *

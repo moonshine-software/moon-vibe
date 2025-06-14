@@ -39,7 +39,9 @@ use App\MoonShine\Resources\LlmResource;
 class MoonShineLayout extends CompactLayout
 {
     /**
-     * @return list<AssetElementContract>
+     * @return array|AssetElementContract[]
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     protected function assets(): array
     {
@@ -90,11 +92,11 @@ class MoonShineLayout extends CompactLayout
     /**
      * @param string|null $name
      *
-     * @return string|array<string, string>
+     * @return string
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    private function getRadius(?string $name = null): string|array
+    private function getRadius(?string $name = null): string
     {
         $r = [
             'default' => session()->get('radius.default', '0.15'),
@@ -108,7 +110,7 @@ class MoonShineLayout extends CompactLayout
         ];
 
         if($name === null) {
-            return $r;
+            return $r['default'];
         }
 
         return $r[$name];

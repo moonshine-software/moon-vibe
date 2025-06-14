@@ -47,12 +47,15 @@ class AiController extends MoonShineController
 
         $subscriptionService->increaseGenerationsUsed(auth('moonshine')->user());
 
-        return toPage(
+        /** @var RedirectResponse $toPage */
+        $toPage = toPage(
             FormPage::class,
             ProjectResource::class,
             params: ['resourceItem' => $projectId],
             redirect: true
         );
+
+        return $toPage;
     }
 
     public function correct(

@@ -125,6 +125,7 @@ class SettingsPage extends Page
      */
     protected function components(): iterable
     {
+        // @phpstan-ignore-next-line
         return [
             $this->getForm(),
             ...$this->getPushedComponents(),

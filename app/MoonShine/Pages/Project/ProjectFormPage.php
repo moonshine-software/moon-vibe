@@ -16,7 +16,7 @@ class ProjectFormPage extends FormPage
 
         $buildComponent = ProjectBuildComponent::fromData(
             auth('moonshine')->user()->id,
-            $this->getResource()->getItemID()
+            (int) $this->getResource()->getItemID()
         );
     
         return [

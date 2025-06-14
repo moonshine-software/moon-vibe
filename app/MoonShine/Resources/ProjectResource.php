@@ -12,14 +12,13 @@ use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\Text;
 use App\Services\SimpleSchema;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Textarea;
-use MoonShine\Support\Enums\Color;
 use MoonShine\UI\Components\Badge;
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\UI\Fields\StackFields;
 use MoonShine\Support\Enums\HttpMethod;
 use MoonShine\UI\Components\FormBuilder;
 use MoonShine\UI\Components\ActionButton;
@@ -68,14 +67,12 @@ class ProjectResource extends ModelResource
     public function indexFields(): iterable
     {
         return [
-            StackFields::make('')->fields(function(StackFields $fields){
-                return [
-                    Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
-                    Textarea::make('', 'description')->customAttributes([
-                        'rows' => 7,
-                    ]),
-                ];
-            }),
+            Fieldset::make('', [
+                Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+                Textarea::make('', 'description')->customAttributes([
+                    'rows' => 7,
+                ]),
+            ]),
         ];
     }
 
@@ -91,7 +88,10 @@ class ProjectResource extends ModelResource
         $generationLeftInfo = $user->getGenerationLeftInfo();
 
         return [
-            ...$this->indexFields(),
+            Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+            Textarea::make('', 'description')->customAttributes([
+                'rows' => 7,
+            ]),
             BelongsTo::make('LLM', 'llm',
                 formatted: fn(LargeLanguageModel $item) => "{$item->provider->toString()} ($item->model)",
                 resource: LlmResource::class

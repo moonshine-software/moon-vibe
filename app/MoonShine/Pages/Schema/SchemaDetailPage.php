@@ -15,7 +15,7 @@ class SchemaDetailPage extends DetailPage
     public function components(): iterable
     {
         /** @var ProjectSchema|null $schema */
-        $schema = $this->getResource()->getItem();
+        $schema = $this->getResource()?->getItem();
 
         if($schema === null) {
             return [];

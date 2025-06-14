@@ -48,7 +48,7 @@ class MoonShineUserRoleResource extends ModelResource
 
     protected function activeActions(): ListOf
     {
-        if(auth('moonshine')->user()->moonshine_user_role_id !== Role::ADMIN) {
+        if(auth('moonshine')->user()?->moonshine_user_role_id !== Role::ADMIN) {
             throw new NotFoundHttpException();
         }
         return parent::activeActions()->except(Action::VIEW);

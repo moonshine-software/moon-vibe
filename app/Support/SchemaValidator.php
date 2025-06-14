@@ -193,6 +193,11 @@ readonly class SchemaValidator
         string $checkName
     ): string {
         $errors = [];
+
+        if($column->relation() === null) {
+            return '';
+        }
+
         $resourceName = str($column->relation()->table()->camel())->singular()->ucfirst()->value();
         foreach ($codeStructures as $checkIndex => $codeStructure) {
             if($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
@@ -226,6 +231,10 @@ readonly class SchemaValidator
         array $codeStructures
     ): string {
         $errors = [];
+
+        if($column->relation() === null) {
+            return '';
+        }
 
         $relationTable = $column->relation()->table()->raw();
 

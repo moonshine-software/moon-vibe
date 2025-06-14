@@ -4,6 +4,6 @@ includes:
 parameters:
     editorUrl: 'anything'
     editorUrlTitle: "\nat %%relFile%%:%%line%%"
-    level: 7
+    level: 8
     paths:
         - app

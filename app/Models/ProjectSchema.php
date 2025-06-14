@@ -14,7 +14,7 @@ use Carbon\Carbon;
  * @property string $schema
  * @property string $first_prompt   
  * @property SchemaStatus $status_id
- * @property string $error
+ * @property ?string $error
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property Project $project

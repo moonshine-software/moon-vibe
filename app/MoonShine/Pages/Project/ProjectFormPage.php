@@ -10,12 +10,12 @@ class ProjectFormPage extends FormPage
 {
     public function components(): iterable
     {
-        if($this->getResource()->getItemID() === null) {
+        if($this->getResource()?->getItemID() === null) {
             return parent::components();
         }
 
         $buildComponent = ProjectBuildComponent::fromData(
-            auth('moonshine')->user()->id,
+            (int) auth('moonshine')->user()?->id,
             (int) $this->getResource()->getItemID()
         );
     
@@ -23,7 +23,7 @@ class ProjectFormPage extends FormPage
             Div::make([
                 $buildComponent
             ])->customAttributes([
-                'id' => 'build-component-' . $this->getResource()->getItemID()
+                'id' => 'build-component-' . (int) $this->getResource()->getItemID()
             ]),
             ...parent::components(),
         ];

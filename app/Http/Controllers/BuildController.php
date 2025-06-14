@@ -16,7 +16,7 @@ class BuildController extends MoonShineController
     {
         dispatch(new ProcessBuildJob(
             $schemaId,
-            (int) $this->auth()->user()->id,
+            (int) $this->auth()->user()?->id,
             app()->getLocale())
         );
 

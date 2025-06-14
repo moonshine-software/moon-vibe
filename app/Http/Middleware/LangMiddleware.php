@@ -18,7 +18,7 @@ class LangMiddleware
             return $next($request);
         }
 
-        $lang = Cookie::get('lang');
+        $lang = Cookie::get('lang') ?? 'en';
 
         (new ChangeLocale())->set($lang, isSetCookie: false);
 

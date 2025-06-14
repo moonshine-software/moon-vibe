@@ -70,7 +70,7 @@ class MoonShineLayout extends CompactLayout
             MenuItem::make(__('app.menu.generation'), Dashboard::class)
                 ->icon('rocket-launch'),
             MenuItem::make(__('app.menu.projects'), ProjectResource::class)
-                ->badge(fn() => Project::query()->where('moonshine_user_id', auth('moonshine')->user()->id)->count())
+                ->badge(fn() => Project::query()->where('moonshine_user_id', (int) auth('moonshine')->user()?->id)->count())
                 ->icon('square-3-stack-3d'),
             MenuItem::make(__('app.menu.llm'), LlmResource::class)
                 ->icon('light-bulb'),
@@ -85,7 +85,7 @@ class MoonShineLayout extends CompactLayout
                     MoonShineUserResource::class
                 ),
                 MenuItem::make('Подписки', SubscriptionPlanResource::class),
-            ])->canSee(static fn(): bool => auth()->user()->moonshine_user_role_id === Role::ADMIN),
+            ])->canSee(static fn(): bool => auth()->user()?->moonshine_user_role_id === Role::ADMIN),
         ];
     }
 

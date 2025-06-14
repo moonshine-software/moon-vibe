@@ -180,13 +180,13 @@ readonly class GenerateSchemaService
     {
         if (str_starts_with($schema, '```json')) {
             $schema = preg_replace('/^```json\s*/', '', $schema);
-            $schema = preg_replace('/\s*```$/', '', $schema);
+            $schema = preg_replace('/\s*```$/', '', (string) $schema);
         }
-        if (str_starts_with($schema, '```')) {
-            $schema = preg_replace('/^```\s*/', '', $schema);
-            $schema = preg_replace('/\s*```$/', '', $schema);
+        if (str_starts_with((string) $schema, '```')) {
+            $schema = preg_replace('/^```\s*/', '', (string) $schema);
+            $schema = preg_replace('/\s*```$/', '', (string) $schema);
         }
 
-        return $schema;
+        return (string) $schema;
     }
 }

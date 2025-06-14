@@ -86,7 +86,7 @@ class ProjectResource extends ModelResource
 
     protected function modifyQueryBuilder(Builder $builder): Builder
     {
-        return $builder->where('moonshine_user_id', auth('moonshine')->user()->id);
+        return $builder->where('moonshine_user_id', (int) auth('moonshine')->user()?->id);
     }
 
     public function formFields(): iterable
@@ -188,7 +188,7 @@ class ProjectResource extends ModelResource
      */
     public function beforeCreating(mixed $item): mixed
     {
-        $item->moonshine_user_id = auth()->user()->id;
+        $item->moonshine_user_id = (int) auth()->user()?->id;
         return $item;
     }
 

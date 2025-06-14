@@ -71,6 +71,13 @@ readonly class MakeAdmin
         return $path;
     }
 
+    /**
+     * @param list<string> $command
+     * @param string      $errorMessage
+     * @param string|null $cwd
+     *
+     * @return self
+     */
     private function runProcess(array $command, string $errorMessage = 'Command failed', ?string $cwd = null): self
     {
         $process = new Process($command, $cwd);

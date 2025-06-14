@@ -36,6 +36,7 @@ class ProjectSchemaResource extends ModelResource
 {
     protected string $model = ProjectSchema::class;
 
+    /** @var string[] */
 	protected array $with = ['project'];
 
     protected bool $detailInModal = true;
@@ -50,6 +51,9 @@ class ProjectSchemaResource extends ModelResource
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     protected function pages(): array
     {
         return [

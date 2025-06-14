@@ -30,6 +30,9 @@ class SubscriptionPlan extends Model
 		'period' => SubscriptionPeriod::class,
 	];
 
+    /**
+     * @return HasMany<MoonShineUser, $this>
+     */
     public function users(): HasMany
     {
         return $this->hasMany(MoonShineUser::class);

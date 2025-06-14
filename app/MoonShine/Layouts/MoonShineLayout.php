@@ -87,6 +87,13 @@ class MoonShineLayout extends CompactLayout
         ];
     }
 
+    /**
+     * @param string|null $name
+     *
+     * @return string|array<string, string>
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     private function getRadius(?string $name = null): string|array
     {
         $r = [

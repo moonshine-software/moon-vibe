@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Admin;
 
 use App\Enums\Role;
+use App\MoonShine\Pages\Auth\ForgotPage;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\MenuManager\Attributes\Group;
 use MoonShine\MenuManager\Attributes\Order;
@@ -17,11 +20,12 @@ use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+// @phpstan-ignore-next-line
 #[Icon('bookmark')]
 #[Group('moonshine::ui.resource.system', 'users', translatable: true)]
 #[Order(1)]
 /**
- * @extends ModelResource<MoonshineUserRole>
+ * @extends ModelResource<MoonshineUserRole, IndexPage, ForgotPage, DetailPage>
  */
 class MoonShineUserRoleResource extends ModelResource
 {
@@ -75,7 +79,9 @@ class MoonShineUserRoleResource extends ModelResource
     }
 
     /**
-     * @return array{name: array|string}
+     * @param $item
+     *
+     * @return array<string, list<string>>
      */
     protected function rules($item): array
     {

@@ -21,8 +21,6 @@ use Carbon\Carbon;
  */
 class Build extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'project_schema_id',
         'moonshine_user_id',
@@ -35,11 +33,17 @@ class Build extends Model
         'status_id' => BuildStatus::class,
     ];
 
+    /**
+     * @return BelongsTo<ProjectSchema, $this>
+     */
     public function projectSchema(): BelongsTo
     {
         return $this->belongsTo(ProjectSchema::class, 'project_schema_id');
     }
 
+    /**
+     * @return BelongsTo<MoonShineUser, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(MoonShineUser::class, 'moonshine_user_id');

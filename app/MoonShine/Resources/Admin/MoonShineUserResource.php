@@ -9,6 +9,7 @@ use App\Models\MoonShineUser;
 use App\Models\SubscriptionPlan;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUserRole;
@@ -33,6 +34,7 @@ use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+// @phpstan-ignore-next-line
 #[Icon('users')]
 #[Group('moonshine::ui.resource.system', 'users', translatable: true)]
 #[Order(1)]
@@ -45,6 +47,7 @@ class MoonShineUserResource extends ModelResource
 
     protected string $column = 'name';
 
+    /** @var string[]  */
     protected array $with = ['moonshineUserRole', 'subscriptionPlan'];
 
     protected bool $simplePaginate = true;
@@ -171,7 +174,7 @@ class MoonShineUserResource extends ModelResource
     }
 
     /**
-     * @return array{name: array|string, moonshine_user_role_id: array|string, email: array|string, password: array|string}
+     * @return array{name: string, moonshine_user_role_id: string, email: array<array-key, string|Unique>, password: string}
      */
     protected function rules($item): array
     {

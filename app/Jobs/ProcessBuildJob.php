@@ -105,7 +105,7 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
         }
     }
 
-    public function uniqueId()
+    public function uniqueId(): int
     {
         return $this->userId;
     }

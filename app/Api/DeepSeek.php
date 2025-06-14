@@ -20,8 +20,11 @@ class DeepSeek implements SchemaGenerateContract
     }
 
     /**
-     * @throws GenerateException
+     * @param list<array{role:string, content:string}> $messages
+     *
+     * @return string
      * @throws ConnectionException
+     * @throws GenerateException
      */
     public function generate(array $messages): string
     {

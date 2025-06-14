@@ -33,6 +33,9 @@ class ProjectSchema extends Model
         'status_id' => SchemaStatus::class,
     ];
 
+    /**
+     * @return BelongsTo<Project, $this>
+     */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class, 'project_id');

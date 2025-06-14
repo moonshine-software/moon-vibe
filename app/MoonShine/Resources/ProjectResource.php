@@ -14,6 +14,8 @@ use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Contracts\UI\HasFieldsContract;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Support\ListOf;
+use MoonShine\UI\Components\Modal;
+use MoonShine\UI\Components\OffCanvas;
 use MoonShine\UI\Fields\Fieldset;
 use MoonShine\UI\Fields\Text;
 use App\Services\SimpleSchema;
@@ -44,6 +46,7 @@ class ProjectResource extends ModelResource
 {
     protected string $model = Project::class;
 
+    /** @var string[]  */
 	protected array $with = ['moonshineUser', 'llm'];
 
     protected string $column = 'name';
@@ -56,7 +59,10 @@ class ProjectResource extends ModelResource
             Action::DELETE,
         ]);
     }
-    
+
+    /**
+     * @return string[]
+     */
     protected function pages(): array
     {
         return [
@@ -153,8 +159,12 @@ class ProjectResource extends ModelResource
         ];
     }
 
+    /**
+     * @return ListOf<ActionButtonContract<Modal, OffCanvas>>
+     */
     protected function formButtons(): ListOf
     {
+        // @phpstan-ignore-next-line
         return new ListOf(ActionButtonContract::class, []);
     }
 

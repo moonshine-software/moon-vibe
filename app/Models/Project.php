@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Carbon $updated_at
  * @property MoonshineUser $moonshineUser
  * @property LargeLanguageModel $llm
- * @property Collection<ProjectSchema> $schemas
+ * @property Collection<int, ProjectSchema> $schemas
  */
 class Project extends Model
 {
@@ -30,16 +30,25 @@ class Project extends Model
 		'moonshine_user_id',
     ];
 
+    /**
+     * @return HasMany<ProjectSchema, $this>
+     */
     public function schemas(): HasMany
     {
         return $this->hasMany(ProjectSchema::class, 'project_id');
     }
 
+    /**
+     * @return BelongsTo<MoonshineUser, $this>
+     */
     public function moonshineUser(): BelongsTo
     {
         return $this->belongsTo(MoonshineUser::class, 'moonshine_user_id');
     }
 
+    /**
+     * @return BelongsTo<LargeLanguageModel, $this>
+     */
     public function llm(): BelongsTo
     {
         return $this->belongsTo(LargeLanguageModel::class, 'llm_id');

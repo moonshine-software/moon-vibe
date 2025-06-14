@@ -92,6 +92,13 @@ readonly class GenerateSchemaService
         }
     }
 
+    /**
+     * @param string        $prompt
+     * @param ProjectSchema $schema
+     * @param bool          $isCorrectPrompt
+     *
+     * @return list<array{role:string, content:string}>
+     */
     private function getMessages(string $prompt, ProjectSchema $schema, bool $isCorrectPrompt): array
     {
         $mainPrompt = file_get_contents(base_path('prompt.md'));

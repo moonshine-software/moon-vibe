@@ -16,6 +16,9 @@ class OpenaiApi implements SchemaGenerateContract
     }
 
     /**
+     * @param list<array{role:string, content:string}> $messages
+     *
+     * @return string
      * @throws GenerateException
      */
     public function generate(array $messages): string

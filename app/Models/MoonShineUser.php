@@ -19,7 +19,7 @@ use MoonShine\Support\Enums\Color;
  * @property string $password
  * @property string $name
  * @property string $avatar
- * @property array $settings
+ * @property array<string, array<string, string>> $settings
  * @property string $lang
  * @property int $subscription_plan_id
  * @property int $generations_used
@@ -102,6 +102,9 @@ class MoonShineUser extends BaseMoonShineUser
         return $this->settings['build'][$key];
     }
 
+    /**
+     * @return BelongsTo<SubscriptionPlan, $this>
+     */
     public function subscriptionPlan(): BelongsTo
     {
         return $this->belongsTo(SubscriptionPlan::class);
@@ -125,6 +128,9 @@ class MoonShineUser extends BaseMoonShineUser
         return $subscriptionPlan->generations_limit - $this->generations_used;
     }
 
+    /**
+     * @return array{info: string|numeric-string, color: Color}
+     */
     public function getGenerationLeftInfo(): array
     {
         $generationsLeft = $this->getGenerationsLeft();

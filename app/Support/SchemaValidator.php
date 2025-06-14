@@ -140,7 +140,7 @@ readonly class SchemaValidator
     }
 
     /**
-     * @param array<int, CodeStructure> $codeStructures
+     * @param array<array-key, CodeStructure> $codeStructures
      * @return array<string, string>
      */
     private function getTableResourceMap(array $codeStructures): array
@@ -175,6 +175,14 @@ readonly class SchemaValidator
         return '';
     }
 
+    /**
+     * @param int             $index
+     * @param ColumnStructure $column
+     * @param array<array-key, CodeStructure> $codeStructures
+     * @param string          $checkName
+     *
+     * @return string
+     */
     private function checkBelongsTo(
         int $index,
         ColumnStructure $column,
@@ -204,6 +212,12 @@ readonly class SchemaValidator
         return $errors === [] ? '' : implode(". ", $errors);
     }
 
+    /**
+     * @param ColumnStructure $column
+     * @param array<array-key, CodeStructure> $codeStructures
+     *
+     * @return string
+     */
     private function checkHasMany(
         ColumnStructure $column,
         array $codeStructures
@@ -214,7 +228,6 @@ readonly class SchemaValidator
 
         $isValidTable = false;
 
-        /** @var CodeStructure $codeStructure */
         foreach ($codeStructures as $codeStructure) {
             if($codeStructure->table() === $relationTable) {
                 $isValidTable = true;
@@ -232,7 +245,7 @@ readonly class SchemaValidator
     /**
      * @param list<ColumnStructure> $columnStructures
      * @param string                $checkName
-     * @param array                 $tableResourceMap
+     * @param array<string, string> $tableResourceMap
      *
      * @return string
      */

@@ -43,8 +43,5 @@ class AppServiceProvider extends ServiceProvider
 
         moonShineAssets()->add([new Js(Vite::asset('resources/ts/app.ts'))]);
         moonShineAssets()->add([new Css(Vite::asset('resources/css/app.css'))]);
-
-        //$this->app->bind(SchemaGenerateContract::class, DeepSeek::class);
-        $this->app->bind(SchemaGenerateContract::class, CutCodeAgent::class);
     }
 }

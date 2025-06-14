@@ -156,13 +156,6 @@ class ProjectResource extends ModelResource
         ]);
     }
 
-    protected function trAttributes(): Closure
-    {
-        return fn(?DataWrapperContract $data, int $row) => [
-            //'style' => 'margin-bottom: 5rem'
-        ];
-    }
-
     public function detailFields(): iterable
     {
         return [
@@ -178,12 +171,6 @@ class ProjectResource extends ModelResource
     {
         $item->moonshine_user_id = auth()->user()->id;
         return $item;
-    }
-
-    public function filters(): iterable
-    {
-        return [
-        ];
     }
 
     public function rules(mixed $item): array

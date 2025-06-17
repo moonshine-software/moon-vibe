@@ -98,7 +98,7 @@ class ProjectSchemaResource extends ModelResource
             Box::make([
                 ID::make('id'),
                 BelongsTo::make(__('app.schema.project'), 'project', resource: ProjectResource::class),
-                Textarea::make('', 'schema')->changeFill(function(ProjectSchema $data, Textarea $field){
+                Textarea::make('', 'schema')->changeFill(function(ProjectSchema $data, Textarea $field): string {
                     $field->customAttributes([
                         'class' => 'schema-edit-id-' . $data->id,
                         'rows' => 20,
@@ -116,7 +116,9 @@ class ProjectSchemaResource extends ModelResource
                 if($schema->schema === null) {
                     return '';
                 }
-                $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+                $simpleSchema = new SimpleSchema(
+                    (new StructureFromArray(json_decode($schema->schema, true))
+                )->makeStructures());
                 return $simpleSchema->generate();
             })
         ];
@@ -128,7 +130,7 @@ class ProjectSchemaResource extends ModelResource
     protected function beforeCreating(mixed $item): mixed
     {
         $item->error = (new SchemaValidator())
-            ->validate(request()->input('schema'));
+            ->validate(request()->string('schema')->value());
 
         $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 
@@ -141,7 +143,7 @@ class ProjectSchemaResource extends ModelResource
     protected function beforeUpdating(mixed $item): mixed
     {
         $item->error = (new SchemaValidator())
-            ->validate(request()->input('schema'));
+            ->validate(request()->string('schema')->value());
 
         $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
 

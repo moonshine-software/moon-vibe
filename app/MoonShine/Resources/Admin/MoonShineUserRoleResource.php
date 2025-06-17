@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources\Admin;
 
 use App\Enums\Role;
-use App\MoonShine\Pages\Auth\ForgotPage;
+use Illuminate\Contracts\Validation\Rule;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\MenuManager\Attributes\Group;
@@ -18,15 +19,15 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Text;
+use Stringable;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-// @phpstan-ignore-next-line
+/**
+ * @extends ModelResource<MoonshineUserRole, IndexPage, FormPage, DetailPage>
+ */
 #[Icon('bookmark')]
 #[Group('moonshine::ui.resource.system', 'users', translatable: true)]
 #[Order(1)]
-/**
- * @extends ModelResource<MoonshineUserRole, IndexPage, ForgotPage, DetailPage>
- */
 class MoonShineUserRoleResource extends ModelResource
 {
     protected string $model = MoonshineUserRole::class;
@@ -79,9 +80,7 @@ class MoonShineUserRoleResource extends ModelResource
     }
 
     /**
-     * @param $item
-     *
-     * @return array<string, list<string>>
+     * @return array<string, string[]|string|list<Rule>|list<Stringable>>
      */
     protected function rules($item): array
     {

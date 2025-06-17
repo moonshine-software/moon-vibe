@@ -121,11 +121,10 @@ class SettingsPage extends Page
     }
 
     /**
-     * @return list<ComponentContract>
+     * @return non-empty-array<ComponentContract>
      */
     protected function components(): iterable
     {
-        // @phpstan-ignore-next-line
         return [
             $this->getForm(),
             ...$this->getPushedComponents(),

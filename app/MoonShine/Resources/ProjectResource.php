@@ -96,7 +96,9 @@ class ProjectResource extends ModelResource
         $generationLeftInfo = $user->getGenerationLeftInfo();
 
         return [
-            Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+            Text::make('', 'name')->changePreview(
+                static fn(string $value, Text $ctx): string => "<b>$value</b><hr>"
+            ),
             Textarea::make('', 'description')->customAttributes([
                 'rows' => 7,
             ]),
@@ -107,7 +109,7 @@ class ProjectResource extends ModelResource
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
                     ActionButton::make(__('app.project.create'),
-                        url: fn($model) => route('build', ['schemaId' => $model->getKey()])
+                        url: fn(Project $model) => route('build', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
@@ -116,7 +118,7 @@ class ProjectResource extends ModelResource
                         )
                     ,
                     ActionButton::make(__('app.project.correct'),
-                        url: fn($model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
+                        url: fn(Project $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
                             __('app.project.correction'),
@@ -159,13 +161,9 @@ class ProjectResource extends ModelResource
         ];
     }
 
-    /**
-     * @return ListOf<ActionButtonContract<Modal, OffCanvas>>
-     */
     protected function formButtons(): ListOf
     {
-        // @phpstan-ignore-next-line
-        return new ListOf(ActionButtonContract::class, []);
+        return parent::formButtons()->empty();
     }
 
     public function modifyListComponent(ComponentContract $component): ComponentContract

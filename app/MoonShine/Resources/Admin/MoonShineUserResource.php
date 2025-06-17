@@ -7,12 +7,13 @@ namespace App\MoonShine\Resources\Admin;
 use App\Enums\Role;
 use App\Models\MoonShineUser;
 use App\Models\SubscriptionPlan;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Unique;
 use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUserRole;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\MenuManager\Attributes\Group;
 use MoonShine\MenuManager\Attributes\Order;
@@ -32,15 +33,15 @@ use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\PasswordRepeat;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
+use Stringable;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-// @phpstan-ignore-next-line
+/**
+ * @extends ModelResource<MoonshineUser, IndexPage, FormPage, DetailPage>
+ */
 #[Icon('users')]
 #[Group('moonshine::ui.resource.system', 'users', translatable: true)]
 #[Order(1)]
-/**
- * @extends ModelResource<MoonshineUser>
- */
 class MoonShineUserResource extends ModelResource
 {
     protected string $model = MoonshineUser::class;
@@ -174,7 +175,7 @@ class MoonShineUserResource extends ModelResource
     }
 
     /**
-     * @return array{name: string, moonshine_user_role_id: string, email: array<array-key, string|Unique>, password: string}
+     * @return array<string, string[]|string|list<Rule>|list<Stringable>>
      */
     protected function rules($item): array
     {

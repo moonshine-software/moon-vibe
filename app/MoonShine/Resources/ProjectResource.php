@@ -161,6 +161,7 @@ class ProjectResource extends ModelResource
         ];
     }
 
+    //@phpstan-ignore-next-line
     protected function formButtons(): ListOf
     {
         return parent::formButtons()->empty();

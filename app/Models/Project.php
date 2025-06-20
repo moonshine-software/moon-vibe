@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use MoonShine\Laravel\Models\MoonshineUser;
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Project extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
 		'name',
 		'description',

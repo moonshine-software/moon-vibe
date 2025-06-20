@@ -12,7 +12,7 @@ use DevLnk\MoonShineBuilder\Enums\SqlTypeMap;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\ColumnStructure;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 
-readonly class SchemaValidator
+class SchemaValidator
 {
     public function validate(string $schema): string
     {

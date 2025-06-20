@@ -1,0 +1,109 @@
+$schema: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+documents:
+  - description: "MoonShine"
+    outputPath: "moonshine.md"
+    sources:
+      - type: file
+        description: "MoonShine"
+        sourcePaths:
+          - app/MoonShine
+        filePattern: "*.php"
+
+  - description: "Services"
+    outputPath: "services.md"
+    sources:
+      - type: file
+        description: "Services"
+        sourcePaths:
+          - app/Services
+        filePattern: "*.php"
+
+  - description: "Repositories"
+    outputPath: "repositories.md"
+    sources:
+      - type: file
+        description: "Repositories"
+        sourcePaths:
+          - app/Repositories
+        filePattern: "*.php"
+
+  - description: "Models"
+    outputPath: "models.md"
+    sources:
+      - type: file
+        description: "Models"
+        sourcePaths:
+          - app/Models
+        filePattern: "*.php"
+
+  - description: "Jobs"
+    outputPath: "jobs.md"
+    sources:
+      - type: file
+        description: "Jobs"
+        sourcePaths:
+          - app/Jobs
+        filePattern: "*.php"
+
+  - description: "Api"
+    outputPath: "api.md"
+    sources:
+      - type: file
+        description: "Api"
+        sourcePaths:
+          - app/Api
+        filePattern: "*.php"
+
+  - description: "Enums"
+    outputPath: "enums.md"
+    sources:
+      - type: file
+        description: "Enums"
+        sourcePaths:
+          - app/Enums
+        filePattern: "*.php"
+
+  - description: "Support"
+    outputPath: "support.md"
+    sources:
+      - type: file
+        description: "Support"
+        sourcePaths:
+          - app/Support
+        filePattern: "*.php"
+
+  - description: "Http"
+    outputPath: "http.md"
+    sources:
+      - type: file
+        description: "Http"
+        sourcePaths:
+          - app/Http
+        filePattern: "*.php"
+
+  - description: "Tests"
+    outputPath: "tests.md"
+    sources:
+      - type: file
+        description: "Tests"
+        sourcePaths:
+          - tests
+        filePattern: "*.php"
+
+  - description: "Contracts"
+    outputPath: "contracts.md"
+    sources:
+      - type: file
+        description: "Contracts"
+        sourcePaths:
+          - app/Contracts
+        filePattern: "*.php"
+
+  - description: "Database"
+    outputPath: "database.md"
+    sources:
+      - type: file
+        description: "Database"
+        sourcePaths:
+          - database
+        filePattern: "*.php"

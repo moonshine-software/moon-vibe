@@ -10,11 +10,9 @@ use App\Models\LargeLanguageModel;
 use App\Models\MoonShineUser;
 use App\Models\Project;
 use App\Models\ProjectSchema;
-use App\Repositories\ProjectRepository;
 use App\Services\GenerateSchemaService;
 use App\Services\LlmProviderBuilder;
 
-use App\Support\SchemaValidator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;

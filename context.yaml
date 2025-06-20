@@ -107,3 +107,12 @@ documents:
         sourcePaths:
           - database
         filePattern: "*.php"
+
+  - description: "Routes"
+    outputPath: "routes.md"
+    sources:
+      - type: file
+        description: "Routes"
+        sourcePaths:
+          - routes
+        filePattern: "*.php"

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\Role;
 use App\Support\ChangeLocale;
+use Database\Factories\MoonShineUserFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
 use Carbon\Carbon;
@@ -32,6 +33,8 @@ use MoonShine\Support\Enums\Color;
 class MoonShineUser extends BaseMoonShineUser
 {
     protected $table = 'moonshine_users';
+
+    protected $rememberTokenName = null;
 
     protected $fillable = [
         'email',
@@ -138,5 +141,10 @@ class MoonShineUser extends BaseMoonShineUser
             'info' => $generationsLeft === false ? '-' : (string) $generationsLeft,
             'color' => ($generationsLeft === false || $generationsLeft > 0) ? Color::GREEN : Color::RED
         ];
+    }
+
+    protected static function newFactory(): MoonShineUserFactory
+    {
+        return MoonShineUserFactory::new();
     }
 }

@@ -17,6 +17,7 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use App\MoonShine\Resources\LlmResource;
+use App\MoonShine\Resources\PromptResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -37,6 +38,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 ProjectSchemaResource::class,
                 SubscriptionPlanResource::class,
                 LlmResource::class,
+                PromptResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

@@ -1,8 +1,8 @@
 # Main Role: Generation of JSON Schema for MoonShine Admin Panel
 
-## English Translation
+Main role: Generation of the JSON schema for the MoonShine admin panel.
 
-Main role: Generation of the JSON schema for the MoonShine admin panel
+You are generating a schema for MoonShine admin panel resources. This schema creates a resource that allows performing CRUD operations on an entity using Laravel models and relationships in models.
 
 Schema generation, let's call it MAIN_SCHEMA:
 Start of MAIN_SCHEMA:

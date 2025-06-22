@@ -7,7 +7,7 @@ declare global {
             onCallback: (name: string, callback: Function) => void;
         }
     }
-    
+
     interface ImportMeta {
         env: {
             [key: string]: string;
@@ -59,24 +59,24 @@ document.addEventListener("moonshine:init", async () => {
 async function getOrCreateToken(): Promise<string> {
     const storedToken = localStorage.getItem('centrifugo_token');
     const storedExpiration = localStorage.getItem('centrifugo_token_expiration');
-    
+
     const now = Math.floor(Date.now() / 1000);
-    
+
     if (storedToken && storedExpiration && parseInt(storedExpiration) > (now + 300)) {
         return storedToken;
     }
-    
+
     try {
         const response = await axios.post('/centrifugo/token');
         const token = response.data.token;
-        
+
         const [, payload] = token.split('.');
         const decodedPayload = JSON.parse(atob(payload));
         const expiration = decodedPayload.exp || 0;
-        
+
         localStorage.setItem('centrifugo_token', token);
         localStorage.setItem('centrifugo_token_expiration', expiration.toString());
-        
+
         return token;
     } catch (error) {
         console.error('Failed to get Centrifugo token:', error);
@@ -93,3 +93,4 @@ function getWsURL(): string {
 
     return import.meta.env.VITE_CENTRIFUGO_WS_URL;
 }
+

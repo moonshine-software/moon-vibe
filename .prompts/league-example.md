@@ -1,0 +1,58 @@
+# Example of a Request and Generation of a League Application
+
+## Request
+Create an admin panel for managing sports leagues, tournaments, and teams.
+
+Entities and relationships:
+
+- Sport type
+
+Fields: Name, icon (optional).
+
+- Relationships: One sport type → many leagues.
+
+League
+
+- Fields: Name, description, logo (image), sport type (BelongsTo).
+- Relationships: League → many tournaments.
+
+Tournament
+
+- Fields: Name, league (BelongsTo), city (BelongsTo), dates (start/end), venue, stages (JSON or text field for description, e.g., "Group stage, Playoffs").
+
+Relationships:
+
+- Tournament → many stages (HasMany).
+- Tournament → many teams (ManyToMany).
+- Tournament → results (HasOne for podium: 1st, 2nd, 3rd places).
+
+Stage
+
+- Fields: Name, tournament (BelongsTo), start date, end date.
+- Relationships: Stage → many games (HasMany).
+
+Game
+
+- Fields: Stage (BelongsTo), home team (BelongsTo), away team (BelongsTo), score (e.g., "3:2"), date and time.
+
+Team
+
+- Fields: Name, description, logo (image), city (BelongsTo), sport type (BelongsTo).
+- Relationships: Team → many members (HasMany).
+
+Member
+
+- Fields: First name, last name, photo (image), gender (enum: male/female), contacts, team (BelongsTo).
+
+Tournament results
+
+- Fields: Tournament (BelongsTo), team, free-form result, sorting field
+
+City
+
+- Fields: Name, country
+
+
+## Correct Answer
+{"resources": [{"name": "City", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "Country", "type": "string", "column": "country", "hasFilter": true}], "menuName": "Cities"}, {"name": "SportType", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "Icon", "type": "string", "field": "Image", "column": "icon", "methods": ["nullable()"], "nullable": true, "required": false}], "menuName": "Sport Types"}, {"name": "League", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "Description", "type": "text", "field": "Textarea", "column": "description"}, {"name": "Logo", "type": "string", "field": "Image", "column": "logo", "methods": ["nullable()"], "nullable": true, "required": false}, {"name": "Sport Type", "type": "BelongsTo", "column": "sport_type_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "sport_types"}, "required": false}], "menuName": "Leagues"}, {"name": "Team", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "Description", "type": "text", "field": "Textarea", "column": "description"}, {"name": "Logo", "type": "string", "field": "Image", "column": "logo", "methods": ["nullable()"], "nullable": true, "required": false}, {"name": "City", "type": "BelongsTo", "column": "city_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "cities"}, "required": false}, {"name": "Sport Type", "type": "BelongsTo", "column": "sport_type_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "sport_types"}, "required": false}], "menuName": "Teams"}, {"name": "Tournament", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "League", "type": "BelongsTo", "column": "league_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "leagues"}, "required": false}, {"name": "City", "type": "BelongsTo", "column": "city_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "cities"}, "required": false}, {"name": "Start Date", "type": "date", "field": "Date", "column": "start_date"}, {"name": "End Date", "type": "date", "field": "Date", "column": "end_date"}, {"name": "Venue", "type": "string", "column": "venue"}, {"name": "Stages", "type": "HasMany", "column": "stages", "methods": ["creatable()"], "relation": {"table": "stages", "foreign_key": "tournament_id"}}, {"name": "Teams", "type": "BelongsToMany", "column": "teams", "methods": ["creatable()"], "relation": {"table": "teams", "foreign_key": "tournament_id"}}], "menuName": "Tournaments"}, {"name": "Stage", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Name", "type": "string", "column": "name", "hasFilter": true}, {"name": "Tournament", "type": "BelongsTo", "column": "tournament_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "tournaments"}, "required": false}, {"name": "Start Date", "type": "date", "field": "Date", "column": "start_date"}, {"name": "End Date", "type": "date", "field": "Date", "column": "end_date"}], "menuName": "Stages"}, {"name": "Game", "column": "id", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Stage", "type": "BelongsTo", "column": "stage_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "stages"}, "required": false}, {"name": "Home Team", "type": "BelongsTo", "column": "home_team_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "teams", "model_relation_name": "homeTeam"}, "required": false}, {"name": "Away Team", "type": "BelongsTo", "column": "away_team_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "teams", "model_relation_name": "awayTeam"}, "required": false}, {"name": "Score", "type": "string", "column": "score"}, {"name": "Date and Time", "type": "dateTime", "field": "Date", "column": "datetime"}], "menuName": "Games"}, {"name": "Member", "column": "last_name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "First Name", "type": "string", "column": "first_name"}, {"name": "Last Name", "type": "string", "column": "last_name"}, {"name": "Photo", "type": "string", "field": "Image", "column": "photo", "methods": ["nullable()"], "nullable": true, "required": false}, {"name": "Gender", "type": "tinyInteger", "field": "Select", "column": "gender", "methods": ["options([0 => 'Male', 1 => 'Female'])"]}, {"name": "Contacts", "type": "text", "field": "Textarea", "column": "contacts"}, {"name": "Team", "type": "BelongsTo", "column": "team_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "teams"}, "required": false}], "menuName": "Members"}, {"name": "TournamentResult", "column": "result", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Tournament", "type": "BelongsTo", "column": "tournament_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "tournaments"}, "required": false}, {"name": "Team", "type": "BelongsTo", "column": "team_id", "methods": ["nullable()"], "nullable": true, "relation": {"table": "teams"}, "required": false}, {"name": "Result", "type": "text", "field": "Textarea", "column": "result"}, {"name": "Sort", "type": "integer", "column": "sort", "methods": ["sortable()"]}], "menuName": "Tournament Results"}, {"name": "TournamentTeamPivot", "table": "team_tournament", "fields": [{"type": "id", "column": "id"}, {"type": "BelongsTo", "column": "tournament_id", "relation": {"table": "tournaments"}}, {"type": "BelongsTo", "column": "team_id", "relation": {"table": "teams"}}], "menuName": "Tournament Participants", "withModel": false, "withResource": false}]}
+

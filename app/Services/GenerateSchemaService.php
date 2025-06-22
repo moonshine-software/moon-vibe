@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 use App\Repositories\ProjectRepository;
+use App\Repositories\PromptRepository;
 use App\Support\SchemaValidator;
 use MoonShine\Rush\Enums\HtmlReloadAction;
 use MoonShine\Rush\Services\Rush;
@@ -20,6 +21,7 @@ readonly class GenerateSchemaService
 {
     public function __construct(
         private ProjectRepository $projectRepository,
+        private PromptRepository $promptRepository,
         private LlmProviderBuilder $llmProviderBuilder,
         private SchemaValidator $schemaValidator,
     ) {
@@ -101,8 +103,7 @@ readonly class GenerateSchemaService
      */
     private function getMessages(string $prompt, ProjectSchema $schema, bool $isCorrectPrompt): array
     {
-        /** @var string $mainPrompt */
-        $mainPrompt = file_get_contents(base_path('prompt_en.md'));
+        $mainPrompt = $this->promptRepository->getAllPrompts();
 
         if( !$isCorrectPrompt) {
             return [

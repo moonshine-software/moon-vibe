@@ -29,12 +29,9 @@ class Dashboard extends Page
      */
     protected function components(): iterable
 	{
-        $lang = App::getLocale();
 
-        $types = View::make("generate-page.examples.{$lang}.types");
-        $example1 = View::make("generate-page.examples.{$lang}.example-1");
-        $example2 = View::make("generate-page.examples.{$lang}.example-2");
-        $example3 = View::make("generate-page.examples.{$lang}.example-3");
+        $types = View::make("generate-page.examples.types");
+        $fields = View::make("generate-page.examples.fields");
 
         /** @var MoonShineUser $user */
         $user = auth('moonshine')->user();
@@ -77,19 +74,9 @@ class Dashboard extends Page
                         FlexibleRender::make($types),
                     ])
                 ]),
-                Tab::make(__('app.dashboard.example-1'), [
+                Tab::make(__('app.dashboard.fields'), [
                     Box::make([
-                        FlexibleRender::make($example1),
-                    ])
-                ]),
-                Tab::make(__('app.dashboard.example-2'), [
-                    Box::make([
-                        FlexibleRender::make($example2),
-                    ])
-                ]),
-                Tab::make(__('app.dashboard.example-3'), [
-                    Box::make([
-                        FlexibleRender::make($example3),
+                        FlexibleRender::make($fields),
                     ])
                 ])
             ])

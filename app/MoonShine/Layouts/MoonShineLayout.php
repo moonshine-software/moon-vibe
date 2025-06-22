@@ -35,6 +35,7 @@ use MoonShine\UI\Components\{Components,
     Layout\Wrapper,
     When};
 use App\MoonShine\Resources\LlmResource;
+use App\MoonShine\Resources\PromptResource;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -74,6 +75,8 @@ class MoonShineLayout extends CompactLayout
                 ->icon('square-3-stack-3d'),
             MenuItem::make(__('app.menu.llm'), LlmResource::class)
                 ->icon('light-bulb'),
+            MenuItem::make(__('app.menu.prompts'), PromptResource::class)
+                ->icon('pencil-square'),
             MenuItem::make(__('app.menu.settings'), SettingsPage::class)
                 ->icon('cog-8-tooth'),
             MenuItem::make(__('app.menu.about'), AboutPage::class)
@@ -84,7 +87,7 @@ class MoonShineLayout extends CompactLayout
                     static fn () => __('moonshine::ui.resource.admins_title'),
                     MoonShineUserResource::class
                 ),
-                MenuItem::make('Подписки', SubscriptionPlanResource::class),
+                MenuItem::make(__('app.menu.subscriptions'), SubscriptionPlanResource::class),
             ])->canSee(static fn(): bool => auth()->user()?->moonshine_user_role_id === Role::ADMIN),
         ];
     }

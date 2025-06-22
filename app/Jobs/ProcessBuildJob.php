@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Exceptions\BuildException;
+use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
 use Exception;
 use App\Models\Build;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\MoonShine\Components\ProjectBuildComponent;
+use Throwable;
 
 class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
 {
@@ -35,6 +37,16 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
      */
     public function handle(ChangeLocale $changeLocale): void
     {
+        $user = MoonShineUser::query()->where('id', $this->userId)->first();
+        if($user === null) {
+            throw new BuildException('User not found');
+        }
+
+        $buildRepository = (string) $user->getBuildSetting('repository', '');
+        if($buildRepository === '') {
+            throw new BuildException('The settings do not indicate a repository for creating an admin panel');
+        }
+
         $changeLocale->set($this->lang, isSetCookie: false);
 
         $projectSchema = ProjectSchema::query()->where('id', $this->schemaId)->first();
@@ -79,12 +91,19 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
                 }
             );
 
-            $path = $makeAdmin->handle();
-            
-            $build->update([
-                'status_id' => BuildStatus::COMPLETED,
-                'file_path' => $path
-            ]);
+            try {
+                $path = $makeAdmin->handle($buildRepository);
+                $build->update([
+                    'status_id' => BuildStatus::COMPLETED,
+                    'file_path' => $path
+                ]);
+            } catch (Throwable $e) {
+                $build->update([
+                    'status_id' => BuildStatus::ERROR,
+                    'errors' => 'Server error',
+                ]);
+                report($e);
+            }
 
             $build->refresh();
 

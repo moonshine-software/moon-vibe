@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 use App\Enums\SubscriptionPeriod;
+use Database\Factories\ProjectSchemaFactory;
+use Database\Factories\SubscriptionPlanFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +23,7 @@ use Carbon\Carbon;
  */
 class SubscriptionPlan extends Model
 {
+    /** @use HasFactory<SubscriptionPlanFactory> */
     use HasFactory;
 
     protected $fillable = [

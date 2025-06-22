@@ -109,7 +109,7 @@ class ProjectResource extends ModelResource
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
                     ActionButton::make(__('app.project.create'),
-                        url: fn(Project $model) => route('build', ['schemaId' => $model->getKey()])
+                        url: fn(ProjectSchema $model) => route('build', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
@@ -118,7 +118,7 @@ class ProjectResource extends ModelResource
                         )
                     ,
                     ActionButton::make(__('app.project.correct'),
-                        url: fn(Project $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
+                        url: fn(ProjectSchema $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
                             __('app.project.correction'),

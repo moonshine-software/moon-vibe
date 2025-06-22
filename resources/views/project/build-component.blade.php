@@ -18,8 +18,13 @@
                 </x-moonshine::progress-bar>
             </div>
             @if($build->file_path !== null)
-                <div>
+
                     <a href="{{ route('build.download', $build->id) }}" class="btn btn-primary">Download</a>
+                </div>
+            @endif
+            @if($build->status_id === \App\Enums\BuildStatus::ERROR)
+                <div>
+                    <button class="btn btn-error" style="cursor: inherit" disabled>{{ $build->errors ?? 'Error' }}</button>
                 </div>
             @endif
         </x-moonshine::layout.flex>

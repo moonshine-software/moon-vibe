@@ -49,10 +49,10 @@ readonly class MakeAdmin
         file_put_contents($this->directories->schemaFile, $this->schema);
     }
 
-    public function handle(): string
+    public function handle(string $buildRepository): string
     {
         $path = $this
-            ->cloneRepository()
+            ->cloneRepository($buildRepository)
             ->installDependencies()
             ->installMoonshineBuilder()
             ->installMarkdown()
@@ -90,13 +90,12 @@ readonly class MakeAdmin
         return $this;
     }
 
-    private function cloneRepository(): self
+    private function cloneRepository(string $buildRepository): self
     {
-        // TODO github config
         $this->alert(__('app.build.cloning_repository'), 7);
         
         return $this->runProcess(
-            ['git', 'clone', 'https://github.com/dev-lnk/moonshine-blank.git', $this->directories->appProjectDirectory],
+            ['git', 'clone', $buildRepository, $this->directories->appProjectDirectory],
             'Failed to clone repository'
         );
     }

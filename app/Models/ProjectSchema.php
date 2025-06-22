@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 use App\Enums\SchemaStatus;
+use Database\Factories\ProjectSchemaFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +23,7 @@ use Carbon\Carbon;
  */ 
 class ProjectSchema extends Model
 {
+    /** @use HasFactory<ProjectSchemaFactory> */
     use HasFactory;
 
     protected $fillable = [

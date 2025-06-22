@@ -116,3 +116,12 @@ documents:
         sourcePaths:
           - routes
         filePattern: "*.php"
+
+  - description: "Config"
+    outputPath: "config.md"
+    sources:
+      - type: file
+        description: "Config"
+        sourcePaths:
+          - routes
+        filePattern: "*.php"

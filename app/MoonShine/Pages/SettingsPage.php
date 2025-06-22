@@ -97,24 +97,24 @@ class SettingsPage extends Page
 
         $userFields = array_merge($userFields, $userPasswordsFields);
 
-//        $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
+        $user = MoonShineAuth::getGuard()->user() ?? MoonShineAuth::getModel();
 
-//        $generateFields = [
-//            Number::make(__('app.settings.max_attempts'), 'attempts')
-//                ->default($user->settings['generation']['attempts'] ?? 5),
-//        ];
+        $generateFields = [
+            Number::make(__('app.settings.max_attempts'), 'attempts')
+                ->default($user->settings['generation']['attempts'] ?? 5),
+        ];
 
         return [
             Box::make([
                 Tabs::make([
                     Tab::make(__('app.settings.profile'), $userFields),
-//                    Tab::make(__('app.settings.generation'), $generateFields),
-//                    Tab::make(__('app.settings.deployment'), [
-//                        Text::make(__('app.settings.repository'), 'repository')
-//                            ->default(
-//                                $user->settings['build']['repository'] ?? 'https://github.com/dev-lnk/moonshine-blank.git'
-//                            ),
-//                    ]),
+                    Tab::make(__('app.settings.generation'), $generateFields),
+                    Tab::make(__('app.settings.deployment'), [
+                        Text::make(__('app.settings.repository'), 'repository')
+                            ->default(
+                                $user->settings['build']['repository'] ?? 'https://github.com/dev-lnk/moonshine-blank.git'
+                            ),
+                    ]),
                 ]),
             ]),
         ];

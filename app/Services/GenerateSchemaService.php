@@ -102,7 +102,7 @@ readonly class GenerateSchemaService
     private function getMessages(string $prompt, ProjectSchema $schema, bool $isCorrectPrompt): array
     {
         /** @var string $mainPrompt */
-        $mainPrompt = file_get_contents(base_path('prompt.md'));
+        $mainPrompt = file_get_contents(base_path('prompt_en.md'));
 
         if( !$isCorrectPrompt) {
             return [

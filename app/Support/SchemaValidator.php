@@ -20,7 +20,7 @@ class SchemaValidator
 
         try {
             if (! json_validate($schema)) {
-                return 'Некорректная JSON схема';
+                return 'Invalid JSON schema';
             }
 
             $data = json_decode($schema, true);
@@ -30,23 +30,23 @@ class SchemaValidator
             $codeStructures = $factory->makeStructures();
 
             if($codeStructures->codeStructures() === []) {
-                return 'Не удалось получить ни одного ресурса';
+                return 'Failed to obtain any resources';
             }
 
             $tableResourceMap = $this->getTableResourceMap($codeStructures->codeStructures());
 
             foreach ($codeStructures->codeStructures() as $index => $codeStructure) {
                 if($codeStructure->columns() === []) {
-                    $errors[] = "В ресурсе {$codeStructure->entity()->singular()} не удалось загрузить поля";
+                    $errors[] = "Failed to load fields in the resource {$codeStructure->entity()->singular()}";
                 }
 
                 if (!preg_match('/^[a-zA-Z]+$/', $codeStructure->entity()->raw())) {
-                    $errors[] = "Ресурс '{$codeStructure->entity()->raw()}' - параметр ресурса name должен содержать только латинские буквы";
+                    $errors[] = "Resource '{$codeStructure->entity()->raw()}' - the resource parameter name must contain only Latin letters";
                 }
 
                 // PHP 8 Error
                 if($codeStructure->entity()->ucFirstSingular() === 'Match') {
-                    $errors[] = "Ресурс не может иметь параметр name:Match. Необходимо изменить ресурс на Game, таблицу matches изменить на games, и обновить все существующие связи.";
+                    $errors[] = "The resource cannot have the parameter name:Match. You need to change the resource to Game, rename the matches table to games, and update all existing relations.";
                 }
 
                 $relationError = $this->checkRelation(
@@ -68,7 +68,7 @@ class SchemaValidator
                     if($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
                             if(! str_contains($methodName, "(")) {
-                                $errors[] = "{$column->column()} (resourceMethod - $methodName) - в методе ресурса должны быть указаны скобки, например $methodName()";
+                                $errors[] = "{$column->column()} (resourceMethod - $methodName) - the resource method must include parentheses, for example $methodName()";
                             }
                         }
                     }
@@ -76,7 +76,7 @@ class SchemaValidator
                     if($column->getMigrationMethods() !== []) {
                         foreach ($column->getMigrationMethods() as $methodName) {
                             if(! str_contains($methodName, "(")) {
-                                $errors[] = "{$column->column()} (migrationMethod - $methodName) - в методе миграции должны быть указаны скобки, например $methodName()";
+                                $errors[] = "{$column->column()} (migrationMethod - $methodName) - the migration method must include parentheses, for example $methodName()";
                             }
                         }
                     }
@@ -107,7 +107,7 @@ class SchemaValidator
                     ;
 
                     if(! class_exists($field)) {
-                        $errors[] = "{$column->column()} - поля $field не существует в MoonShine";
+                        $errors[] = "{$column->column()} - the field $field does not exist in MoonShine";
                     }
 
                     if($column->getResourceMethods() !== []) {
@@ -117,10 +117,10 @@ class SchemaValidator
                             try {
                                 $class = new ReflectionClass($field);
                                 if(! $class->hasMethod($method)) {
-                                    $errors[] = "{$column->column()} - метод $method не существует для поля $field";
+                                    $errors[] = "{$column->column()} - the method $method does not exist for the field $field";
                                 }
                             } catch (Throwable $e) {
-                                $errors[] = "{$column->column()}->$methodName - ошибка проверки метода: " . $e->getMessage();
+                                $errors[] = "{$column->column()}->$methodName - method validation error: " . $e->getMessage();
                             }
                         }
                     }
@@ -129,12 +129,11 @@ class SchemaValidator
         } catch (Throwable $e) {
             $error = $e->getMessage();
             if($error === 'No resources array found.') {
-                $errors[] = "В схеме отсутствует основной параметр 'resources'";
+                $errors[] = "The main parameter 'resources' is missing from the schema";
             } else {
                 $errors[] = $e->getMessage();
             }
         }
-
         if($errors === []) {
             return '';
         }
@@ -172,7 +171,7 @@ class SchemaValidator
         sort($newPivotTables);
 
         if($newPivotTables !== $pivotTables) {
-            return "Ошибка в ресурсе {$codeStructure->entity()->ucFirstSingular()}, pivot таблица задана не по конвенции laravel (таблицы в алфавитном порядке)";
+            return "Error in resource {$codeStructure->entity()->ucFirstSingular()}, the pivot table is not defined according to Laravel convention (tables must be in alphabetical order)";
         }
 
         return '';
@@ -201,12 +200,12 @@ class SchemaValidator
         $resourceName = str($column->relation()->table()->camel())->singular()->ucfirst()->value();
         foreach ($codeStructures as $checkIndex => $codeStructure) {
             if($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
-                $errors[] = "Ресурс $resourceName должен быть выше $checkName в списке ресурсов";
+                $errors[] = "Resource $resourceName must be above $checkName in the resource list";
             }
         }
 
         if($column->column() !== '' && ! str_contains($column->column(), '_id')) {
-            $errors[] = "Поле {$column->column()} ресурса $checkName должно заканчиваться на _id для построения корректной связи";
+            $errors[] = "The field {$column->column()} of resource $checkName must end with _id to build a correct relation";
         }
 
         if(
@@ -214,7 +213,7 @@ class SchemaValidator
             && $column->getModelClass() === "\\MoonShine\\Laravel\\Models\\MoonshineUser"
             && $column->column() !== 'moonshine_user_id'
         ) {
-            $errors[] = "Поле {$column->column()} ресурса $checkName должно иметь значение column: moonshine_user_id";
+            $errors[] = "The field {$column->column()} of resource $checkName must have the value column: moonshine_user_id";
         }
 
         return $errors === [] ? '' : implode(". ", $errors);
@@ -248,7 +247,7 @@ class SchemaValidator
         }
 
         if(! $isValidTable) {
-            $errors[] = "Для таблицы $relationTable должен быть создан ресурс";
+            $errors[] = "A resource must be created for the table $relationTable";
         }
 
         return $errors === [] ? '' : implode(". ", $errors);
@@ -266,13 +265,12 @@ class SchemaValidator
         $errors = [];
 
         $relationModelMethods = [];
-
         foreach ($columnStructures as $column) {
             if($column->relation() === null) {
                 continue;
             }
             if(in_array($column->getModelRelationName(), $relationModelMethods)) {
-                $errorRelationName = "Ошибка, в ресурсе $checkName у двух отношений одинаковое имя {$column->getModelRelationName()}, необходимо задать уникальное имя отношения для каждого поля, с помощью параметра model_relation_name внутри параметра relation";
+                $errorRelationName = "Error: in resource $checkName, two relations have the same name {$column->getModelRelationName()}; you must specify a unique relation name for each field using the model_relation_name parameter inside the relation parameter";
                 if(! in_array($errorRelationName, $errors)) {
                     $errors[] = $errorRelationName;
                 }
@@ -285,9 +283,9 @@ class SchemaValidator
                 $tableName !== 'moonshine_users'
                 && ! isset($tableResourceMap[$tableName])
             ) {
-                $errorTable = "Для ресурса $checkName у поля {$column->column()} задана таблица $tableName, у которой не создан ресурс";
+                $errorTable = "For resource $checkName, the field {$column->column()} specifies the table $tableName, for which no resource has been created";
                 if($column->type() === SqlTypeMap::BELONGS_TO_MANY) {
-                    $errorTable .= " Для поля BelongsToMany необходимо создать связывающий Pivot ресурс с необходимой таблицей.";
+                    $errorTable .= " For the BelongsToMany field, you need to create a linking Pivot resource with the required table.";
                 }
                 $errors[] = $errorTable;
             }

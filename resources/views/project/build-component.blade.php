@@ -18,7 +18,7 @@
                 </x-moonshine::progress-bar>
             </div>
             @if($build->file_path !== null)
-
+                <div>
                     <a href="{{ route('build.download', $build->id) }}" class="btn btn-primary">Download</a>
                 </div>
             @endif

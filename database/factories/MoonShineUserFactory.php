@@ -25,10 +25,12 @@ class MoonShineUserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'moonshine_user_role_id' => Role::USER->value,
+            'moonshine_user_role_id' => Role::ADMIN->value,
             'lang' => 'en',
             'generations_used' => 0,
-            'subscription_end_date' => now()->addMonth(),
+            'avatar' => '',
+            'subscription_plan_id' => null,
+            'subscription_end_date' => null,
         ];
     }
 

@@ -18,11 +18,11 @@ class ProjectFormPage extends FormPage
             (int) auth('moonshine')->user()?->id,
             (int) $this->getResource()->getItemID()
         );
-    
+
+        $buildComponents = $buildComponent === '' ? [] : [$buildComponent];
+
         return [
-            Div::make([
-                $buildComponent
-            ])->customAttributes([
+            Div::make($buildComponents)->customAttributes([
                 'id' => 'build-component-' . (int) $this->getResource()->getItemID()
             ]),
             ...parent::components(),

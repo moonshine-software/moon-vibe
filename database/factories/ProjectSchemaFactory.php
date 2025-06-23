@@ -20,18 +20,7 @@ class ProjectSchemaFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'schema' => json_encode([
-                'resources' => [
-                    [
-                        'entity' => 'User',
-                        'table' => 'users',
-                        'columns' => [
-                            ['name' => 'name', 'type' => 'string'],
-                            ['name' => 'email', 'type' => 'string'],
-                        ]
-                    ]
-                ]
-            ]),
+            'schema' => '{"resources": [{"name": "StageTest", "column": "name", "fields": [{"type": "id", "column": "id", "methods": ["sortable()"]}, {"name": "Title", "type": "string", "column": "name", "hasFilter": true}, {"name": "Order", "type": "integer", "column": "order", "methods": ["sortable()"], "migration": {"methods": ["default(0)"]}}], "menuName": "Stages"}]}',
             'first_prompt' => fake()->paragraph(),
             'status_id' => SchemaStatus::PENDING->value,
             'error' => null,

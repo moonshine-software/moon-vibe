@@ -16,17 +16,22 @@ use App\Services\LlmProviderBuilder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
+use Mockery\LegacyMockInterface;
+use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /** Made using AI */
 class GenerateSchemaServiceTest extends TestCase
 {
-    use RefreshDatabase;
+    /** @var GenerateSchemaService|LegacyMockInterface */
+    private GenerateSchemaService|LegacyMockInterface $service;
 
-    private GenerateSchemaService $service;
-    private SchemaGenerateContract $mockSchemaGenerator;
-    private LlmProviderBuilder $llmProviderBuilder;
+    /** @var LegacyMockInterface|SchemaGenerateContract */
+    private SchemaGenerateContract|LegacyMockInterface $mockSchemaGenerator;
+
+    /** @var LegacyMockInterface|LlmProviderBuilder */
+    private LlmProviderBuilder|LegacyMockInterface $llmProviderBuilder;
 
     private string $validSchemaResult;
     

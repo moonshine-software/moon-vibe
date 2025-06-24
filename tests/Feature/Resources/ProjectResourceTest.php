@@ -16,10 +16,14 @@ use MoonShine\Laravel\Pages\Crud\IndexPage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class ProjectResourceFormPageTest extends TestCase
+class ProjectResourceTest extends TestCase
 {
     private MoonShineUser $user;
+
     private Project $project;
+
+    private ProjectSchema $schema;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -42,7 +46,7 @@ class ProjectResourceFormPageTest extends TestCase
     {
         // Act
         $response = $this->actingAs($this->user)
-            ->get(toPage(IndexPage::class, ProjectResource::class));
+            ->get((string) toPage(IndexPage::class, ProjectResource::class));
 
         // Assert
         $response->assertStatus(200);
@@ -54,7 +58,7 @@ class ProjectResourceFormPageTest extends TestCase
     {
         // Act
         $response = $this->actingAs($this->user)
-            ->get(toPage(ProjectFormPage::class, ProjectResource::class, [
+            ->get((string) toPage(ProjectFormPage::class, ProjectResource::class, [
                 'resourceItem' => $this->project->id,
             ]));
 

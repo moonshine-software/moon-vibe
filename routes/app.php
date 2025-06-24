@@ -16,6 +16,7 @@ Route::controller(AiController::class)
 
 Route::controller(BuildController::class)->prefix('/build')->name('build')->middleware(['lang'])
     ->group(function() {
-        Route::post('{schemaId}', 'index');
+        Route::post('/for-download/{schemaId}', 'forDownload')->name('.for-download');
+        Route::post('/for-test/{schemaId}', 'forTest')->name('.for-test');
         Route::get('{buildId}/download', 'download')->name('.download');
     });

@@ -50,8 +50,8 @@ return [
     ],
     'project' => [
         'schemas' => 'Схемы',
-        'create' => 'Создать проект',
-        'build_confirm' => 'Выполнить построение проекта?',
+        'download' => 'Загрузить проект',
+        'download_confirm' => 'Выполнить построение проекта для его загрузки?',
         'correct' => 'Исправить',
         'correction' => 'Исправление схемы',
         'prompt' => 'Запрос'
@@ -74,7 +74,8 @@ return [
         'status' => [
             'in_progress' => 'В процессе',
             'error' => 'Ошибка',
-            'completed' => 'Завершено',
+            'for_download' => 'Completed for download',
+            'for_test' => 'Completed for test',
         ],
     ],
     'auth' => [

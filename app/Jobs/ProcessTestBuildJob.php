@@ -20,7 +20,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\MoonShine\Components\ProjectBuildComponent;
 use Throwable;
 
-class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
+class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
 {
     use Queueable;
 
@@ -88,13 +88,14 @@ class ProcessBuildJob implements ShouldQueue, ShouldBeUnique
                         '#build-component-' . $build->projectSchema->project->id,
                         (string) ProjectBuildComponent::fromBuild($build, $percent, $alert)
                     );
-                }
+                },
+                appProjectDirectory: base_path('generate'),
             );
 
             try {
-                $path = $makeAdmin->handle($buildRepository);
+                $path = $makeAdmin->handleForTest($buildRepository);
                 $build->update([
-                    'status_id' => BuildStatus::COMPLETED,
+                    'status_id' => BuildStatus::FOR_TEST,
                     'file_path' => $path
                 ]);
             } catch (Throwable $e) {

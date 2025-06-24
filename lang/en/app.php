@@ -55,8 +55,10 @@ return [
     ],
     'project' => [
         'schemas' => 'Schemas',
-        'create' => 'Create Project',
-        'build_confirm' => 'Execute project build?',
+        'download' => 'Download project',
+        'download_confirm' => 'Start building a project to download it?',
+        'test' => 'Testing project',
+        'test_confirm' => 'Start building a project to test it?',
         'correct' => 'Correct',
         'correction' => 'Schema Correction',
         'prompt' => 'Prompt'
@@ -76,10 +78,15 @@ return [
         'archiving_directory' => 'Archiving directory',
         'removing_directory' => 'Removing directory',
         'component_title' => 'Project assembly',
+        'copy_env' => 'Copy .env',
+        'env_settings' => 'Set .env values',
+        'migrate_fresh' => 'Fresh test database',
+        'chmod' => 'Make permissions',
         'status' => [
             'in_progress' => 'In progress',
             'error' => 'Error',
-            'completed' => 'Completed',
+            'for_download' => 'Completed for download',
+            'for_test' => 'Completed for test',
         ],
     ],
     'auth' => [

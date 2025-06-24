@@ -17,9 +17,14 @@
                     {{ $status }}: {{ $buildPercent }}%
                 </x-moonshine::progress-bar>
             </div>
-            @if($build->file_path !== null)
+            @if($build->status_id === \App\Enums\BuildStatus::FOR_DOWNLOAD)
                 <div>
                     <a href="{{ route('build.download', $build->id) }}" class="btn btn-primary">Download</a>
+                </div>
+            @endif
+            @if($build->status_id === \App\Enums\BuildStatus::FOR_TEST)
+                <div>
+                    <a href="{{ config('app.url') }}/generate/" target="_blank" class="btn btn-primary">Test</a>
                 </div>
             @endif
             @if($build->status_id === \App\Enums\BuildStatus::ERROR)

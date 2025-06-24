@@ -108,13 +108,22 @@ class ProjectResource extends ModelResource
             )->nullable(),
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
-                    ActionButton::make(__('app.project.create'),
-                        url: fn(ProjectSchema $model) => route('build', ['schemaId' => $model->getKey()])
+                    ActionButton::make(__('app.project.download'),
+                        url: fn(ProjectSchema $model) => route('build.for-download', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
                             '',
-                            __('app.project.build_confirm'),
+                            __('app.project.download_confirm'),
+                        )
+                    ,
+                    ActionButton::make(__('app.project.test'),
+                        url: fn(ProjectSchema $model) => route('build.for-test', ['schemaId' => $model->getKey()])
+                    )
+                        ->async(HttpMethod::POST)
+                        ->withConfirm(
+                            '',
+                            __('app.project.test_confirm'),
                         )
                     ,
                     ActionButton::make(__('app.project.correct'),

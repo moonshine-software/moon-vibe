@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTestBuildJob;
 use App\Models\Build;
-use App\Jobs\ProcessBuildJob;
+use App\Jobs\ProcessDownloadBuildJob;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -12,9 +13,9 @@ use App\Enums\BuildStatus;
 
 class BuildController extends MoonShineController
 {
-    public function index(int $schemaId): Response
+    public function forDownload(int $schemaId): Response
     {
-        dispatch(new ProcessBuildJob(
+        dispatch(new ProcessDownloadBuildJob(
             $schemaId,
             (int) $this->auth()->user()?->id,
             app()->getLocale())
@@ -22,7 +23,18 @@ class BuildController extends MoonShineController
 
         return response()->noContent(200);
     }
-    
+
+    public function forTest(int $schemaId): Response
+    {
+        dispatch(new ProcessTestBuildJob(
+            $schemaId,
+            (int) $this->auth()->user()?->id,
+            app()->getLocale())
+        );
+
+        return response()->noContent(200);
+    }
+
     public function download(int $buildId): BinaryFileResponse|RedirectResponse
     {
         $build = Build::query()->where('id', $buildId)->first();
@@ -31,7 +43,7 @@ class BuildController extends MoonShineController
             return back()->with('error', 'Сборка не найдена');
         }
         
-        if ($build->status_id !== BuildStatus::COMPLETED) {
+        if ($build->status_id !== BuildStatus::FOR_DOWNLOAD) {
             return back()->with('error', 'Сборка еще не готова или завершилась с ошибкой');
         }
         

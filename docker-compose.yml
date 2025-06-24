@@ -5,7 +5,7 @@ services:
         project_dir: ${APP_PATH}
       context: .
       dockerfile: ./docker/dockerfiles/nginx/Dockerfile
-      target: dev
+      target: nginx
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
     ports:
       - "${APP_WEB_PORT}:80"

@@ -12,15 +12,14 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use MoonShine\Laravel\Exceptions\MoonShineNotFoundException;
 use MoonShine\Laravel\Forms\FiltersForm;
 use MoonShine\Laravel\Forms\LoginForm;
-use MoonShine\Laravel\Http\Middleware\ChangeLocale;
 use MoonShine\Laravel\Pages\ErrorPage;
 use MoonShine\Laravel\Pages\LoginPage;
 
 
 return [
     'title' => env('MOONSHINE_TITLE', 'Ms-Builder'),
-    'logo' => 'vendor/moonshine/logo.svg',
-    'logo_small' => 'vendor/moonshine/logo-small.svg',
+    'logo' => 'icon.png',
+    'logo_small' => 'icon.png',
 
 
     // Default flags

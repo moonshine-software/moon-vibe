@@ -26,6 +26,7 @@ use MoonShine\UI\Components\{Components,
     Layout\Body,
     Layout\Content,
     Layout\Div,
+    Layout\Favicon,
     Layout\Flash,
     Layout\Header,
     Layout\Html,
@@ -188,7 +189,22 @@ class MoonShineLayout extends CompactLayout
 
     protected function getProfileComponent(bool $sidebar = false): Profile
     {
-        return Profile::make(logOutRoute: route('logout'), withBorder: $sidebar);
+        return Profile::make(
+            logOutRoute: route('logout'),
+            avatar: fn() => '/icon.png',
+            withBorder: $sidebar
+        );
+    }
+
+    protected function getFaviconComponent(): Favicon
+    {
+        return Favicon::make([
+            'apple-touch' => $this->getAssetManager()->getAsset('vendor/moonshine/apple-touch-icon.png'),
+            '32' => $this->getAssetManager()->getAsset('favicon.ico'),
+            '16' => $this->getAssetManager()->getAsset('favicon.ico'),
+            'safari-pinned-tab' => $this->getAssetManager()->getAsset('vendor/moonshine/safari-pinned-tab.svg'),
+            'web-manifest' => $this->getAssetManager()->getAsset('vendor/moonshine/site.webmanifest'),
+        ]);
     }
 
     protected function getHeaderComponent(): Header

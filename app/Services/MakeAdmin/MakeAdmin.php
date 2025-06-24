@@ -89,6 +89,10 @@ readonly class MakeAdmin
 
         $env = file_get_contents($this->directories->appProjectDirectory . '/.env');
 
+        if($env === false){
+            return $this;
+        }
+
         $env = str_replace('COMPOSE_PROJECT_NAME=moonshine-blank', 'COMPOSE_PROJECT_NAME=admin-builder', $env);
         $env = str_replace('DB_DATABASE=my_database', 'DB_DATABASE=my_generate', $env);
         $env = str_replace('QUEUE_CONNECTION=redis', 'QUEUE_CONNECTION=sync', $env);
@@ -126,6 +130,7 @@ readonly class MakeAdmin
      * @param list<string> $command
      * @param string      $errorMessage
      * @param string|null $cwd
+     * @param array<string, string> $env
      *
      * @return self
      */

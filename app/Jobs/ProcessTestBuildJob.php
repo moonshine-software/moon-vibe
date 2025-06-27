@@ -2,23 +2,24 @@
 
 namespace App\Jobs;
 
-use App\Enums\BuildStatus;
-use App\Exceptions\BuildException;
+use Exception;
+use Throwable;
 use App\Models\Build;
+use App\Enums\BuildStatus;
+use Psr\Log\LoggerInterface;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
-use App\MoonShine\Components\ProjectBuildComponent;
-use App\Services\MakeAdmin\MakeAdmin;
-use App\Services\SchemaValidator;
 use App\Support\ChangeLocale;
-use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use App\Services\SchemaValidator;
 use MoonShine\Rush\Services\Rush;
-use Throwable;
+use App\Exceptions\BuildException;
+use Illuminate\Support\Facades\Log;
+use App\Services\MakeAdmin\MakeAdmin;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use App\MoonShine\Components\ProjectBuildComponent;
 
 class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
 {
@@ -35,7 +36,7 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
     /**
      * @throws BuildException
      */
-    public function handle(ChangeLocale $changeLocale): void
+    public function handle(ChangeLocale $changeLocale, LoggerInterface $logger): void
     {
         $user = MoonShineUser::query()->where('id', $this->userId)->first();
         if($user === null) {
@@ -83,6 +84,7 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
             $makeAdmin = new MakeAdmin(
                 $projectSchema->schema,
                 Storage::disk('local')->path('builds/' . $build->moonshine_user_id),
+                logger: $logger,
                 alertFunction: function(string $alert, int $percent) use ($build): void {
                     Rush::events()->htmlReload(
                         '#build-component-' . $build->projectSchema->project->id,

@@ -28,7 +28,7 @@ class LoginTest extends TestCase
     {
         $user = MoonShineUser::factory()->create([
             'email' => 'test@mail.com',
-            'password' => Hash::make(12345)
+            'password' => Hash::make('12345')
         ]);
 
         $response = $this->post(route('authenticate'), [

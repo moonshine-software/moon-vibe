@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pages;
+namespace Tests\Feature\Pages;
 
 use App\Enums\LlmProvider;
 use App\Models\LargeLanguageModel;

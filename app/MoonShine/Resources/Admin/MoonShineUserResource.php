@@ -89,7 +89,7 @@ class MoonShineUserResource extends ModelResource
                 resource: SubscriptionPlanResource::class,
             ),
 
-            Preview::make('Expiration Date', formatted: static fn (MoonshineUser $model) => $model->subscription_end_date->format('d.m.Y')),
+            Date::make('Expiration Date', 'subscription_end_date')->format('d.m.Y'),
 
             Email::make(__('moonshine::ui.resource.email'), 'email')
                 ->sortable(),

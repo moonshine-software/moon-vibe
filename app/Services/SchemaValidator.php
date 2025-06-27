@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Support;
+namespace App\Services;
 
-use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructure;
-use DevLnk\MoonShineBuilder\Support\TypeMap;
-use Throwable;
-use ReflectionClass;
 use DevLnk\MoonShineBuilder\Enums\SqlTypeMap;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\CodeStructure;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\ColumnStructure;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use DevLnk\MoonShineBuilder\Support\TypeMap;
+use ReflectionClass;
+use Throwable;
 
 class SchemaValidator
 {

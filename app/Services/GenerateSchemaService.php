@@ -8,7 +8,6 @@ use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 use App\Repositories\ProjectRepository;
 use App\Repositories\PromptRepository;
-use App\Support\SchemaValidator;
 use MoonShine\Rush\Enums\HtmlReloadAction;
 use MoonShine\Rush\Services\Rush;
 use MoonShine\Support\AlpineJs;

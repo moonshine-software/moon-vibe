@@ -6,11 +6,11 @@ namespace App\MoonShine\Resources;
 
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
-
+use App\Services\SchemaValidator;
 use App\Services\SimpleSchema;
-use App\Support\SchemaValidator;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 use MoonShine\Laravel\Enums\Action;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
@@ -20,7 +20,6 @@ use MoonShine\Support\ListOf;
 use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
-use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Textarea;
 

@@ -2,22 +2,22 @@
 
 namespace App\Jobs;
 
+use App\Enums\BuildStatus;
 use App\Exceptions\BuildException;
+use App\Models\Build;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
-use Exception;
-use App\Models\Build;
-use App\Enums\BuildStatus;
-use App\Support\ChangeLocale;
-use Illuminate\Bus\Queueable;
-use App\Support\SchemaValidator;
-use MoonShine\Rush\Services\Rush;
-use Illuminate\Support\Facades\Log;
-use App\Services\MakeAdmin\MakeAdmin;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\MoonShine\Components\ProjectBuildComponent;
+use App\Services\MakeAdmin\MakeAdmin;
+use App\Services\SchemaValidator;
+use App\Support\ChangeLocale;
+use Exception;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use MoonShine\Rush\Services\Rush;
 use Throwable;
 
 class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique

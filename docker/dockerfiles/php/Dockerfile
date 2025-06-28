@@ -61,7 +61,6 @@ RUN pecl install xdebug-3.4.4 && \
 COPY . .
 
 RUN chmod -R 775 ./bootstrap/cache && chmod g+w /var/www/app/storage && chmod g+s /var/www/app/storage
-RUN find /var/www/app/storage -type d -exec chmod g+s {} \;
 
 COPY ./docker/config/php/entrypoint-dev.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -82,7 +81,6 @@ RUN composer dump-autoload --optimize && \
     composer check-platform-reqs
 
 RUN chmod -R 775 ./bootstrap/cache && chmod g+w /var/www/app/storage && chmod g+s /var/www/app/storage
-RUN find /var/www/app/storage -type d -exec chmod g+s {} \;
 
 FROM build AS prod
 COPY ./docker/config/php/entrypoint-prod.sh /usr/local/bin/entrypoint.sh

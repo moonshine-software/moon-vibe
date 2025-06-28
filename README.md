@@ -18,6 +18,12 @@ make install
 make build
 ```
 
+Then you can run the project with the following command:
+
+```bash
+make up
+```
+
 ## 🎯 What is MoonShine AI Admin Generator?
 
 This application revolutionizes the way you create Laravel admin panels by combining the power of **MoonShine 3** with **artificial intelligence**. Simply describe your project requirements in natural language, and watch as our AI generates a complete, working admin panel with:

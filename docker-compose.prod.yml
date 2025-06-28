@@ -1,0 +1,101 @@
+services:
+  nginx:
+    image: ${DOCKER_HUB_USER}/${COMPOSE_PROJECT_NAME}-nginx:${IMAGE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    restart: unless-stopped
+    volumes:
+      - ./.env:${APP_PATH}/.env
+      - ./docker/config/nginx/production/nginx.conf:/etc/nginx/nginx.conf
+      - type: volume
+        source: storage
+        target: ${APP_PATH}/storage
+    ports:
+      - "${APP_WEB_PORT}:80"
+    depends_on:
+      - php
+
+  php:
+    image: ${DOCKER_HUB_USER}/${COMPOSE_PROJECT_NAME}-php:${IMAGE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}-php
+    restart: unless-stopped
+    volumes:
+      - ./.env:${APP_PATH}/.env
+      - ./docker/config/php/production/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/config/php/production/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
+      - type: volume
+        source: storage
+        target: ${APP_PATH}/storage
+    depends_on:
+      - db
+      - redis
+
+#  scheduler:
+#    image: ${DOCKER_HUB_USER}/${COMPOSE_PROJECT_NAME}-scheduler:${IMAGE_TAG}
+#    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
+#    volumes:
+#      - ./.env:${APP_PATH}/.env
+#      - ./docker/config/php/production/php.ini:/usr/local/etc/php/conf.d/php.ini
+#      - ./docker/config/php/production/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
+#      - type: volume
+#        source: storage
+#        target: ${APP_PATH}/storage
+#    restart: unless-stopped
+#    depends_on:
+#      - php
+
+  worker:
+    image: ${DOCKER_HUB_USER}/${COMPOSE_PROJECT_NAME}-worker:${IMAGE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}-worker
+    volumes:
+      - ./.env:${APP_PATH}/.env
+      - ./docker/config/php/production/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/config/php/production/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./docker/config/php/production/supervisord.conf:/etc/supervisor/supervisord.conf
+      - type: volume
+        source: storage
+        target: ${APP_PATH}/storage
+    depends_on:
+      - php
+
+  db:
+    image: ${DOCKER_HUB_USER}/${COMPOSE_PROJECT_NAME}-db:${IMAGE_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    restart: unless-stopped
+    volumes:
+      - ./docker/config/mysql/production/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+      - type: volume
+        source: mysqldata
+        target: /var/lib/mysql
+    ports:
+      - "${APP_MYSQL_PORT}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
+
+  redis:
+    image: redis:7.0.11-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    restart: unless-stopped
+    volumes:
+      - type: volume
+        source: redisdata
+        target: /data
+    ports:
+      - "${APP_REDIS_PORT}:6379"
+
+  centrifugo:
+    container_name: ${COMPOSE_PROJECT_NAME}-centrifugo
+    image: centrifugo/centrifugo:v6.1.0
+    volumes:
+      - ./docker/config/centrifugo/production:/centrifugo
+    command: centrifugo -c config.json
+    ports:
+      - "${CENTRIFUGO_CLIENT_PORT}:8000"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+
+volumes:
+  storage:
+  mysqldata:
+  redisdata:

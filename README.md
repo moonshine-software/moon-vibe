@@ -1,182 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
 
-# Laravel 12 blank project
+# 🚀 MoonVibe - MoonShine AI Admin Generator
 
----
-| Included         |
-|------------------|
-| ✅ Basic setting  |
-| ✅ PhpStan        |
-| ✅ Php CS Fixer   |
-| ✅ TypeScript     |
-| ✅ Xdebug         |
-| ✅ Docker         |
-| ✅ GitHub actions |
+> **Generate beautiful Laravel admin panels with AI-powered schema creation**
 
-## Installation
-- Run the git clone command `git clone git@github.com:dev-lnk/laravel-blank.git .`.
-- Copy the `.env.example` file and rename it to `.env`, customize the `#Docker` section to your needs.
-- Run the command `make build`, and then `make install`.
-- Check the application's operation using the link `http://localhost` or `http://localhost:${APP_WEB_PORT}`.
-- Run stat analysis and tests using the command `make test`.
+A powerful Laravel application that leverages artificial intelligence to automatically generate MoonShine admin panel schemas, resources, models, and migrations based on your project descriptions. Deploy working admin panels in minutes, not hours.
 
-## About
-This is a blank Laravel 12 project set up to get started with development. What the setup includes:
-- Configured docker for local development.
-- Middleware is configured in a separate file.
-```php
-namespace App\Http\Middleware;
+## ✨ Quick Start
 
-use Illuminate\Foundation\Configuration\Middleware;
+### Prerequisites
 
-class MiddlewareHandler
-{
-    protected array $aliases = [
-        //'auth' => AuthMiddleware::class
-    ];
+- PHP 8.3+
+- Composer
+- Node.js \& NPM
+- Docker (optional)
 
-    public function __invoke(Middleware $middleware): Middleware
-    {
-        if ($this->aliases) {
-            $middleware->alias($this->aliases);
-        }
-        return $middleware;
-    }
-}
-```
-- Cron jobs are configured in a separate file.
-```php
-namespace App\Console;
 
-use Illuminate\Console\Scheduling\Schedule;
+### Installation
 
-class ScheduleHandler
-{
-    public function __invoke(Schedule $schedule): void
-    {
-        //$schedule->command(HealthCommand::class)->hourly();
-    }
-}
-```
-- Exception handling is configured in a separate file
-```php
-namespace App\Exceptions;
+```bash
+# Clone the repository
+git clone git@github.com:dev-lnk/admin-builder.git
+cd moonshine-ai-admin-generator
 
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Http\Request;
-
-class ExceptionsHandler
-{
-    public function __invoke(Exceptions $exceptions): Exceptions
-    {
-        $exceptions->renderable(
-            function (NotFoundHttpException $e, ?Request $request = null) {
-                if($request?->is('api/*')) {
-                    return $this->jsonResponse($e->getStatusCode());
-                }
-                return response()->view('errors.404', status: $e->getStatusCode());
-            }
-        );
-
-        return $exceptions;
-    }
-
-    private function jsonResponse(int $code): JsonResponse
-    {
-        return response()->json([
-            'error' => "HTTP error: $code"
-        ])->setStatusCode($code);
-    }
-}
-```
-- Configured tests.
-```php
-namespace Tests;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Notification;
-
-abstract class TestCase extends BaseTestCase
-{
-    use RefreshDatabase;
-
-    protected bool $seed = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Artisan::call('optimize:clear');
-
-        Notification::fake();
-
-        Http::preventStrayRequests();
-
-        $this->withoutVite();
-    }
-}
-```
-- Added RouteServiceProvider
-```php
-namespace App\Providers;
-
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Route;
-
-class RouteServiceProvider extends ServiceProvider
-{
-    public function boot(): void
-    {
-//        $this->routes(function () {
-//            Route::middleware(['web', 'app.auth'])
-//                ->namespace($this->namespace)
-//                ->prefix('my')
-//                ->group(base_path('routes/my.php'));
-//        });
-    }
-}
-```
-- Installed and configured phpstan (max level).
-- Installed and configured TypeScript, used instead of JavaScript.
-
-The final `bootstrap/app.php` file looks like this:
-
-```php
-<?php
-
-use App\Console\ScheduleHandler;
-use App\Exceptions\ExceptionsHandler;
-use App\Http\Middleware\MiddlewareHandler;
-use Illuminate\Foundation\Application;
-
-return Application::configure(basePath: dirname(__DIR__))
-    ->withMiddleware(new MiddlewareHandler())
-    ->withSchedule(new ScheduleHandler())
-    ->withExceptions(new ExceptionsHandler())
-    ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
-        health: '/up',
-    )
-    ->create();
+# Quick setup with Make
+make install
+make build
 ```
 
-## Docker
 
-### Images
+## 🎯 What is MoonShine AI Admin Generator?
 
-- nginx:1.27.3-alpine
-- php:8.4.4-fpm (with xdebug)
-- mysql:9.2.0
-- redis:7.0.11-alpine
-- node:23.6.1-alpine3.18
+This application revolutionizes the way you create Laravel admin panels by combining the power of **MoonShine 3** with **artificial intelligence**. Simply describe your project requirements in natural language, and watch as our AI generates a complete, working admin panel with:
 
-### Other
-- Many commands to speed up development and work with docker can be found in the `Makefile`
-- If you don't need Docker, remove: `/docker`, `docker-compose.yml`, `Makefile`. Convert `.env` to standard Laravel form
-- To launch containers with `worker` and `scheduler`, delete comments on the corresponding blocks in `docker-compose.yml`
+- **Database schemas** with proper relationships
+- **Eloquent models** with validations and relationships
+- **Database migrations** ready for deployment
+- **MoonShine resources** with forms, tables, and filters
+- **Complete Laravel project** packaged and ready to deploy
+
+
+### 🤖 AI-Powered Generation
+
+- **Multiple LLM Providers**: OpenAI GPT models, DeepSeek, and more
+- **Intelligent Schema Validation**: Ensures generated code follows Laravel and MoonShine best practices
+- **Iterative Correction**: AI can fix validation errors automatically
+- **Natural Language Processing**: Describe your admin panel in plain English
+
+
+### 🏗️ Build System
+
+- **Automated Project Assembly**: Creates complete Laravel projects with MoonShine pre-installed
+- **Tar Archive Generation**: Download ready-to-deploy projects
+- **Test Environment Setup**: Spin up test instances for immediate preview
+- **Repository Integration**: Clone from custom Laravel templates
+
+
+## 🌟 Key Features
+
+### 🎨 **AI Schema Generation**
+
+- Natural language to admin panel conversion
+- Support for complex relationships (BelongsTo, HasMany, BelongsToMany)
+- Automatic field type detection and validation
+- Smart naming conventions and best practices
+
+
+### 👥 **User Management**
+
+- Role-based access control (Admin/User)
+- Subscription plans with generation limits
+- Multi-language support
+- Profile management with custom settings
+
+
+### 🔧 **Project Management**
+
+- Multiple projects per user
+- Schema versioning and history
+- Real-time build progress tracking
+- Error handling and validation feedback
+
+
+### **Technology Stack**
+- **Backend**: Laravel 12, PHP 8.4+
+- **Admin Panel**: MoonShine 3
+- **AI Integration**: OpenAI API, DeepSeek API
+- **Real-time**: Centrifugo WebSocket
+- **Queue System**: Laravel Queues
+- **Database**: MySQL
+
+## 📋 Usage
+
+### 1. **Add LLM provider and model**
+TODO
+
+### 2. **Generate Schema**
+TODO
+
+### **LLM Providers Setup**
+
+1. **OpenAI**: Get API key from [OpenAI Platform](https://platform.openai.com)
+2. **DeepSeek**: Register at [DeepSeek Platform](https://platform.deepseek.com)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation**: [Full Documentation](docs/)
+- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
+- **Discord**: [Community Server](https://discord.gg/your-server)
+- **Email**: support@yourproject.com

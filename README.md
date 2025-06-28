@@ -8,26 +8,17 @@ A powerful Laravel application that leverages artificial intelligence to automat
 
 ## ✨ Quick Start
 
-### Prerequisites
-
-- PHP 8.3+
-- Composer
-- Node.js \& NPM
-- Docker (optional)
-
-
 ### Installation
+The project runs in Docker
 
 ```bash
 # Clone the repository
 git clone git@github.com:dev-lnk/admin-builder.git
-cd moonshine-ai-admin-generator
 
 # Quick setup with Make
 make install
 make build
 ```
-
 
 ## 🎯 What is MoonShine AI Admin Generator?
 
@@ -45,7 +36,7 @@ This application revolutionizes the way you create Laravel admin panels by combi
 - **Multiple LLM Providers**: OpenAI GPT models, DeepSeek, and more
 - **Intelligent Schema Validation**: Ensures generated code follows Laravel and MoonShine best practices
 - **Iterative Correction**: AI can fix validation errors automatically
-- **Natural Language Processing**: Describe your admin panel in plain English
+- **Natural Language Processing**: Describe your admin panel in plain languge
 
 
 ### 🏗️ Build System

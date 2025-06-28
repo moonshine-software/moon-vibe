@@ -87,8 +87,8 @@ async function getOrCreateToken(): Promise<string> {
 function getWsURL(): string {
     const { hostname } = window.location;
 
-    if(hostname === 'admin-builder.getmoonshine.app') {
-        return 'wss://wss.admin-builder.getmoonshine.app/connection/websocket'
+    if(hostname === 'moon-vibe.production.com') {
+        return 'wss://wss.moon-vibe.production.com/connection/websocket'
     }
 
     return import.meta.env.VITE_CENTRIFUGO_WS_URL;

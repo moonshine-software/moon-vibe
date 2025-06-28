@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@mail.com',
             'moonshine_user_role_id' => 1,
-            'password' => Hash::make('123456'),
+            'password' => Hash::make('12345'),
             'settings' => '{"build": {"repository": "https://github.com/dev-lnk/moonshine-blank.git"}, "generation": {"attempts": 5}}'
         ]);
 

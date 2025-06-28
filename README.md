@@ -11,7 +11,7 @@ The project runs in Docker
 
 ```bash
 # Clone the repository
-git clone git@github.com:dev-lnk/admin-builder.git
+git clone git@github.com:dev-lnk/moon-vibe.git
 
 # Quick setup with Make
 make install

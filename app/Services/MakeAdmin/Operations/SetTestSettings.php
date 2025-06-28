@@ -14,7 +14,7 @@ class SetTestSettings extends AbstractMakeOperation
             return;
         }
 
-        $env = str_replace('COMPOSE_PROJECT_NAME=moonshine-blank', 'COMPOSE_PROJECT_NAME=admin-builder', $env);
+        $env = str_replace('COMPOSE_PROJECT_NAME=moonshine-blank', 'COMPOSE_PROJECT_NAME=moon-vibe', $env);
         $env = str_replace('DB_DATABASE=my_database', 'DB_DATABASE=my_generate', $env);
         $env = str_replace('QUEUE_CONNECTION=redis', 'QUEUE_CONNECTION=sync', $env);
         $env = str_replace('SESSION_DRIVER=redis', 'SESSION_DRIVER=file', $env);

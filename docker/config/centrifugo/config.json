@@ -1,0 +1,26 @@
+{
+  "client": {
+      "token": {
+          "hmac_secret_key": "bbe7d157-a253-4094-9759-06a8236543f9"
+      },
+      "allowed_origins": ["*"]
+  },
+  "http_api": {
+      "key": "d7627bb6-2292-4911-82e1-615c0ed3eebb"
+  },
+  "channel": {
+      "without_namespace": {
+          "allow_subscribe_for_client": true
+      },
+      "namespaces": [
+          {
+              "name": "moonshine-channel"
+          }
+      ]
+  },
+  "admin": {
+      "enabled": true,
+      "password": "12345",
+      "secret": "12345"
+  }
+}

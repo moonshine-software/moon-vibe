@@ -16,7 +16,7 @@ build:
 	@echo "$(APP_URL)"
 
 .PHONY: install
-install: composer-install composer-update migrate npm-install npm-update npm-build
+install: composer-install composer-update migrate-fresh npm-install npm-update npm-build
 	@echo "$(APP_URL)"
 
 .PHONY: rebuild

@@ -104,7 +104,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: [Full Documentation](docs/)
-- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
-- **Discord**: [Community Server](https://discord.gg/your-server)
-- **Email**: support@yourproject.com
+- **Issues**: [GitHub Issues](https://github.com/moonshine-software/moon-vibe/issues)
+- **Telegram**: [dev_lnk](https://t.me/dev_lnk)

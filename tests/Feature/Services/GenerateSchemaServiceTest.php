@@ -88,7 +88,7 @@ class GenerateSchemaServiceTest extends TestCase
 
         $this->twirlBroadcastContract
             ->shouldReceive('send')
-            ->times(4);
+            ->times(5);
 
         // Act
         $this->service->generate($prompt, $schema->id, 3);
@@ -135,7 +135,7 @@ class GenerateSchemaServiceTest extends TestCase
 
         $this->twirlBroadcastContract
             ->shouldReceive('send')
-            ->times(6);
+            ->times(7);
 
         // Act
         $this->service->generate($prompt, $schema->id, 3);
@@ -183,7 +183,7 @@ class GenerateSchemaServiceTest extends TestCase
 
         $this->twirlBroadcastContract
             ->shouldReceive('send')
-            ->times(4);
+            ->times(5);
 
         // Act
         $this->service->generate($prompt, $schema->id, $maxTries);
@@ -231,7 +231,7 @@ class GenerateSchemaServiceTest extends TestCase
 
         $this->twirlBroadcastContract
             ->shouldReceive('send')
-            ->times(4);
+            ->times(5);
 
         // Act
         $this->service->generate($correctionPrompt, $schema->id, 3, true);

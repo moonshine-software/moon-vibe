@@ -44,6 +44,8 @@ jobs:
                   echo "DB_DATABASE=my_database_test" >> .env.testing
                   echo "DB_USERNAME=root" >> .env.testing
                   echo "DB_PASSWORD=root" >> .env.testing
+                  echo "CENTRIFUGO_CLIENT_PORT=8000" >> .env.testing
+                  echo "CENTRIFUGO_URL=http://project-centrifugo:${CENTRIFUGO_CLIENT_PORT}" >> .env.testing
 
             - name: Install Dependencies
               run: composer install --no-interaction --prefer-dist --optimize-autoloader

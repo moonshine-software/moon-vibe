@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Event;
 use Mockery;
 use Mockery\LegacyMockInterface;
 use Mockery\MockInterface;
+use MoonShine\Twirl\Contracts\TwirlBroadcastContract;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -33,6 +34,9 @@ class GenerateSchemaServiceTest extends TestCase
     /** @var LegacyMockInterface|LlmProviderBuilder */
     private LlmProviderBuilder|LegacyMockInterface $llmProviderBuilder;
 
+    /** @var LlmProviderBuilder|TwirlBroadcastContract */
+    private TwirlBroadcastContract|LlmProviderBuilder $twirlBroadcastContract;
+    
     private string $validSchemaResult;
     
     protected function setUp(): void
@@ -41,6 +45,9 @@ class GenerateSchemaServiceTest extends TestCase
 
         $this->mockSchemaGenerator = Mockery::mock(SchemaGenerateContract::class);
         $this->llmProviderBuilder = Mockery::mock(LlmProviderBuilder::class);
+
+        $this->twirlBroadcastContract = Mockery::mock(TwirlBroadcastContract::class);
+        $this->instance(TwirlBroadcastContract::class, $this->twirlBroadcastContract);
 
         // Create GenerateSchemaService using app() helper
         $this->service = app(GenerateSchemaService::class, [
@@ -53,7 +60,7 @@ class GenerateSchemaServiceTest extends TestCase
     #[Test]
     public function generateSuccessfullyCreatesSchemaOnFirstAttempt(): void
     {
-        Event::fake();
+        //Event::fake();
 
         // Arrange
         $user = MoonShineUser::factory()->create();
@@ -81,6 +88,10 @@ class GenerateSchemaServiceTest extends TestCase
             ->shouldReceive('generate')
             ->once()
             ->andReturn($this->validSchemaResult);
+
+        $this->twirlBroadcastContract
+            ->shouldReceive('send')
+            ->times(4);
 
         // Act
         $this->service->generate($prompt, $schema->id, 3);
@@ -124,6 +135,10 @@ class GenerateSchemaServiceTest extends TestCase
             ->shouldReceive('generate')
             ->twice()
             ->andReturn($invalidSchemaResult, $this->validSchemaResult);
+
+        $this->twirlBroadcastContract
+            ->shouldReceive('send')
+            ->times(6);
 
         // Act
         $this->service->generate($prompt, $schema->id, 3);
@@ -169,6 +184,10 @@ class GenerateSchemaServiceTest extends TestCase
             ->once()
             ->andReturn($invalidSchemaResult);
 
+        $this->twirlBroadcastContract
+            ->shouldReceive('send')
+            ->times(4);
+
         // Act
         $this->service->generate($prompt, $schema->id, $maxTries);
 
@@ -212,6 +231,10 @@ class GenerateSchemaServiceTest extends TestCase
             ->shouldReceive('generate')
             ->once()
             ->andReturn($this->validSchemaResult);
+
+        $this->twirlBroadcastContract
+            ->shouldReceive('send')
+            ->times(4);
 
         // Act
         $this->service->generate($correctionPrompt, $schema->id, 3, true);

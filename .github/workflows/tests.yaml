@@ -9,6 +9,30 @@ on:
             - '**'
 
 jobs:
+    analyse:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.4'
+                    tools: composer:v2
+                    coverage: none
+
+            -   name: Create .env
+                run: |
+                    echo "APP_NAME=App" > .env
+                    echo "APP_ENV=dev" >> .env
+                    echo "APP_KEY=base64:XCPrsF+U8VYa6qN0halPXgOGDkJjgrJJlyxirgiGXQ0=" >> .env
+
+            -   name: Install dependencies
+                run: composer install --prefer-dist --no-progress --no-suggest
+
+            -   name: Run analyse
+                run: php -d memory_limit=512M vendor/bin/phpstan analyse
     tests:
         runs-on: ubuntu-latest
 
@@ -44,8 +68,6 @@ jobs:
                   echo "DB_DATABASE=my_database_test" >> .env.testing
                   echo "DB_USERNAME=root" >> .env.testing
                   echo "DB_PASSWORD=root" >> .env.testing
-                  echo "CENTRIFUGO_CLIENT_PORT=8000" >> .env.testing
-                  echo "CENTRIFUGO_URL=http://project-centrifugo:${CENTRIFUGO_CLIENT_PORT}" >> .env.testing
 
             - name: Install Dependencies
               run: composer install --no-interaction --prefer-dist --optimize-autoloader

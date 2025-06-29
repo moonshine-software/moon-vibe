@@ -21,7 +21,7 @@ readonly class GenerateSchemaService
         private ProjectRepository $projectRepository,
         private PromptRepository $promptRepository,
         private LlmProviderBuilder $llmProviderBuilder,
-        private SchemaValidator $schemaValidator,
+        private SchemaValidator $schemaValidator
     ) {
     }
 

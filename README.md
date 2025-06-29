@@ -7,7 +7,9 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 ## ✨ Quick Start
 
 > The project runs only in Docker.
->
+
+> To use this package you need API tokens for OpenAI/DeepSeek
+
 ### Installation
 1. Execute:
 ```bash

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\Prompt;
-
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
@@ -13,8 +12,8 @@ use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\Support\Enums\SortDirection;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Textarea;
 
 /**
@@ -36,9 +35,9 @@ class PromptResource extends ModelResource
     public function indexFields(): iterable
     {
         return [
-			ID::make('id'),
-			Text::make(__('app.prompt_resource.title'), 'title'),
-			Number::make(__('app.prompt_resource.order'), 'order'),
+            ID::make('id'),
+            Text::make(__('app.prompt_resource.title'), 'title'),
+            Number::make(__('app.prompt_resource.order'), 'order'),
         ];
     }
 
@@ -52,7 +51,7 @@ class PromptResource extends ModelResource
                     'rows' => 20,
                 ]),
                 Number::make(__('app.prompt_resource.order'), 'order'),
-            ])
+            ]),
         ];
     }
 
@@ -69,8 +68,8 @@ class PromptResource extends ModelResource
     public function rules(mixed $item): array
     {
         return [
-			'title' => ['string', 'required'],
-			'prompt' => ['string', 'required'],
+            'title' => ['string', 'required'],
+            'prompt' => ['string', 'required'],
         ];
     }
 }

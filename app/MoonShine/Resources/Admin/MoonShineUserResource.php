@@ -31,7 +31,6 @@ use MoonShine\UI\Fields\Email;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\PasswordRepeat;
-use MoonShine\UI\Fields\Preview;
 use MoonShine\UI\Fields\Text;
 use Stringable;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -48,7 +47,7 @@ class MoonShineUserResource extends ModelResource
 
     protected string $column = 'name';
 
-    /** @var string[]  */
+    /** @var string[] */
     protected array $with = ['moonshineUserRole', 'subscriptionPlan'];
 
     protected bool $simplePaginate = true;
@@ -62,9 +61,10 @@ class MoonShineUserResource extends ModelResource
 
     protected function activeActions(): ListOf
     {
-        if(auth('moonshine')->user()?->moonshine_user_role_id !== Role::ADMIN) {
+        if (auth('moonshine')->user()?->moonshine_user_role_id !== Role::ADMIN) {
             throw new NotFoundHttpException();
         }
+
         return parent::activeActions()->except(Action::VIEW);
     }
 
@@ -104,7 +104,7 @@ class MoonShineUserResource extends ModelResource
     protected function formFields(): iterable
     {
         $expirationField = FlexibleRender::make('');
-        if($this->getItem() !== null) {
+        if ($this->getItem() !== null) {
             $expirationField = Date::make('Expiration Date', 'subscription_end_date');
         }
 
@@ -163,7 +163,7 @@ class MoonShineUserResource extends ModelResource
      */
     protected function afterCreated(mixed $item): mixed
     {
-        if(
+        if (
             request()->post('subscription_plan_id')
             && $item->subscription_end_date === null
         ) {

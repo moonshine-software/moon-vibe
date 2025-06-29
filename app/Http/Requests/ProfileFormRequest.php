@@ -6,7 +6,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 // test
 class ProfileFormRequest extends FormRequest
@@ -23,7 +22,7 @@ class ProfileFormRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'email:dns', Rule::unique('users')->ignore(auth()->id())]
+            'email' => ['required', 'email:dns', Rule::unique('users')->ignore(auth()->id())],
         ];
     }
 }

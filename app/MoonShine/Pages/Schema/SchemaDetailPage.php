@@ -17,7 +17,7 @@ class SchemaDetailPage extends DetailPage
         /** @var ProjectSchema|null $schema */
         $schema = $this->getResource()?->getItem();
 
-        if($schema === null) {
+        if ($schema === null) {
             return [];
         }
 
@@ -26,7 +26,7 @@ class SchemaDetailPage extends DetailPage
         );
 
         return [
-            Preview::make(__('app.schema.preview'))->setValue($simpleSchema->generate())
+            Preview::make(__('app.schema.preview'))->setValue($simpleSchema->generate()),
         ];
     }
 }

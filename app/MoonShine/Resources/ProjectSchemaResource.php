@@ -31,7 +31,7 @@ class ProjectSchemaResource extends ModelResource
     protected string $model = ProjectSchema::class;
 
     /** @var string[] */
-	protected array $with = ['project'];
+    protected array $with = ['project'];
 
     protected bool $detailInModal = true;
 
@@ -62,27 +62,30 @@ class ProjectSchemaResource extends ModelResource
     {
         return [
             Preview::make(__('app.schema.status'), formatted: function (ProjectSchema $schema) {
-                if($schema->status_id === SchemaStatus::ERROR) {
+                if ($schema->status_id === SchemaStatus::ERROR) {
                     return (string) Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([
-                        'class' => 'schema-id-' . $schema->id
+                        'class' => 'schema-id-' . $schema->id,
                     ]);
                 }
+
                 return (string) Badge::make($schema->status_id->toString(), $schema->status_id->color())->customAttributes([
-                    'class' => 'schema-id-' . $schema->id
+                    'class' => 'schema-id-' . $schema->id,
                 ]);
             }),
 
             Preview::make(__('app.schema.preview'), formatted: function (ProjectSchema $schema) {
-                if($schema->schema === null) {
+                if ($schema->schema === null) {
                     return '';
                 }
+
                 try {
                     $simpleSchema = new SimpleSchema((new StructureFromArray(json_decode($schema->schema, true)))->makeStructures());
+
                     return $simpleSchema->generate(false);
                 } catch (\Throwable) {
                     return '';
                 }
-            })
+            }),
         ];
     }
 
@@ -92,14 +95,15 @@ class ProjectSchemaResource extends ModelResource
             Box::make([
                 ID::make('id'),
                 BelongsTo::make(__('app.schema.project'), 'project', resource: ProjectResource::class),
-                Textarea::make('', 'schema')->changeFill(function(ProjectSchema $data, Textarea $field): string {
+                Textarea::make('', 'schema')->changeFill(function (ProjectSchema $data, Textarea $field): string {
                     $field->customAttributes([
                         'class' => 'schema-edit-id-' . $data->id,
                         'rows' => 20,
                     ]);
+
                     return $data->schema;
                 }),
-            ])
+            ]),
         ];
     }
 
@@ -107,14 +111,16 @@ class ProjectSchemaResource extends ModelResource
     {
         return [
             Preview::make(__('app.schema.preview'), formatted: function (ProjectSchema $schema) {
-                if($schema->schema === null) {
+                if ($schema->schema === null) {
                     return '';
                 }
                 $simpleSchema = new SimpleSchema(
                     (new StructureFromArray(json_decode($schema->schema, true))
-                )->makeStructures());
+                )->makeStructures()
+                );
+
                 return $simpleSchema->generate();
-            })
+            }),
         ];
     }
 
@@ -153,8 +159,8 @@ class ProjectSchemaResource extends ModelResource
     public function rules(mixed $item): array
     {
         return [
-			'project_id' => ['int', 'required'],
-			'schema' => ['string', 'required'],
+            'project_id' => ['int', 'required'],
+            'schema' => ['string', 'required'],
         ];
     }
 }

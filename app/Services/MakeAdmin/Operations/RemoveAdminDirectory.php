@@ -13,4 +13,4 @@ class RemoveAdminDirectory extends AbstractMakeOperation
             'Failed to remove admin directory'
         );
     }
-} 
+}

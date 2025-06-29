@@ -9,7 +9,7 @@ enum BuildStatus: int
     case IN_PROGRESS = 1;
 
     case ERROR = 2;
-    
+
     case FOR_DOWNLOAD = 3;
 
     case FOR_TEST = 4;
@@ -25,7 +25,7 @@ enum BuildStatus: int
     }
 
     public function color(): Color
-    {   
+    {
         return match ($this) {
             self::IN_PROGRESS => Color::WARNING,
             self::ERROR => Color::RED,

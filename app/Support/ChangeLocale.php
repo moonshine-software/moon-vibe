@@ -10,7 +10,7 @@ class ChangeLocale
 {
     public function set(string $locale, bool $isSetCookie = true): void
     {
-        if($isSetCookie) {
+        if ($isSetCookie) {
             Cookie::queue('lang', $locale);
         }
 

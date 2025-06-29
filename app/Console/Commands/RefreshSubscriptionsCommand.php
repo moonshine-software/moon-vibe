@@ -6,8 +6,8 @@ namespace App\Console\Commands;
 
 use App\Enums\Role;
 use App\Models\MoonShineUser;
-use Illuminate\Console\Command;
 use App\Services\Subscription\SubscriptionService;
+use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 
 class RefreshSubscriptionsCommand extends Command
@@ -18,7 +18,7 @@ class RefreshSubscriptionsCommand extends Command
         private readonly SubscriptionService $subscriptionService,
     ) {
         parent::__construct();
-    }   
+    }
 
     public function handle(): int
     {
@@ -38,4 +38,4 @@ class RefreshSubscriptionsCommand extends Command
 
         return self::SUCCESS;
     }
-} 
+}

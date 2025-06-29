@@ -23,15 +23,15 @@ readonly class SimpleSchema
 
         foreach ($this->codeStructureList->codeStructures() as $codeStructure) {
             $result .= str('<li>')
-                ->when($withColumns, fn($str) => $str->append('<b>'))
+                ->when($withColumns, fn ($str) => $str->append('<b>'))
                 ->append("{$codeStructure->entity()->ucFirstSingular()}")
-                ->when($withColumns, fn($str) => $str->append('</b>'))
+                ->when($withColumns, fn ($str) => $str->append('</b>'))
                 ->append(' - ')
                 ->append("menu: <b>{$codeStructure->menuName()}</b>, ")
                 ->append("column: <b>{$codeStructure->getColumnName()}</b>, ")
                 ->append("table: <b>{$codeStructure->table()}</b>, ")
             ;
-            if($withColumns) {
+            if ($withColumns) {
                 $result .= '<ul style="margin-left: 2rem">';
                 foreach ($codeStructure->columns() as $column) {
                     $fieldClass = $column->getFieldClass()

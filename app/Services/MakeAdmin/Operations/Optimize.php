@@ -14,4 +14,4 @@ class Optimize extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

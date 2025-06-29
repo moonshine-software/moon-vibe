@@ -28,7 +28,7 @@ class RegisterPage extends Page
     public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->getTitle()
+            '#' => $this->getTitle(),
         ];
     }
 
@@ -61,8 +61,8 @@ class RegisterPage extends Page
                 ])->submit(__('app.auth.create_account'), [
                     'class' => 'btn-primary btn-lg w-full',
                 ])->buttons([
-                    ActionButton::make(__('app.auth.log_in'), route('login'))
-                ])
+                    ActionButton::make(__('app.auth.log_in'), route('login')),
+                ]),
         ];
     }
 }

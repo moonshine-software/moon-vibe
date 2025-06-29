@@ -13,4 +13,4 @@ class CreateBuildsDirectory extends AbstractMakeOperation
             'Failed to create builds directory'
         );
     }
-} 
+}

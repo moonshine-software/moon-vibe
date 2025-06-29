@@ -29,23 +29,23 @@ class SchemaValidator
 
             $codeStructures = $factory->makeStructures();
 
-            if($codeStructures->codeStructures() === []) {
+            if ($codeStructures->codeStructures() === []) {
                 return 'Failed to obtain any resources';
             }
 
             $tableResourceMap = $this->getTableResourceMap($codeStructures->codeStructures());
 
             foreach ($codeStructures->codeStructures() as $index => $codeStructure) {
-                if($codeStructure->columns() === []) {
+                if ($codeStructure->columns() === []) {
                     $errors[] = "Failed to load fields in the resource {$codeStructure->entity()->singular()}";
                 }
 
-                if (!preg_match('/^[a-zA-Z]+$/', $codeStructure->entity()->raw())) {
+                if (! preg_match('/^[a-zA-Z]+$/', $codeStructure->entity()->raw())) {
                     $errors[] = "Resource '{$codeStructure->entity()->raw()}' - the resource parameter name must contain only Latin letters";
                 }
 
                 // PHP 8 Error
-                if($codeStructure->entity()->ucFirstSingular() === 'Match') {
+                if ($codeStructure->entity()->ucFirstSingular() === 'Match') {
                     $errors[] = "The resource cannot have the parameter name:Match. You need to change the resource to Game, rename the matches table to games, and update all existing relations.";
                 }
 
@@ -55,45 +55,45 @@ class SchemaValidator
                     $tableResourceMap
                 );
 
-                if($relationError !== '') {
+                if ($relationError !== '') {
                     $errors[] = $relationError;
                 }
 
                 $pivotError = $this->checkPivotTable($codeStructure);
-                if($pivotError !== '') {
+                if ($pivotError !== '') {
                     $errors[] = $pivotError;
                 }
 
                 foreach ($codeStructure->columns() as $column) {
-                    if($column->getResourceMethods() !== []) {
+                    if ($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
-                            if(! str_contains($methodName, "(")) {
+                            if (! str_contains($methodName, "(")) {
                                 $errors[] = "{$column->column()} (resourceMethod - $methodName) - the resource method must include parentheses, for example $methodName()";
                             }
                         }
                     }
 
-                    if($column->getMigrationMethods() !== []) {
+                    if ($column->getMigrationMethods() !== []) {
                         foreach ($column->getMigrationMethods() as $methodName) {
-                            if(! str_contains($methodName, "(")) {
+                            if (! str_contains($methodName, "(")) {
                                 $errors[] = "{$column->column()} (migrationMethod - $methodName) - the migration method must include parentheses, for example $methodName()";
                             }
                         }
                     }
 
-                    if($column->type() === SqlTypeMap::BELONGS_TO) {
+                    if ($column->type() === SqlTypeMap::BELONGS_TO) {
                         $belongsToError = $this->checkBelongsTo($index, $column, $codeStructures->codeStructures(), $codeStructure->entity()->ucFirstSingular());
-                        if($belongsToError !== '') {
+                        if ($belongsToError !== '') {
                             $errors[] = $belongsToError;
                         }
                     }
 
-                    if($column->type() === SqlTypeMap::HAS_MANY) {
+                    if ($column->type() === SqlTypeMap::HAS_MANY) {
                         $hasManyError = $this->checkHasMany(
                             $column,
                             $codeStructures->codeStructures()
                         );
-                        if($hasManyError !== '') {
+                        if ($hasManyError !== '') {
                             $errors[] = $hasManyError;
                         }
                     }
@@ -106,17 +106,18 @@ class SchemaValidator
                         : $typeMap->getMoonShineFieldFromSqlType($column->type())
                     ;
 
-                    if(! class_exists($field)) {
+                    if (! class_exists($field)) {
                         $errors[] = "{$column->column()} - the field $field does not exist in MoonShine";
                     }
 
-                    if($column->getResourceMethods() !== []) {
+                    if ($column->getResourceMethods() !== []) {
                         foreach ($column->getResourceMethods() as $methodName) {
                             /** @var string $method */
                             $method = strstr($methodName, '(', true);
+
                             try {
                                 $class = new ReflectionClass($field);
-                                if(! $class->hasMethod($method)) {
+                                if (! $class->hasMethod($method)) {
                                     $errors[] = "{$column->column()} - the method $method does not exist for the field $field";
                                 }
                             } catch (Throwable $e) {
@@ -128,13 +129,13 @@ class SchemaValidator
             }
         } catch (Throwable $e) {
             $error = $e->getMessage();
-            if($error === 'No resources array found.') {
+            if ($error === 'No resources array found.') {
                 $errors[] = "The main parameter 'resources' is missing from the schema";
             } else {
                 $errors[] = $e->getMessage();
             }
         }
-        if($errors === []) {
+        if ($errors === []) {
             return '';
         }
 
@@ -151,18 +152,19 @@ class SchemaValidator
         foreach ($codeStructures as $codeStructure) {
             $result[$codeStructure->table()] = $codeStructure->entity()->raw();
         }
+
         return $result;
     }
 
     private function checkPivotTable(CodeStructure $codeStructure): string
     {
-        if(! str_contains($codeStructure->entity()->raw(), 'Pivot')) {
+        if (! str_contains($codeStructure->entity()->raw(), 'Pivot')) {
             return '';
         }
 
         $pivotTables = explode("_", $codeStructure->table());
 
-        if(count($pivotTables) !== 2) {
+        if (count($pivotTables) !== 2) {
             return '';
         }
 
@@ -170,7 +172,7 @@ class SchemaValidator
 
         sort($newPivotTables);
 
-        if($newPivotTables !== $pivotTables) {
+        if ($newPivotTables !== $pivotTables) {
             return "Error in resource {$codeStructure->entity()->ucFirstSingular()}, the pivot table is not defined according to Laravel convention (tables must be in alphabetical order)";
         }
 
@@ -193,22 +195,22 @@ class SchemaValidator
     ): string {
         $errors = [];
 
-        if($column->relation() === null) {
+        if ($column->relation() === null) {
             return '';
         }
 
         $resourceName = str($column->relation()->table()->camel())->singular()->ucfirst()->value();
         foreach ($codeStructures as $checkIndex => $codeStructure) {
-            if($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
+            if ($codeStructure->entity()->ucFirstSingular() === $resourceName && $checkIndex > $index) {
                 $errors[] = "Resource $resourceName must be above $checkName in the resource list";
             }
         }
 
-        if($column->column() !== '' && ! str_contains($column->column(), '_id')) {
+        if ($column->column() !== '' && ! str_contains($column->column(), '_id')) {
             $errors[] = "The field {$column->column()} of resource $checkName must end with _id to build a correct relation";
         }
 
-        if(
+        if (
             $column->relation()->table()->raw() === 'moonshine_users'
             && $column->getModelClass() === "\\MoonShine\\Laravel\\Models\\MoonshineUser"
             && $column->column() !== 'moonshine_user_id'
@@ -231,7 +233,7 @@ class SchemaValidator
     ): string {
         $errors = [];
 
-        if($column->relation() === null) {
+        if ($column->relation() === null) {
             return '';
         }
 
@@ -240,13 +242,14 @@ class SchemaValidator
         $isValidTable = false;
 
         foreach ($codeStructures as $codeStructure) {
-            if($codeStructure->table() === $relationTable) {
+            if ($codeStructure->table() === $relationTable) {
                 $isValidTable = true;
+
                 break;
             }
         }
 
-        if(! $isValidTable) {
+        if (! $isValidTable) {
             $errors[] = "A resource must be created for the table $relationTable";
         }
 
@@ -266,12 +269,12 @@ class SchemaValidator
 
         $relationModelMethods = [];
         foreach ($columnStructures as $column) {
-            if($column->relation() === null) {
+            if ($column->relation() === null) {
                 continue;
             }
-            if(in_array($column->getModelRelationName(), $relationModelMethods)) {
+            if (in_array($column->getModelRelationName(), $relationModelMethods)) {
                 $errorRelationName = "Error: in resource $checkName, two relations have the same name {$column->getModelRelationName()}; you must specify a unique relation name for each field using the model_relation_name parameter inside the relation parameter";
-                if(! in_array($errorRelationName, $errors)) {
+                if (! in_array($errorRelationName, $errors)) {
                     $errors[] = $errorRelationName;
                 }
             }
@@ -279,12 +282,12 @@ class SchemaValidator
             $relationModelMethods[] = $column->getModelRelationName();
 
             $tableName = $column->relation()->table()->raw();
-            if(
+            if (
                 $tableName !== 'moonshine_users'
                 && ! isset($tableResourceMap[$tableName])
             ) {
                 $errorTable = "For resource $checkName, the field {$column->column()} specifies the table $tableName, for which no resource has been created";
-                if($column->type() === SqlTypeMap::BELONGS_TO_MANY) {
+                if ($column->type() === SqlTypeMap::BELONGS_TO_MANY) {
                     $errorTable .= " For the BelongsToMany field, you need to create a linking Pivot resource with the required table.";
                 }
                 $errors[] = $errorTable;

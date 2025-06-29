@@ -15,6 +15,7 @@ class PromptRepository
         foreach ($prompts as $prompt) {
             $result[] = $prompt->prompt;
         }
+
         return implode("\n\n", $result);
     }
 }

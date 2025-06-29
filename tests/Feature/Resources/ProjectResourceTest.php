@@ -34,7 +34,7 @@ class ProjectResourceTest extends TestCase
             'moonshine_user_id' => $this->user->id,
             'llm_id' => $llm->id,
             'name' => 'Test Project',
-            'description' => 'Test project description'
+            'description' => 'Test project description',
         ]);
 
         $this->schema = ProjectSchema::factory()->create([
@@ -63,8 +63,10 @@ class ProjectResourceTest extends TestCase
             ]));
 
         $simpleSchema = new SimpleSchema(
-            new StructureFromArray(json_decode($this->schema->schema, true)
-        )->makeStructures());
+            new StructureFromArray(
+                json_decode($this->schema->schema, true)
+            )->makeStructures()
+        );
 
         // Assert
         $response->assertStatus(200);

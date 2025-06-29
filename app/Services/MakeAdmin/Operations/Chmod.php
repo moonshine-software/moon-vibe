@@ -14,4 +14,4 @@ class Chmod extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

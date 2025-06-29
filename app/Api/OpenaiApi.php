@@ -28,18 +28,21 @@ class OpenaiApi implements SchemaGenerateContract
             'messages' => $messages,
         ]);
 
-        if(! isset($result->choices[0])) {
+        if (! isset($result->choices[0])) {
             logger()->error('OpenAPI error: empty choices', [$result]);
+
             throw new GenerateException('OpenAPI error: empty choices');
         }
 
-        if(! isset($result->choices[0]->message)) {
+        if (! isset($result->choices[0]->message)) {
             logger()->error('OpenAPI error: empty message', [$result]);
+
             throw new GenerateException('OpenAPI error: empty message');
         }
 
-        if(! isset($result->choices[0]->message->content)) {
+        if (! isset($result->choices[0]->message->content)) {
             logger()->error('OpenAPI error: empty content', [$result]);
+
             throw new GenerateException('OpenAPI error: empty content');
         }
 

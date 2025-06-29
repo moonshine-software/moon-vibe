@@ -16,4 +16,4 @@ class OptimizeClear extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

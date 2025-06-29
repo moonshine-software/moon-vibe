@@ -6,21 +6,19 @@ namespace App\MoonShine\Pages;
 
 use App\Models\MoonShineUser;
 use App\Repositories\LlmRepository;
+use Illuminate\Support\Facades\View;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Laravel\Pages\Page;
+use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\FlexibleRender;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\Divider;
+use MoonShine\UI\Components\Tabs;
+use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Fields\Select;
 use MoonShine\UI\Fields\Text;
-use MoonShine\Laravel\Pages\Page;
-use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Fields\Textarea;
-use MoonShine\Support\Enums\Color;
-use MoonShine\UI\Components\Badge;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\View;
-use MoonShine\UI\Components\Tabs\Tab;
-use MoonShine\UI\Components\Layout\Box;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\FlexibleRender;
-use MoonShine\UI\Components\Layout\Divider;
-use MoonShine\Contracts\UI\ComponentContract;
 
 class Dashboard extends Page
 {
@@ -28,7 +26,7 @@ class Dashboard extends Page
      * @return list<ComponentContract>
      */
     protected function components(): iterable
-	{
+    {
 
         $types = View::make("generate-page.examples.types");
         $fields = View::make("generate-page.examples.fields");
@@ -41,7 +39,7 @@ class Dashboard extends Page
         $llms = $llmRepository->getLlms();
         $defaultId = $llmRepository->getDefaultLlmId();
 
-		return [
+        return [
             FormBuilder::make(route('ai-request.request'), fields: [
                 FlexibleRender::make(
                     (string) Badge::make(
@@ -72,14 +70,14 @@ class Dashboard extends Page
                 Tab::make(__('app.dashboard.types'), [
                     Box::make([
                         FlexibleRender::make($types),
-                    ])
+                    ]),
                 ]),
                 Tab::make(__('app.dashboard.fields'), [
                     Box::make([
                         FlexibleRender::make($fields),
-                    ])
-                ])
-            ])
+                    ]),
+                ]),
+            ]),
         ];
-	}
+    }
 }

@@ -14,4 +14,4 @@ class InstallMoonshineBuilder extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

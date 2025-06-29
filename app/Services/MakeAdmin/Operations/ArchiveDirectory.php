@@ -16,8 +16,8 @@ class ArchiveDirectory extends AbstractMakeOperation
             'Failed to create tar archive of admin directory'
         );
 
-        if (!file_exists($archiveFile)) {
+        if (! file_exists($archiveFile)) {
             throw new \RuntimeException('Archive was not created successfully');
         }
     }
-} 
+}

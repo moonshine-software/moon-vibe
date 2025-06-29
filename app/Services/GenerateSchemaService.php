@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Throwable;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
-use MoonShine\Support\Enums\Color;
-use MoonShine\UI\Components\Badge;
-use MoonShine\Support\Enums\JsEvent;
-use App\Repositories\PromptRepository;
-use MoonShine\Twirl\Events\TwirlEvent;
 use App\Repositories\ProjectRepository;
+use App\Repositories\PromptRepository;
+use MoonShine\Support\Enums\Color;
+use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Twirl\Enums\HtmlReloadAction;
+use MoonShine\Twirl\Events\TwirlEvent;
+use MoonShine\UI\Components\Badge;
+use Throwable;
 
 readonly class GenerateSchemaService
 {
@@ -33,7 +33,7 @@ readonly class GenerateSchemaService
     ): void {
         $schema = $this->projectRepository->getSchema($schemaId);
 
-        if($schema === null) {
+        if ($schema === null) {
             return;
         }
 
@@ -62,21 +62,23 @@ readonly class GenerateSchemaService
 
                 $error = $this->schemaValidator->validate($schemaResult);
 
-                if($error !== '') {
-                    logger()->debug('generation error', [
-                            'try'    => $tries,
+                if ($error !== '') {
+                    logger()->debug(
+                        'generation error',
+                        [
+                            'try' => $tries,
                             'schema' => $schemaResult,
-                            'error'  => $error,
+                            'error' => $error,
                         ]
                     );
 
                     $messages[] = [
-                        'role'    => 'assistant',
-                        'content' => $schemaResult
+                        'role' => 'assistant',
+                        'content' => $schemaResult,
                     ];
                     $messages[] = [
-                        'role'    => 'user',
-                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой."
+                        'role' => 'user',
+                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой.",
                     ];
 
                     $isValidSchema = false;
@@ -103,14 +105,15 @@ readonly class GenerateSchemaService
     {
         $mainPrompt = $this->promptRepository->getAllPrompts();
 
-        if( !$isCorrectPrompt) {
+        if (! $isCorrectPrompt) {
             return [
                 ['role' => 'system', 'content' => $mainPrompt],
-                ['role' => 'user', 'content' => $prompt]
+                ['role' => 'user', 'content' => $prompt],
             ];
         }
 
         $mainPrompt = "# " . __('app.schema.correction') . PHP_EOL . $mainPrompt;
+
         return [
             ['role' => 'system', 'content' => $mainPrompt],
             ['role' => 'user', 'content' => $schema->first_prompt],
@@ -134,13 +137,13 @@ readonly class GenerateSchemaService
         $badge = $status === SchemaStatus::ERROR
             ? Badge::make(__('app.schema.error') . ': ' . $schema->error, Color::RED)
                 ->customAttributes([
-                    'class' => 'schema-id-' . $schema->id
+                    'class' => 'schema-id-' . $schema->id,
                 ])
             : Badge::make(
                 $schema->status_id->toString(),
                 $schema->status_id->color()
             )->customAttributes([
-                'class' => 'schema-id-' . $schema->id
+                'class' => 'schema-id-' . $schema->id,
             ]);
 
         TwirlEvent::dispatch(
@@ -157,8 +160,8 @@ readonly class GenerateSchemaService
     {
         TwirlEvent::dispatch(
             '.schema-id-' . $schemaId,
-            (string) Badge::make(__('app.schema.generation') . ': ' .  $event)->customAttributes([
-                'class' => 'schema-id-' . $schemaId
+            (string) Badge::make(__('app.schema.generation') . ': ' . $event)->customAttributes([
+                'class' => 'schema-id-' . $schemaId,
             ]),
             HtmlReloadAction::OUTER_HTML
         );
@@ -167,7 +170,7 @@ readonly class GenerateSchemaService
     public function schemaError(Throwable $e, ProjectSchema $schema, ?string $schemaResult = null): void
     {
         $schema->status_id = SchemaStatus::ERROR;
-        if(! empty($schemaResult)) {
+        if (! empty($schemaResult)) {
             $schema->schema = $schemaResult;
         }
         $schema->error = __("moonshine.schema.server_error");

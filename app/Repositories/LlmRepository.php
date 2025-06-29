@@ -15,7 +15,8 @@ class LlmRepository
     {
         $appLlms = LlmProvider::cases();
 
-        $unsetNotAvailableLlms = function (int $key, LlmProvider $llm) use (&$appLlms
+        $unsetNotAvailableLlms = function (int $key, LlmProvider $llm) use (
+            &$appLlms
         ): void {
             if (empty(config($llm->configTokenKey()))) {
                 unset($appLlms[$key]);
@@ -55,6 +56,7 @@ class LlmRepository
     public function getDefaultLlmId(): ?int
     {
         $llm = LargeLanguageModel::query()->where('is_default', 1)->first();
+
         return $llm === null ? null : $llm->id;
     }
 }

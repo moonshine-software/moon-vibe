@@ -5,38 +5,31 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\LargeLanguageModel;
-use Closure;
-
-use App\Models\Project;
 use App\Models\MoonShineUser;
+use App\Models\Project;
 use App\Models\ProjectSchema;
-use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Contracts\UI\HasFieldsContract;
-use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Support\ListOf;
-use MoonShine\UI\Components\Modal;
-use MoonShine\UI\Components\OffCanvas;
-use MoonShine\UI\Fields\Fieldset;
-use MoonShine\UI\Fields\Text;
+use App\MoonShine\Pages\Project\ProjectFormPage;
 use App\Services\SimpleSchema;
-use MoonShine\UI\Fields\Preview;
-use MoonShine\UI\Fields\Textarea;
-use MoonShine\UI\Components\Badge;
+use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Enums\Action;
-use MoonShine\Support\Enums\HttpMethod;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\UI\Components\ActionButton;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
+use MoonShine\Laravel\Fields\Relationships\HasMany;
+use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
+use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\HttpMethod;
+use MoonShine\Support\ListOf;
+use MoonShine\UI\Components\ActionButton;
+use MoonShine\UI\Components\Badge;
 use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Divider;
-use MoonShine\Laravel\Pages\Crud\DetailPage;
-use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\Laravel\Resources\ModelResource;
-use App\MoonShine\Pages\Project\ProjectFormPage;
-use MoonShine\Contracts\UI\ActionButtonContract;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use MoonShine\Laravel\Fields\Relationships\HasMany;
-use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
+use MoonShine\UI\Fields\Fieldset;
+use MoonShine\UI\Fields\Preview;
+use MoonShine\UI\Fields\Text;
+use MoonShine\UI\Fields\Textarea;
 use Throwable;
 
 /**
@@ -46,8 +39,8 @@ class ProjectResource extends ModelResource
 {
     protected string $model = Project::class;
 
-    /** @var string[]  */
-	protected array $with = ['moonshineUser', 'llm'];
+    /** @var string[] */
+    protected array $with = ['moonshineUser', 'llm'];
 
     protected string $column = 'name';
 
@@ -76,7 +69,7 @@ class ProjectResource extends ModelResource
     {
         return [
             Fieldset::make('', [
-                Text::make('', 'name')->changePreview(fn(string $value) => "<b>$value</b><hr>"),
+                Text::make('', 'name')->changePreview(fn (string $value) => "<b>$value</b><hr>"),
                 Textarea::make('', 'description')->customAttributes([
                     'rows' => 7,
                 ]),
@@ -97,19 +90,22 @@ class ProjectResource extends ModelResource
 
         return [
             Text::make('', 'name')->changePreview(
-                static fn(string $value, Text $ctx): string => "<b>$value</b><hr>"
+                static fn (string $value, Text $ctx): string => "<b>$value</b><hr>"
             ),
             Textarea::make('', 'description')->customAttributes([
                 'rows' => 7,
             ]),
-            BelongsTo::make('LLM', 'llm',
-                formatted: fn(LargeLanguageModel $item) => "{$item->provider->toString()} ($item->model)",
+            BelongsTo::make(
+                'LLM',
+                'llm',
+                formatted: fn (LargeLanguageModel $item) => "{$item->provider->toString()} ($item->model)",
                 resource: LlmResource::class
             )->nullable(),
             HasMany::make(__('app.project.schemas'), 'schemas', resource: ProjectSchemaResource::class)
                 ->indexButtons([
-                    ActionButton::make(__('app.project.download'),
-                        url: fn(ProjectSchema $model) => route('build.for-download', ['schemaId' => $model->getKey()])
+                    ActionButton::make(
+                        __('app.project.download'),
+                        url: fn (ProjectSchema $model) => route('build.for-download', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
@@ -117,8 +113,9 @@ class ProjectResource extends ModelResource
                             __('app.project.download_confirm'),
                         )
                     ,
-                    ActionButton::make(__('app.project.test'),
-                        url: fn(ProjectSchema $model) => route('build.for-test', ['schemaId' => $model->getKey()])
+                    ActionButton::make(
+                        __('app.project.test'),
+                        url: fn (ProjectSchema $model) => route('build.for-test', ['schemaId' => $model->getKey()])
                     )
                         ->async(HttpMethod::POST)
                         ->withConfirm(
@@ -126,8 +123,9 @@ class ProjectResource extends ModelResource
                             __('app.project.test_confirm'),
                         )
                     ,
-                    ActionButton::make(__('app.project.correct'),
-                        url: fn(ProjectSchema $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
+                    ActionButton::make(
+                        __('app.project.correct'),
+                        url: fn (ProjectSchema $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
                             __('app.project.correction'),
@@ -138,13 +136,17 @@ class ProjectResource extends ModelResource
                                 $builder
                                     ->fields([
                                         Preview::make('', formatted: function () use ($schema) {
-                                            if($schema->schema === null) {
+                                            if ($schema->schema === null) {
                                                 return '';
                                             }
+
                                             try {
                                                 $simpleSchema = new SimpleSchema(
-                                                    new StructureFromArray(json_decode($schema->schema, true)
-                                                )->makeStructures());
+                                                    new StructureFromArray(
+                                                        json_decode($schema->schema, true)
+                                                    )->makeStructures()
+                                                );
+
                                                 return $simpleSchema->generate();
                                             } catch (Throwable) {
                                                 return '';
@@ -159,11 +161,12 @@ class ProjectResource extends ModelResource
                                         Divider::make(),
                                         Textarea::make(__('app.project.prompt'), 'prompt')->customAttributes([
                                             'rows' => 6,
-                                        ])
+                                        ]),
                                     ]);
+
                                 return $builder;
                             },
-                        )
+                        ),
                 ])
                 ->searchable(false)
                 ->creatable(),
@@ -178,14 +181,14 @@ class ProjectResource extends ModelResource
     public function modifyListComponent(ComponentContract $component): ComponentContract
     {
         return parent::modifyListComponent($component)->customAttributes([
-            'style' => 'border-spacing: 0rem 1.2rem;'
+            'style' => 'border-spacing: 0rem 1.2rem;',
         ]);
     }
 
     public function detailFields(): iterable
     {
         return [
-            ...$this->indexFields()
+            ...$this->indexFields(),
         ];
     }
 
@@ -196,14 +199,15 @@ class ProjectResource extends ModelResource
     public function beforeCreating(mixed $item): mixed
     {
         $item->moonshine_user_id = (int) auth()->user()?->id;
+
         return $item;
     }
 
     public function rules(mixed $item): array
     {
         return [
-			'name' => ['string', 'required'],
-			'description' => ['string', 'nullable']
+            'name' => ['string', 'required'],
+            'description' => ['string', 'nullable'],
         ];
     }
 }

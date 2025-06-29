@@ -10,7 +10,7 @@ class ProjectFormPage extends FormPage
 {
     public function components(): iterable
     {
-        if($this->getResource()?->getItemID() === null) {
+        if ($this->getResource()?->getItemID() === null) {
             return parent::components();
         }
 
@@ -23,7 +23,7 @@ class ProjectFormPage extends FormPage
 
         return [
             Div::make($buildComponents)->customAttributes([
-                'id' => 'build-component-' . (int) $this->getResource()->getItemID()
+                'id' => 'build-component-' . (int) $this->getResource()->getItemID(),
             ]),
             ...parent::components(),
         ];

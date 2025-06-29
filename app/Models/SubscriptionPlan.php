@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 namespace App\Models;
+
 use App\Enums\SubscriptionPeriod;
-use Database\Factories\ProjectSchemaFactory;
+use Carbon\Carbon;
 use Database\Factories\SubscriptionPlanFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use Carbon\Carbon;
 
 /**
  * @property int $id
@@ -27,14 +27,14 @@ class SubscriptionPlan extends Model
     use HasFactory;
 
     protected $fillable = [
-		'name',
-		'generations_limit',
-		'period',
+        'name',
+        'generations_limit',
+        'period',
     ];
 
-	protected $casts = [
-		'period' => SubscriptionPeriod::class,
-	];
+    protected $casts = [
+        'period' => SubscriptionPeriod::class,
+    ];
 
     /**
      * @return HasMany<MoonShineUser, $this>

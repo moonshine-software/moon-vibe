@@ -2,24 +2,24 @@
 
 namespace App\Jobs;
 
-use Exception;
-use Throwable;
-use App\Models\Build;
 use App\Enums\BuildStatus;
-use Psr\Log\LoggerInterface;
+use App\Exceptions\BuildException;
+use App\Models\Build;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
-use App\Support\ChangeLocale;
-use Illuminate\Bus\Queueable;
-use App\Services\SchemaValidator;
-use App\Exceptions\BuildException;
-use Illuminate\Support\Facades\Log;
-use App\Services\MakeAdmin\MakeAdmin;
-use MoonShine\Twirl\Events\TwirlEvent;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use App\MoonShine\Components\ProjectBuildComponent;
+use App\Services\MakeAdmin\MakeAdmin;
+use App\Services\SchemaValidator;
+use App\Support\ChangeLocale;
+use Exception;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use MoonShine\Twirl\Events\TwirlEvent;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
 {
@@ -39,12 +39,12 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
     public function handle(ChangeLocale $changeLocale, LoggerInterface $logger): void
     {
         $user = MoonShineUser::query()->where('id', $this->userId)->first();
-        if($user === null) {
+        if ($user === null) {
             throw new BuildException('User not found');
         }
 
         $buildRepository = (string) $user->getBuildSetting('repository', '');
-        if($buildRepository === '') {
+        if ($buildRepository === '') {
             throw new BuildException('The settings do not indicate a repository for creating an admin panel');
         }
 
@@ -73,11 +73,12 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
             $projectSchema = $build->projectSchema;
 
             $errors = (new SchemaValidator())->validate($projectSchema->schema);
-            if($errors !== '') {
+            if ($errors !== '') {
                 $build->update([
                     'status_id' => BuildStatus::ERROR,
-                    'errors' => $errors
+                    'errors' => $errors,
                 ]);
+
                 return;
             }
 
@@ -85,7 +86,7 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
                 $projectSchema->schema,
                 Storage::disk('local')->path('builds/' . $build->moonshine_user_id),
                 $logger,
-                alertFunction: function(string $alert, int $percent) use ($build): void {
+                alertFunction: function (string $alert, int $percent) use ($build): void {
                     TwirlEvent::dispatch(
                         '#build-component-' . $build->projectSchema->project->id,
                         (string) ProjectBuildComponent::fromBuild($build, $percent, $alert)
@@ -97,7 +98,7 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
                 $path = $makeAdmin->handleForDownload($buildRepository);
                 $build->update([
                     'status_id' => BuildStatus::FOR_DOWNLOAD,
-                    'file_path' => $path
+                    'file_path' => $path,
                 ]);
             } catch (Throwable $e) {
                 $build->update([
@@ -116,12 +117,12 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
         } catch (Exception $e) {
             Log::error('Build error: ' . $e->getMessage(), [
                 'build_id' => $build->id,
-                'exception' => $e
+                'exception' => $e,
             ]);
-            
+
             $build->update([
                 'status_id' => BuildStatus::ERROR,
-                'errors' => $e->getMessage()
+                'errors' => $e->getMessage(),
             ]);
         }
     }
@@ -130,4 +131,4 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
     {
         return $this->userId;
     }
-} 
+}

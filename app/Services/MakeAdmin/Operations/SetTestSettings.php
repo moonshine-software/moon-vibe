@@ -21,4 +21,4 @@ class SetTestSettings extends AbstractMakeOperation
 
         file_put_contents($this->directories->appProjectDirectory . '/.env', $env);
     }
-} 
+}

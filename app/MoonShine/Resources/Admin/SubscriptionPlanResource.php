@@ -7,7 +7,6 @@ namespace App\MoonShine\Resources\Admin;
 use App\Enums\Role;
 use App\Enums\SubscriptionPeriod;
 use App\Models\SubscriptionPlan;
-use MoonShine\Laravel\Enums\Action;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
@@ -34,19 +33,20 @@ class SubscriptionPlanResource extends ModelResource
 
     protected function activeActions(): ListOf
     {
-        if(auth('moonshine')->user()?->moonshine_user_role_id !== Role::ADMIN) {
+        if (auth('moonshine')->user()?->moonshine_user_role_id !== Role::ADMIN) {
             throw new NotFoundHttpException();
         }
+
         return parent::activeActions();
     }
 
     public function indexFields(): iterable
     {
         return [
-			ID::make('id'),
-			Text::make('Name', 'name'),
-			Number::make('Generation limit', 'generations_limit'),
-			Enum::make('Period', 'period')->attach(SubscriptionPeriod::class),
+            ID::make('id'),
+            Text::make('Name', 'name'),
+            Number::make('Generation limit', 'generations_limit'),
+            Enum::make('Period', 'period')->attach(SubscriptionPeriod::class),
         ];
     }
 
@@ -54,24 +54,24 @@ class SubscriptionPlanResource extends ModelResource
     {
         return [
             Box::make([
-                ...$this->indexFields()
-            ])
+                ...$this->indexFields(),
+            ]),
         ];
     }
 
     public function detailFields(): iterable
     {
         return [
-            ...$this->indexFields()
+            ...$this->indexFields(),
         ];
     }
 
     public function rules(mixed $item): array
     {
         return [
-			'name' => ['string', 'required'],
-			'generations_limit' => ['int', 'required'],
-			'period' => ['string', 'required'],
+            'name' => ['string', 'required'],
+            'generations_limit' => ['int', 'required'],
+            'period' => ['string', 'required'],
         ];
     }
 }

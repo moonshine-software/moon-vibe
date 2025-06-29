@@ -4,28 +4,27 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Pages;
 
-use LogicException;
+use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\Contracts\UI\FieldContract;
+use MoonShine\Contracts\UI\FormBuilderContract;
+use MoonShine\Laravel\Http\Controllers\ProfileController;
+use MoonShine\Laravel\MoonShineAuth;
+use MoonShine\Laravel\Pages\Page;
+use MoonShine\Laravel\Traits\WithComponentsPusher;
+use MoonShine\Laravel\TypeCasts\ModelCaster;
+use MoonShine\MenuManager\Attributes\SkipMenu;
+use MoonShine\UI\Components\FormBuilder;
+use MoonShine\UI\Components\Heading;
+use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Tabs;
+use MoonShine\UI\Components\Tabs\Tab;
 use MoonShine\UI\Fields\ID;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Image;
 use MoonShine\UI\Fields\Number;
-use MoonShine\UI\Fields\Select;
-use MoonShine\Laravel\Pages\Page;
-use MoonShine\UI\Components\Tabs;
 use MoonShine\UI\Fields\Password;
-use MoonShine\Laravel\MoonShineAuth;
-use MoonShine\UI\Components\Heading;
-use MoonShine\UI\Components\Tabs\Tab;
-use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\PasswordRepeat;
-use MoonShine\UI\Components\FormBuilder;
-use MoonShine\Contracts\UI\FieldContract;
-use MoonShine\Laravel\TypeCasts\ModelCaster;
-use MoonShine\Contracts\UI\ComponentContract;
-use MoonShine\MenuManager\Attributes\SkipMenu;
-use MoonShine\Contracts\UI\FormBuilderContract;
-use MoonShine\Laravel\Traits\WithComponentsPusher;
-use MoonShine\Laravel\Http\Controllers\ProfileController;
+use MoonShine\UI\Fields\Select;
+use MoonShine\UI\Fields\Text;
 
 #[SkipMenu]
 /**

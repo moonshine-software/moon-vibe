@@ -32,7 +32,7 @@ final class FormLayout extends MoonShineLayout
                     ])
                         ->class('authentication')
                         ->customAttributes([
-                            'style' => 'padding: inherit; background-image: url(/images/back.png); background-size: cover; background-position: center;'
+                            'style' => 'padding: inherit; background-image: url(/images/back.png); background-size: cover; background-position: center;',
                         ])
                     ,
                 ]),

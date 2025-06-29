@@ -29,7 +29,7 @@ class LoginPage extends Page
     public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->getTitle()
+            '#' => $this->getTitle(),
         ];
     }
 

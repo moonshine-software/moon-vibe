@@ -13,4 +13,4 @@ class CopyBuildFile extends AbstractMakeOperation
             'Failed to copy file'
         );
     }
-} 
+}

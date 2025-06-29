@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Api\DeepSeek;
 use App\Services\Centrifugo;
-use App\Services\CutCodeAgent;
-use Illuminate\Support\Facades\URL;
-use MoonShine\AssetManager\Js;
-use MoonShine\AssetManager\Css;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use MoonShine\AssetManager\Css;
+use MoonShine\AssetManager\Js;
 use MoonShine\Twirl\Contracts\TwirlBroadcastContract;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->environment('production')) {
             // @phpstan-ignore-next-line
-            $this->app['request']->server->set('HTTPS','on');
+            $this->app['request']->server->set('HTTPS', 'on');
             URL::forceHttps();
         }
 

@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Enums\BuildStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Carbon\Carbon;
+
 /**
  * @property int $id
  * @property int $project_schema_id
@@ -48,4 +48,4 @@ class Build extends Model
     {
         return $this->belongsTo(MoonShineUser::class, 'moonshine_user_id');
     }
-} 
+}

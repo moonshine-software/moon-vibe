@@ -7,12 +7,12 @@ use App\Actions\GenerateFromAI;
 use App\Exceptions\GenerateException;
 use App\Exceptions\UserPlanException;
 use App\Models\MoonShineUser;
-use Illuminate\Http\RedirectResponse;
-use MoonShine\Support\Enums\ToastType;
-use MoonShine\Laravel\Pages\Crud\FormPage;
 use App\MoonShine\Resources\ProjectResource;
 use App\Services\Subscription\SubscriptionService;
+use Illuminate\Http\RedirectResponse;
 use MoonShine\Laravel\Http\Controllers\MoonShineController;
+use MoonShine\Laravel\Pages\Crud\FormPage;
+use MoonShine\Support\Enums\ToastType;
 
 class AiController extends MoonShineController
 {
@@ -33,6 +33,7 @@ class AiController extends MoonShineController
             $subscriptionService->validate($user);
         } catch (UserPlanException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
+
             return back();
         }
 
@@ -46,6 +47,7 @@ class AiController extends MoonShineController
             );
         } catch (GenerateException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
+
             return back()->withInput();
         }
 
@@ -68,7 +70,7 @@ class AiController extends MoonShineController
         SubscriptionService $subscriptionService,
     ): RedirectResponse {
         $data = request()->validate([
-            'prompt' => ['string', 'required', 'min:5']
+            'prompt' => ['string', 'required', 'min:5'],
         ]);
 
         /** @var MoonShineUser $user */
@@ -78,6 +80,7 @@ class AiController extends MoonShineController
             $subscriptionService->validate($user);
         } catch (UserPlanException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
+
             return back();
         }
 
@@ -85,6 +88,7 @@ class AiController extends MoonShineController
             $correctAction->handle($schemaId, $data['prompt'], $user, app()->getLocale());
         } catch (GenerateException $e) {
             $this->toast($e->getMessage(), ToastType::ERROR);
+
             return back();
         }
 

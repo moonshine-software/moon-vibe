@@ -6,10 +6,10 @@ namespace App\Models;
 
 use App\Enums\Role;
 use App\Support\ChangeLocale;
+use Carbon\Carbon;
 use Database\Factories\MoonShineUserFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MoonShine\Laravel\Models\MoonshineUser as BaseMoonShineUser;
-use Carbon\Carbon;
 use MoonShine\Laravel\Models\MoonshineUserRole;
 use MoonShine\Support\Enums\Color;
 
@@ -41,7 +41,7 @@ class MoonShineUser extends BaseMoonShineUser
         'moonshine_user_role_id',
         'password',
         'name',
-        'avatar',       
+        'avatar',
         'settings',
         'lang',
         'subscription_plan_id',
@@ -58,7 +58,7 @@ class MoonShineUser extends BaseMoonShineUser
     protected static function booted(): void
     {
         static::saving(static function (self $model) {
-            if(
+            if (
                 $model->hasAttribute('attempts')
                 && $model->hasAttribute('repository')
             ) {
@@ -67,7 +67,7 @@ class MoonShineUser extends BaseMoonShineUser
                 ];
 
                 $settings['build'] = [
-                    'repository' => $model->getAttribute('repository')
+                    'repository' => $model->getAttribute('repository'),
                 ];
 
                 unset($model->attributes['attempts']);
@@ -76,7 +76,7 @@ class MoonShineUser extends BaseMoonShineUser
                 $model->settings = $settings;
             }
 
-            if($model->id !== null && auth('moonshine')->user()?->id === $model->id) {
+            if ($model->id !== null && auth('moonshine')->user()?->id === $model->id) {
                 (new ChangeLocale())->set((string) $model->getAttribute('lang'));
             }
         });
@@ -84,23 +84,25 @@ class MoonShineUser extends BaseMoonShineUser
 
     public function getGenerationSetting(string $key, mixed $default = null): mixed
     {
-        if($this->settings === null) {
+        if ($this->settings === null) {
             return $default;
         }
-        if(! isset($this->settings['generation'][$key])) {
+        if (! isset($this->settings['generation'][$key])) {
             return $default;
         }
+
         return $this->settings['generation'][$key];
     }
 
     public function getBuildSetting(string $key, mixed $default = null): mixed
     {
-        if($this->settings === null) {
+        if ($this->settings === null) {
             return $default;
         }
-        if(! isset($this->settings['build'][$key])) {
+        if (! isset($this->settings['build'][$key])) {
             return $default;
         }
+
         return $this->settings['build'][$key];
     }
 
@@ -114,19 +116,20 @@ class MoonShineUser extends BaseMoonShineUser
 
     public function getGenerationsLeft(): false|int
     {
-        if($this->moonshine_user_role_id === Role::ADMIN) {
+        if ($this->moonshine_user_role_id === Role::ADMIN) {
             return false;
         }
 
-        if($this->subscription_end_date <= now()) {
+        if ($this->subscription_end_date <= now()) {
             return 0;
         }
 
         /** @var SubscriptionPlan|null $subscriptionPlan */
         $subscriptionPlan = $this->subscriptionPlan;
-        if($subscriptionPlan === null) {
+        if ($subscriptionPlan === null) {
             return 0;
         }
+
         return $subscriptionPlan->generations_limit - $this->generations_used;
     }
 
@@ -136,9 +139,10 @@ class MoonShineUser extends BaseMoonShineUser
     public function getGenerationLeftInfo(): array
     {
         $generationsLeft = $this->getGenerationsLeft();
+
         return [
             'info' => $generationsLeft === false ? '-' : (string) $generationsLeft,
-            'color' => ($generationsLeft === false || $generationsLeft > 0) ? Color::GREEN : Color::RED
+            'color' => ($generationsLeft === false || $generationsLeft > 0) ? Color::GREEN : Color::RED,
         ];
     }
 

@@ -3,14 +3,15 @@
 declare(strict_types=1);
 
 namespace App\Models;
+
 use Carbon\Carbon;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use MoonShine\Laravel\Models\MoonshineUser;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
+use MoonShine\Laravel\Models\MoonshineUser;
 
 /**
  * @property int $id
@@ -29,10 +30,10 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-		'name',
-		'description',
-		'llm_id',
-		'moonshine_user_id',
+        'name',
+        'description',
+        'llm_id',
+        'moonshine_user_id',
     ];
 
     /**

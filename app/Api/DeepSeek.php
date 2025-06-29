@@ -35,23 +35,26 @@ class DeepSeek implements SchemaGenerateContract
             ])->post($this->url, [
                 'model' => $this->model,
                 'messages' => $messages,
-                'stream' => false
+                'stream' => false,
             ]);
 
         $result = $response->json();
 
-        if(! isset($result['choices'][0])) {
+        if (! isset($result['choices'][0])) {
             logger()->error('DeepSeek error: empty choices', $result);
+
             throw new GenerateException('DeepSeek error: empty choices');
         }
 
-        if(! isset($result['choices'][0]['message'])) {
+        if (! isset($result['choices'][0]['message'])) {
             logger()->error('DeepSeek error: empty message', $result);
+
             throw new GenerateException('DeepSeek error: empty message');
         }
 
-        if(! isset($result['choices'][0]['message']['content'])) {
+        if (! isset($result['choices'][0]['message']['content'])) {
             logger()->error('DeepSeek error: empty content', $result);
+
             throw new GenerateException('DeepSeek error: empty content');
         }
 

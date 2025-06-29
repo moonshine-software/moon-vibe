@@ -16,7 +16,7 @@ class CloneRepository extends AbstractMakeOperation
     public function handle(int $percent): void
     {
         $this->alert(__('app.build.cloning_repository'), $percent);
-        
+
         $this->runProcess(
             ['git', 'clone', $this->repository, $this->directories->appProjectDirectory],
             'Failed to clone repository'

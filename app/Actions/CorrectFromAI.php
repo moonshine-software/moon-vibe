@@ -6,17 +6,15 @@ namespace App\Actions;
 
 use App\Enums\SchemaStatus;
 use App\Exceptions\GenerateException;
+use App\Jobs\CorrectSchemaJob;
 use App\Models\MoonShineUser;
 use App\Models\ProjectSchema;
-use App\Jobs\CorrectSchemaJob;
-use MoonShine\Laravel\MoonShineAuth;
-use App\Exceptions\UserPlanException;
 
 readonly class CorrectFromAI
 {
     public function __construct(
         private ValidatePendingSchemas $validatePendingSchemas
-    ){
+    ) {
 
     }
 
@@ -25,12 +23,12 @@ readonly class CorrectFromAI
      */
     public function handle(int $schemaId, string $prompt, MoonShineUser $user, string $lang): void
     {
-        if($this->validatePendingSchemas->isPending($user->id)) {
+        if ($this->validatePendingSchemas->isPending($user->id)) {
             throw new GenerateException(__('app.schema.already_pending'));
         }
 
         $schema = ProjectSchema::query()->where('id', $schemaId)->with('project')->first();
-        if($schema === null) {
+        if ($schema === null) {
             throw new GenerateException(__('app.schema.schema_not_found'));
         }
 

@@ -6,7 +6,6 @@ namespace App\MoonShine\Resources;
 
 use App\Enums\LlmProvider;
 use App\Models\LargeLanguageModel;
-
 use App\Repositories\LlmRepository;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
@@ -16,8 +15,8 @@ use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Enum;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Select;
-use MoonShine\UI\Fields\Text;
 use MoonShine\UI\Fields\Switcher;
+use MoonShine\UI\Fields\Text;
 
 /**
  * @extends ModelResource<LargeLanguageModel, IndexPage, FormPage, DetailPage>
@@ -45,7 +44,7 @@ class LlmResource extends ModelResource
     {
         $default = LlmProvider::OPEN_AI->value;
         $llms = (new LlmRepository())->getAvailableProviders();
-        if($this->getItem() !== null && isset($llms[$this->getItem()->provider->value])) {
+        if ($this->getItem() !== null && isset($llms[$this->getItem()->provider->value])) {
             $default = $this->getItem()->provider->value;
         }
 
@@ -58,38 +57,40 @@ class LlmResource extends ModelResource
                 ,
                 Text::make('Model', 'model'),
                 Switcher::make('Default', 'is_default'),
-            ])
+            ]),
         ];
     }
 
     public function detailFields(): iterable
     {
         return [
-            ...$this->indexFields()
+            ...$this->indexFields(),
         ];
     }
 
     public function rules(mixed $item): array
     {
         return [
-			'provider' => ['int', 'required'],
-			'model' => ['string', 'required'],
+            'provider' => ['int', 'required'],
+            'model' => ['string', 'required'],
         ];
     }
 
     protected function beforeUpdating(mixed $item): mixed
     {
-        if((int) request()->input('is_default') === 1) {
+        if ((int) request()->input('is_default') === 1) {
             $this->setIsDefaultToFalse();
         }
+
         return $item;
     }
 
     public function beforeCreating(mixed $item): mixed
     {
-        if((int) request()->input('is_default') === 1) {
+        if ((int) request()->input('is_default') === 1) {
             $this->setIsDefaultToFalse();
         }
+
         return $item;
     }
 

@@ -14,7 +14,7 @@ class LangMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(! Cookie::has('lang')) {
+        if (! Cookie::has('lang')) {
             return $next($request);
         }
 

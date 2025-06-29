@@ -9,15 +9,15 @@ use App\MoonShine\Pages\SettingsPage;
 use App\MoonShine\Resources\Admin\MoonShineUserResource;
 use App\MoonShine\Resources\Admin\MoonShineUserRoleResource;
 use App\MoonShine\Resources\Admin\SubscriptionPlanResource;
+use App\MoonShine\Resources\LlmResource;
 use App\MoonShine\Resources\ProjectResource;
 use App\MoonShine\Resources\ProjectSchemaResource;
+use App\MoonShine\Resources\PromptResource;
 use Illuminate\Support\ServiceProvider;
 use MoonShine\Contracts\Core\DependencyInjection\ConfiguratorContract;
 use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
-use App\MoonShine\Resources\LlmResource;
-use App\MoonShine\Resources\PromptResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {

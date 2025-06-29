@@ -10,7 +10,7 @@ class InstallMarkdown extends AbstractMakeOperation
 
         /** @var string $fileContent */
         $fileContent = file_get_contents($this->directories->schemaFile);
-        if (!str_contains($fileContent, '"Markdown"')) {
+        if (! str_contains($fileContent, '"Markdown"')) {
             return;
         }
 
@@ -20,4 +20,4 @@ class InstallMarkdown extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

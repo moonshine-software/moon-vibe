@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Models;
+
 use App\Enums\LlmProvider;
 use Database\Factories\LargeLanguageModelFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,12 +20,12 @@ class LargeLanguageModel extends Model
     /** @use HasFactory<LargeLanguageModelFactory> */
     use HasFactory;
 
-	public $timestamps = false;
+    public $timestamps = false;
 
     protected $fillable = [
-		'provider',
-		'model',
-		'is_default',
+        'provider',
+        'model',
+        'is_default',
     ];
 
     public $casts = [

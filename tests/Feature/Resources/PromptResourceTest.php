@@ -48,7 +48,7 @@ class PromptResourceTest extends TestCase
         // Act
         $response = $this->actingAs($this->user)
             ->get((string) toPage(FormPage::class, PromptResource::class, [
-                'resourceItem' => $this->prompt->id
+                'resourceItem' => $this->prompt->id,
             ]));
 
         // Assert

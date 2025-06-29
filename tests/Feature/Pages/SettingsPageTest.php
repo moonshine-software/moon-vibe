@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Pages;
 
-use App\Enums\LlmProvider;
-use App\Models\LargeLanguageModel;
 use App\Models\MoonShineUser;
 use App\MoonShine\Pages\SettingsPage;
 use PHPUnit\Framework\Attributes\Test;

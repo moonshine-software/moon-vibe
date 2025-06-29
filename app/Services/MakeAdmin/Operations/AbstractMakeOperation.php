@@ -2,10 +2,10 @@
 
 namespace App\Services\MakeAdmin\Operations;
 
+use App\Services\MakeAdmin\ProjectDirectoryDTO;
 use Closure;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
-use App\Services\MakeAdmin\ProjectDirectoryDTO;
 
 abstract class AbstractMakeOperation
 {
@@ -42,9 +42,9 @@ abstract class AbstractMakeOperation
     ): void {
         $process = new Process($command, $cwd, $env);
         $process->run();
-        
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($errorMessage . ': ' . $process->getOutput()  . '(' . $process->getErrorOutput() . ')');
+
+        if (! $process->isSuccessful()) {
+            throw new \RuntimeException($errorMessage . ': ' . $process->getOutput() . '(' . $process->getErrorOutput() . ')');
         }
 
         $this->logger->debug('Command: ', array_merge($command, [$process->getOutput()]));

@@ -10,7 +10,7 @@ class InstallTinyMce extends AbstractMakeOperation
 
         /** @var string $fileContent */
         $fileContent = file_get_contents($this->directories->schemaFile);
-        if (!str_contains($fileContent, '"TinyMce"')) {
+        if (! str_contains($fileContent, '"TinyMce"')) {
             return;
         }
 
@@ -20,4 +20,4 @@ class InstallTinyMce extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

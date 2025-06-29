@@ -24,12 +24,14 @@ class ProjectBuildComponent extends MoonShineComponent
     {
         $build = Build::query()
             ->where('moonshine_user_id', $userId)
-            ->when($projectId, fn($query) => $query
-                ->whereHas('projectSchema', fn($query) => $query->where('project_id', $projectId))
+            ->when(
+                $projectId,
+                fn ($query) => $query
+                ->whereHas('projectSchema', fn ($query) => $query->where('project_id', $projectId))
             )
             ->first();
 
-        if($build === null) {
+        if ($build === null) {
             return '';
         }
 
@@ -38,7 +40,7 @@ class ProjectBuildComponent extends MoonShineComponent
 
     public static function fromBuild(Build $build, ?int $buildPercent = null, ?string $status = null): static
     {
-        if($buildPercent === null && $build->file_path !== null) {
+        if ($buildPercent === null && $build->file_path !== null) {
             $buildPercent = 100;
         }
 

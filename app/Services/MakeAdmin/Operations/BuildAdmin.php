@@ -16,4 +16,4 @@ class BuildAdmin extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

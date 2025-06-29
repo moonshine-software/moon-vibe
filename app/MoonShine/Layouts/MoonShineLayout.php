@@ -10,7 +10,9 @@ use App\MoonShine\Pages\AboutPage;
 use App\MoonShine\Pages\Dashboard;
 use App\MoonShine\Pages\SettingsPage;
 use App\MoonShine\Resources\Admin\SubscriptionPlanResource;
+use App\MoonShine\Resources\LlmResource;
 use App\MoonShine\Resources\ProjectResource;
+use App\MoonShine\Resources\PromptResource;
 use MoonShine\AssetManager\InlineCss;
 use MoonShine\ColorManager\ColorManager;
 use MoonShine\Contracts\AssetManager\AssetElementContract;
@@ -21,6 +23,7 @@ use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
+use MoonShine\Twirl\Components\Twirl;
 use MoonShine\UI\Components\{Components,
     Layout\Body,
     Layout\Content,
@@ -34,9 +37,6 @@ use MoonShine\UI\Components\{Components,
     Layout\Sidebar,
     Layout\Wrapper,
     When};
-use App\MoonShine\Resources\LlmResource;
-use App\MoonShine\Resources\PromptResource;
-use MoonShine\Twirl\Components\Twirl;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -72,7 +72,7 @@ class MoonShineLayout extends CompactLayout
             MenuItem::make(__('app.menu.generation'), Dashboard::class)
                 ->icon('rocket-launch'),
             MenuItem::make(__('app.menu.projects'), ProjectResource::class)
-                ->badge(fn() => Project::query()->where('moonshine_user_id', (int) auth('moonshine')->user()?->id)->count())
+                ->badge(fn () => Project::query()->where('moonshine_user_id', (int) auth('moonshine')->user()?->id)->count())
                 ->icon('square-3-stack-3d'),
             MenuItem::make(__('app.menu.llm'), LlmResource::class)
                 ->icon('light-bulb'),
@@ -89,7 +89,7 @@ class MoonShineLayout extends CompactLayout
                     MoonShineUserResource::class
                 ),
                 MenuItem::make(__('app.menu.subscriptions'), SubscriptionPlanResource::class),
-            ])->canSee(static fn(): bool => auth()->user()?->moonshine_user_role_id === Role::ADMIN),
+            ])->canSee(static fn (): bool => auth()->user()?->moonshine_user_role_id === Role::ADMIN),
         ];
     }
 
@@ -113,7 +113,7 @@ class MoonShineLayout extends CompactLayout
             'full' => '9999',
         ];
 
-        if($name === null) {
+        if ($name === null) {
             return $r['default'];
         }
 
@@ -180,7 +180,7 @@ class MoonShineLayout extends CompactLayout
             ])->customAttributes([
                 'class' => 'menu',
                 ':class' => "asideMenuOpen && '_is-opened'",
-                'style' => 'margin-top: 10rem'
+                'style' => 'margin-top: 10rem',
             ]),
         ])
             ->collapsed();
@@ -190,7 +190,7 @@ class MoonShineLayout extends CompactLayout
     {
         return Profile::make(
             logOutRoute: route('logout'),
-            avatar: fn() => '/icon.png',
+            avatar: fn () => '/icon.png',
             withBorder: $sidebar
         );
     }

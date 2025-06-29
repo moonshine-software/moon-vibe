@@ -22,7 +22,7 @@ class RemoveGit extends AbstractMakeOperation
                 [
                     'cp',
                     $this->directories->appProjectDirectory . '/storage/logs/.gitignore',
-                    $this->directories->appProjectDirectory . '/.gitignore'
+                    $this->directories->appProjectDirectory . '/.gitignore',
                 ],
                 'Failed to copy .gitignore'
             );
@@ -34,4 +34,4 @@ class RemoveGit extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

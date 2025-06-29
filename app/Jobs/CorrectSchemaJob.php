@@ -5,9 +5,9 @@ namespace App\Jobs;
 use App\Models\ProjectSchema;
 use App\Services\GenerateSchemaService;
 use App\Support\ChangeLocale;
-use Throwable;
-use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Throwable;
 
 class CorrectSchemaJob implements ShouldQueue
 {
@@ -41,8 +41,9 @@ class CorrectSchemaJob implements ShouldQueue
         $generateSchemaService = app(GenerateSchemaService::class);
 
         $schema = ProjectSchema::query()->where('id', $this->schemaId)->first();
-        if($schema === null) {
+        if ($schema === null) {
             report($e);
+
             return;
         }
 

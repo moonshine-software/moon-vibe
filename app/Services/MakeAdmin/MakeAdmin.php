@@ -4,31 +4,31 @@ declare(strict_types=1);
 
 namespace App\Services\MakeAdmin;
 
+use App\Services\MakeAdmin\Operations\{
+    AbstractMakeOperation,
+    ArchiveDirectory,
+    BuildAdmin,
+    Chmod,
+    CloneRepository,
+    CopyBuildFile,
+    CopyEnv,
+    CreateBuildsDirectory,
+    InstallDependencies,
+    InstallMarkdown,
+    InstallMoonshineBuilder,
+    InstallTinyMce,
+    MigrateFresh,
+    Optimize,
+    OptimizeClear,
+    PrepareDirectories,
+    PublishMoonshineBuilder,
+    RemoveAdminDirectory,
+    RemoveGit,
+    RemoveVendorDirectory,
+    SetTestSettings
+};
 use Closure;
 use Psr\Log\LoggerInterface;
-use App\Services\MakeAdmin\Operations\{
-    Chmod, 
-    CopyEnv, 
-    Optimize, 
-    RemoveGit, 
-    BuildAdmin, 
-    MigrateFresh, 
-    CopyBuildFile, 
-    OptimizeClear, 
-    InstallTinyMce, 
-    CloneRepository, 
-    InstallMarkdown, 
-    SetTestSettings, 
-    ArchiveDirectory, 
-    InstallDependencies, 
-    PrepareDirectories,
-    RemoveAdminDirectory, 
-    AbstractMakeOperation, 
-    CreateBuildsDirectory, 
-    RemoveVendorDirectory, 
-    InstallMoonshineBuilder, 
-    PublishMoonshineBuilder
-};
 
 readonly class MakeAdmin
 {
@@ -39,7 +39,7 @@ readonly class MakeAdmin
         private string $path,
         private LoggerInterface $logger,
         private Closure $alertFunction,
-        private ?string $appProjectDirectory  = null,
+        private ?string $appProjectDirectory = null,
     ) {
         $this->directories = new ProjectDirectoryDTO(
             path: $this->path,

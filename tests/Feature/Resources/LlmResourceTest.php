@@ -49,7 +49,7 @@ class LlmResourceTest extends TestCase
         // Act
         $response = $this->actingAs($this->user)
             ->get((string) toPage(FormPage::class, LlmResource::class, [
-                'resourceItem' => $this->llm->id
+                'resourceItem' => $this->llm->id,
             ]));
 
         // Assert

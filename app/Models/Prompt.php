@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Models;
+
 use Carbon\Carbon;
 use Database\Factories\PromptFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,8 +23,8 @@ class Prompt extends Model
     use HasFactory;
 
     protected $fillable = [
-		'title',
-		'prompt',
-		'order',
+        'title',
+        'prompt',
+        'order',
     ];
 }

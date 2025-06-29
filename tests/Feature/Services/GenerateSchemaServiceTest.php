@@ -12,12 +12,9 @@ use App\Models\Project;
 use App\Models\ProjectSchema;
 use App\Services\GenerateSchemaService;
 use App\Services\LlmProviderBuilder;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 use Mockery\LegacyMockInterface;
-use Mockery\MockInterface;
 use MoonShine\Twirl\Contracts\TwirlBroadcastContract;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -36,9 +33,9 @@ class GenerateSchemaServiceTest extends TestCase
 
     /** @var LlmProviderBuilder|TwirlBroadcastContract */
     private TwirlBroadcastContract|LlmProviderBuilder $twirlBroadcastContract;
-    
+
     private string $validSchemaResult;
-    
+
     protected function setUp(): void
     {
         parent::setUp();

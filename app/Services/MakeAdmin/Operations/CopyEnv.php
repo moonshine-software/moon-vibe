@@ -13,4 +13,4 @@ class CopyEnv extends AbstractMakeOperation
             'Failed to copy .env.example'
         );
     }
-} 
+}

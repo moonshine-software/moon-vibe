@@ -15,4 +15,4 @@ class MigrateFresh extends AbstractMakeOperation
             ['DB_DATABASE' => 'my_generate']
         );
     }
-} 
+}

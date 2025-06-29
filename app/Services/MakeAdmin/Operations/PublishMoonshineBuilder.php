@@ -14,4 +14,4 @@ class PublishMoonshineBuilder extends AbstractMakeOperation
             $this->directories->appProjectDirectory
         );
     }
-} 
+}

@@ -6,7 +6,8 @@ namespace App\Services;
 
 class TwirlDispatcher
 {
-    public function handle() {
+    public function handle()
+    {
 
     }
 }

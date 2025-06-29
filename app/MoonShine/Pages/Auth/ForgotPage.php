@@ -32,7 +32,7 @@ class ForgotPage extends Page
     public function getBreadcrumbs(): array
     {
         return [
-            '#' => $this->getTitle()
+            '#' => $this->getTitle(),
         ];
     }
 
@@ -65,7 +65,7 @@ class ForgotPage extends Page
 
             Flex::make([
                 ActionButton::make(__('app.auth.log_in'), route('login'))->primary(),
-            ])->justifyAlign('start')
+            ])->justifyAlign('start'),
         ];
     }
 }

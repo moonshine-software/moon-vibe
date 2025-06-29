@@ -24,6 +24,8 @@ Then you can run the project with the following command:
 make up
 ```
 
+![image](https://github.com/user-attachments/assets/0e1035bb-bf6f-4a09-9ff3-d1bcef55a02e)
+
 ## 🎯 What is MoonShine AI Admin Generator?
 
 This application revolutionizes the way you create Laravel admin panels by combining the power of **MoonShine 3** with **artificial intelligence**. Simply describe your project requirements in natural language, and watch as our AI generates a complete, working admin panel with:

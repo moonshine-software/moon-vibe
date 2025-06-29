@@ -103,8 +103,6 @@ This application revolutionizes the way you create Laravel admin panels by combi
 ## 📋 Usage
 
 ### 1. **Add LLM provider and model**
-TODO
-
 ### 2. **Generate Schema**
 After configuring your LLM provider, you are ready to generate your admin panel schema:
 - Go to the "Generation" section.

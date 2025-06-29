@@ -8,6 +8,7 @@ use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
 use App\Repositories\ProjectRepository;
 use App\Repositories\PromptRepository;
+use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\JsEvent;
 use MoonShine\Twirl\Enums\HtmlReloadAction;
@@ -152,8 +153,10 @@ readonly class GenerateSchemaService
             HtmlReloadAction::OUTER_HTML
         );
 
-        // TODO reload table in .ts
-        #Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
+        TwirlEvent::dispatch(
+            'reload-scheme',
+            AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"),
+        );
     }
 
     private function sendEvent(string $event, int $schemaId): void

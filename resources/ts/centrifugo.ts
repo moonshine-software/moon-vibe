@@ -40,6 +40,20 @@ document.addEventListener("moonshine:init", async () => {
         const sub = centrifuge.newSubscription(channel);
 
         sub.on('publication', function(ctx: PublicationContext): void {
+            if(ctx.data.data.selector === 'reload-scheme') {
+                let parts = ctx.data.data.html.split('|')
+                let eventName = parts[0]
+                dispatchEvent(
+                    new CustomEvent(eventName.replaceAll(/\s/g, '').toLowerCase(), {
+                        detail: {},
+                        bubbles: true,
+                        composed: true,
+                        cancelable: true,
+                    }),
+                )
+                return
+            }
+
             onTwirl(ctx.data);
         }).on('error', (error): void => {
             console.log(error)

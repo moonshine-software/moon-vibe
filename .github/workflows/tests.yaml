@@ -73,4 +73,4 @@ jobs:
               run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
             - name: Run tests
-              run: vendor/bin/phpunit
+              run: php artisan test

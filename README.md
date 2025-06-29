@@ -28,8 +28,10 @@ make install
 # Then you can run the project with the following command:
 make up
 ```
-6. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`)
-7. You can now go to the **Generation** section and start using the application
+6. Go to http://localhost:80
+7. Use for login: `admin@mail.com/12345`
+8. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`)
+9. You can now go to the **Generation** section and start using the application
 
 ![image](https://github.com/user-attachments/assets/0e1035bb-bf6f-4a09-9ff3-d1bcef55a02e)
 

@@ -105,6 +105,7 @@ services:
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: worker
+    restart: on-failure
     volumes:
       - ./:${APP_PATH}
       - ./docker/config/php/php.ini:/usr/local/etc/php/conf.d/php.ini

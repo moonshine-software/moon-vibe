@@ -14,7 +14,7 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 1. Execute:
 ```bash
 # Clone the repository
-git clone git@github.com:dev-lnk/moon-vibe.git
+git clone git@github.com:moonshine-software/moon-vibe.git
 ```
 2. Copy `.env.example` to `.env`
 3. Change the `os_user` parameter to the OS user of your system for stable operation
@@ -125,4 +125,4 @@ This project is licensed under the MIT License - see the [LICENSE](https://choos
 ## 🆘 Support
 
 - **Issues**: [GitHub Issues](https://github.com/moonshine-software/moon-vibe/issues)
-- **Telegram**: [dev_lnk](https://t.me/dev_lnk)
+

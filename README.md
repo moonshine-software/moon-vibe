@@ -6,23 +6,28 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 
 ## ✨ Quick Start
 
+> The project runs only in Docker.
+>
 ### Installation
-The project runs in Docker
-
+1. Execute:
 ```bash
 # Clone the repository
 git clone git@github.com:dev-lnk/moon-vibe.git
-
+```
+2. Copy `.env.example` to `.env`
+3. Change the `os_user` parameter to the OS user of your system for stable operation
+4. Add `OPENAI_API_KEY` and/or `DEEP_SEEK_TOKEN` to the `.env` file for API requests
+5. Run:
+```bash
 # Quick setup with Make
 make install
 make build
-```
 
-Then you can run the project with the following command:
-
-```bash
+# Then you can run the project with the following command:
 make up
 ```
+6. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`)
+7. You can now go to the **Generation** section and start using the application
 
 ![image](https://github.com/user-attachments/assets/0e1035bb-bf6f-4a09-9ff3-d1bcef55a02e)
 

@@ -1,8 +1,8 @@
 # 🚀 MoonVibe - MoonShine AI Admin Generator
 
-> **Generate beautiful Laravel admin panels with AI-powered schema creation**
+> **From idea to ready admin panel in 5 minutes. Seriously.**
 
-A powerful Laravel application that leverages artificial intelligence to automatically generate MoonShine admin panel schemas, resources, models, and migrations based on your project descriptions. Deploy working admin panels in minutes, not hours.
+Forget about days of admin panel development! MoonVibe is an AI-powered tool for instantly creating fully functional Laravel admin panels with MoonShine. Simply describe what your admin panel should be like - and get a complete solution with database, models, migrations, and beautiful interface.
 
 ## ✨ Quick Start
 

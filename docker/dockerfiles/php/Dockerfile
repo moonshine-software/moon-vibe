@@ -37,7 +37,6 @@ RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
 RUN mkdir -p /root/.composer
-RUN cp /home/$user/.composer/auth.json /root/.composer/auth.json
 
 FROM php AS dev
 

@@ -93,7 +93,16 @@ This application revolutionizes the way you create Laravel admin panels by combi
 TODO
 
 ### 2. **Generate Schema**
-TODO
+After configuring your LLM provider, you are ready to generate your admin panel schema:
+- Go to the "Generation" section.
+- Enter a name for your new project.
+- Select an LLM model from the list of connected providers.
+- Describe your project in detail in the provided field. The more specific and detailed your description, the higher the quality of the generated admin panel. Specify entities, relationships between them, required fields, user roles, and any special business logic.
+- Click the "Start Generation Schema" button.
+
+MoonVibe will automatically analyze your requirements and generate a complete admin panel structure: database schemas, models, migrations, and MoonShine resources. You can track the generation progress in real time. Once it’s finished, you can preview or download your ready-to-use project—or instantly test its functionality right from the MoonVibe interface by clicking the "Testing project" button.
+
+![image](https://github.com/user-attachments/assets/c04fd80a-e29f-45a6-8b2d-171e94902956)
 
 ### **LLM Providers Setup**
 
@@ -102,7 +111,7 @@ TODO
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://choosealicense.com/licenses/mit) for details.
 
 ## 🆘 Support
 

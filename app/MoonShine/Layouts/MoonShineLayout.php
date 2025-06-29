@@ -80,8 +80,6 @@ class MoonShineLayout extends CompactLayout
                 ->icon('pencil-square'),
             MenuItem::make(__('app.menu.settings'), SettingsPage::class)
                 ->icon('cog-8-tooth'),
-            MenuItem::make(__('app.menu.about'), AboutPage::class)
-                ->icon('information-circle'),
 
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(

@@ -43,7 +43,6 @@ class MoonShineServiceProvider extends ServiceProvider
             ->pages([
                 ...$config->getPages(),
                 SettingsPage::class,
-                AboutPage::class,
             ])
         ;
     }

@@ -21,7 +21,6 @@ use MoonShine\Laravel\Layouts\CompactLayout;
 use MoonShine\Laravel\Resources\MoonShineUserResource;
 use MoonShine\MenuManager\MenuGroup;
 use MoonShine\MenuManager\MenuItem;
-use MoonShine\Rush\Services\Rush;
 use MoonShine\UI\Components\{Components,
     Layout\Body,
     Layout\Content,
@@ -37,6 +36,7 @@ use MoonShine\UI\Components\{Components,
     When};
 use App\MoonShine\Resources\LlmResource;
 use App\MoonShine\Resources\PromptResource;
+use MoonShine\Twirl\Components\Twirl;
 
 class MoonShineLayout extends CompactLayout
 {
@@ -155,8 +155,7 @@ class MoonShineLayout extends CompactLayout
                             ])->class('layout-page')->name(self::CONTENT_FRAGMENT_NAME),
                         ])->class('flex grow overflow-auto')->customAttributes(['id' => self::CONTENT_ID]),
                     ]),
-                    Rush::components()->htmlReload(),
-                    Rush::components()->jsEvent(),
+                    Twirl::make(),
                 ])->class('theme-minimalistic'),
             ])
                 ->customAttributes([

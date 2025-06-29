@@ -16,10 +16,10 @@
         "moonshine/easymde": "^1.0",
         "moonshine/moonshine": "^3.7",
         "moonshine/ru": "^1.0",
-        "moonshine/rush": "^2.0",
         "moonshine/tinymce": "^1.0",
         "openai-php/laravel": "^0.11.0",
-        "dev-lnk/moonshine-builder": "^2.3"
+        "dev-lnk/moonshine-builder": "^2.3",
+        "moonshine/twirl": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -82,11 +82,5 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://moonshine-laravel.com/repository/"
-        }
-    ]
+    "prefer-stable": true
 }

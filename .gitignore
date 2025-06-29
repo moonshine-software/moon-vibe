@@ -25,3 +25,4 @@ yarn-error.log
 /docker/volumes
 .php-cs-fixer.cache
 /admin
+/packages

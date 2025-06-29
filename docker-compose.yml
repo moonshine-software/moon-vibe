@@ -17,9 +17,6 @@ services:
       args:
         user: ${DOCKER_USER}
         uid: 1000
-        #gh_token: ${GH_TOKEN}
-        ms_user: ${MS_USER}
-        ms_pass: ${MS_PASS}
         target: dev
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
@@ -89,9 +86,6 @@ services:
 #      args:
 #        user: ${DOCKER_USER}
 #        uid: 1000
-#        gh_token: ${GH_TOKEN}
-#        ms_user: ${MS_USER}
-#        ms_pass: ${MS_PASS}
 #      context: .
 #      dockerfile: ./docker/dockerfiles/php/Dockerfile
 #      target: scheduler
@@ -108,9 +102,6 @@ services:
       args:
         user: ${DOCKER_USER}
         uid: 1000
-        #gh_token: ${GH_TOKEN}
-        ms_user: ${MS_USER}
-        ms_pass: ${MS_PASS}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: worker

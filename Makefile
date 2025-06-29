@@ -110,18 +110,6 @@ npm-build:
 npm-host:
 	docker-compose run --rm --service-ports $(app-npm) run dev --host $(c)
 
-#app
-.PHONY: admin
-admin:
-	tar -xvf storage/app/private/builds/1/app/project.tar.gz -C "storage" && chown -R $(DOCKER_USER):$(DOCKER_USER) storage/project && cd storage/project && cp .env.example .env && make build && make install
-
-.PHONY: clear
-clear: clear-dir
-
-.PHONY: clear-dir
-clear-dir:
-	sudo rm -rf storage/project
-
 .PHONY: deploy
 deploy:
 	git tag $(t) && git push origin $(t)

@@ -4,8 +4,6 @@ WORKDIR /var/www/app
 
 ARG user
 ARG uid
-ARG ms_user
-ARG ms_pass
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -37,11 +35,6 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
-
-COPY ./docker/config/php/auth.json /home/$user/.composer/auth.json
-
-RUN sed -i "s/\"ms_user\"/\"$ms_user\"/" /home/$user/.composer/auth.json
-RUN sed -i "s/\"ms_pass\"/\"$ms_pass\"/" /home/$user/.composer/auth.json
 
 RUN mkdir -p /root/.composer
 RUN cp /home/$user/.composer/auth.json /root/.composer/auth.json

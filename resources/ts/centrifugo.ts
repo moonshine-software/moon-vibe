@@ -29,10 +29,10 @@ document.addEventListener("moonshine:init", async () => {
     });
 
     centrifuge.on('connected', () => {
-        document.dispatchEvent(new CustomEvent('moonshine:rush'));
+        document.dispatchEvent(new CustomEvent('moonshine:twirl'));
     }).connect();
 
-    window.MoonShine.onCallback('onMoonShineWS', function(channel: string, onRush: (data: any) => void): void {
+    window.MoonShine.onCallback('onTwirl', function(channel: string, onTwirl: (data: any) => void): void {
         if(centrifuge.getSubscription(channel) !== null) {
             return;
         }
@@ -40,19 +40,11 @@ document.addEventListener("moonshine:init", async () => {
         const sub = centrifuge.newSubscription(channel);
 
         sub.on('publication', function(ctx: PublicationContext): void {
-            onRush(ctx.data);
-        }).on('subscribing', (): void => {
-            document.dispatchEvent(new CustomEvent('rush-subscribe:'));
+            onTwirl(ctx.data);
         }).on('error', (error): void => {
             console.log(error)
         })
             .subscribe()
-    });
-
-    window.MoonShine.onCallback('rushPublish', function(channel: string, data: any[]): void {
-        centrifuge.publish(channel, data).then().catch(error => {
-            console.error('Failed to publish message:', error);
-        });
     });
 });
 

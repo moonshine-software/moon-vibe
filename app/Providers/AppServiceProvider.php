@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\SchemaGenerateContract;
-use MoonShine\Rush\Contracts\RushBroadcastContract;
+use MoonShine\Twirl\Contracts\TwirlBroadcastContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict(! app()->isProduction());
 
-        $this->app->bind(RushBroadcastContract::class, Centrifugo::class);
+        $this->app->bind(TwirlBroadcastContract::class, Centrifugo::class);
 
         moonShineAssets()->add([new Js(Vite::asset('resources/ts/app.ts'))]);
         moonShineAssets()->add([new Css(Vite::asset('resources/css/app.css'))]);

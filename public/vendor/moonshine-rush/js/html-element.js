@@ -1,1 +1,0 @@
-document.addEventListener("moonshine:rush",()=>{const n=window.MoonShine,t=document.getElementById("html-element-ws");if(t===null)return;const e=t.getAttribute("data-channel");e!==null&&n.callbacks.onMoonShineWS&&(console.log("html-element-ws",e),n.callbacks.onMoonShineWS(e,o=>{switch(o.event){case"test":console.log("test");break}}))});

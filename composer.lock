@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdb29a97b9ad7b8aff2a16408616e246",
+    "content-hash": "0ea576b86296cf8f3d6f594f00b6d6f2",
     "packages": [
         {
             "name": "brick/math",
@@ -2559,59 +2559,6 @@
             "time": "2024-07-27T15:57:26+00:00"
         },
         {
-            "name": "moonshine/rush",
-            "version": "2.1.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://moonshine-laravel.com/repository/download/1/2.1.3"
-            },
-            "require": {
-                "php": "^8.2"
-            },
-            "conflict": {
-                "moonshine/moonshine": "<3.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^9.0",
-                "phpstan/phpstan": "^1.11",
-                "phpunit/phpunit": "^11.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "MoonShine\\Rush\\Providers\\MoonShineRushProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "MoonShine\\Rush\\": "src/"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "MoonShine\\Rush\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Levchenko",
-                    "email": "lkivanmail@gmail.com",
-                    "homepage": "https://github.com/dev-lnk"
-                }
-            ],
-            "description": "Web sockets for MoonShine",
-            "keywords": [
-                "moonshine",
-                "rush",
-                "web socket"
-            ]
-        },
-        {
             "name": "moonshine/tinymce",
             "version": "1.0.8",
             "source": {
@@ -2674,6 +2621,69 @@
                 "source": "https://github.com/moonshine-software/tinymce"
             },
             "time": "2025-06-17T15:59:24+00:00"
+        },
+        {
+            "name": "moonshine/twirl",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moonshine-software/twirl.git",
+                "reference": "d7877524d550d301c0355629f4ccc514bfd1010f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moonshine-software/twirl/zipball/d7877524d550d301c0355629f4ccc514bfd1010f",
+                "reference": "d7877524d550d301c0355629f4ccc514bfd1010f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "conflict": {
+                "moonshine/moonshine": "<3.0"
+            },
+            "require-dev": {
+                "moonshine/moonshine": "3.x-dev",
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^12.0",
+                "rector/rector": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MoonShine\\Twirl\\Providers\\TwirlServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MoonShine\\Twirl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Levchenko",
+                    "email": "lkivanmail@gmail.com",
+                    "homepage": "https://github.com/dev-lnk"
+                }
+            ],
+            "description": "Web sockets for MoonShine for component reload",
+            "homepage": "https://moonshine.cutcode.dev",
+            "keywords": [
+                "moonshine",
+                "twirl",
+                "web socket"
+            ],
+            "support": {
+                "issues": "https://github.com/moonshine-software/twirl/issues",
+                "source": "https://github.com/moonshine-software/twirl"
+            },
+            "time": "2025-06-28T22:56:00+00:00"
         },
         {
             "name": "nesbot/carbon",

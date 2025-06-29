@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Throwable;
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
-use App\Repositories\ProjectRepository;
-use App\Repositories\PromptRepository;
-use MoonShine\Rush\Enums\HtmlReloadAction;
-use MoonShine\Rush\Services\Rush;
-use MoonShine\Support\AlpineJs;
 use MoonShine\Support\Enums\Color;
-use MoonShine\Support\Enums\JsEvent;
 use MoonShine\UI\Components\Badge;
-use Throwable;
+use MoonShine\Support\Enums\JsEvent;
+use App\Repositories\PromptRepository;
+use MoonShine\Twirl\Events\TwirlEvent;
+use App\Repositories\ProjectRepository;
+use MoonShine\Twirl\Enums\HtmlReloadAction;
 
 readonly class GenerateSchemaService
 {
@@ -144,18 +143,19 @@ readonly class GenerateSchemaService
                 'class' => 'schema-id-' . $schema->id
             ]);
 
-        Rush::events()->htmlReload(
+        TwirlEvent::dispatch(
             '.schema-id-' . $schema->id,
             (string) $badge,
             HtmlReloadAction::OUTER_HTML
         );
 
-        Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
+        // TODO reload table in .ts
+        #Rush::events()->js(AlpineJs::event(JsEvent::TABLE_ROW_UPDATED, "schemas-{$schema->id}"));
     }
 
     private function sendEvent(string $event, int $schemaId): void
     {
-        Rush::events()->htmlReload(
+        TwirlEvent::dispatch(
             '.schema-id-' . $schemaId,
             (string) Badge::make(__('app.schema.generation') . ': ' .  $event)->customAttributes([
                 'class' => 'schema-id-' . $schemaId

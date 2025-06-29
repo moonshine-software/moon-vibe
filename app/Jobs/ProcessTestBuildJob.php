@@ -12,10 +12,10 @@ use App\Models\ProjectSchema;
 use App\Support\ChangeLocale;
 use Illuminate\Bus\Queueable;
 use App\Services\SchemaValidator;
-use MoonShine\Rush\Services\Rush;
 use App\Exceptions\BuildException;
 use Illuminate\Support\Facades\Log;
 use App\Services\MakeAdmin\MakeAdmin;
+use MoonShine\Twirl\Events\TwirlEvent;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -64,7 +64,7 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
             'status_id' => BuildStatus::IN_PROGRESS,
         ]);
 
-        Rush::events()->htmlReload(
+        TwirlEvent::dispatch(
             '#build-component-' . $projectSchema->project->id,
             (string) ProjectBuildComponent::fromBuild($build)
         );
@@ -86,7 +86,7 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
                 Storage::disk('local')->path('builds/' . $build->moonshine_user_id),
                 logger: $logger,
                 alertFunction: function(string $alert, int $percent) use ($build): void {
-                    Rush::events()->htmlReload(
+                    TwirlEvent::dispatch(
                         '#build-component-' . $build->projectSchema->project->id,
                         (string) ProjectBuildComponent::fromBuild($build, $percent, $alert)
                     );
@@ -110,7 +110,7 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
 
             $build->refresh();
 
-            Rush::events()->htmlReload(
+            TwirlEvent::dispatch(
                 '#build-component-' . $projectSchema->project->id,
                 (string) ProjectBuildComponent::fromBuild($build)
             );

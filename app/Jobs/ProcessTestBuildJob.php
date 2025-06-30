@@ -72,6 +72,10 @@ class ProcessTestBuildJob implements ShouldQueue, ShouldBeUnique
         try {
             $projectSchema = $build->projectSchema;
 
+            if($projectSchema->schema === null) {
+                throw new BuildException('Schema is empty');
+            }
+
             $errors = (new SchemaValidator())->validate($projectSchema->schema);
             if ($errors !== '') {
                 $build->update([

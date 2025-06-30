@@ -17,7 +17,7 @@ class SchemaDetailPage extends DetailPage
         /** @var ProjectSchema|null $schema */
         $schema = $this->getResource()?->getItem();
 
-        if ($schema === null) {
+        if ($schema === null || $schema->schema === null) {
             return [];
         }
 

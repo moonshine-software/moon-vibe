@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property int $project_id
- * @property string $schema
+ * @property ?string $schema
  * @property string $first_prompt
  * @property SchemaStatus $status_id
  * @property ?string $error

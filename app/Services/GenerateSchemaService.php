@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\SchemaStatus;
+use App\Exceptions\BuildException;
 use App\Models\ProjectSchema;
 use App\Repositories\ProjectRepository;
 use App\Repositories\PromptRepository;
@@ -41,6 +42,10 @@ readonly class GenerateSchemaService
         $schemaResult = null;
 
         try {
+            if($schema->project->llm === null) {
+                throw new BuildException('LLM not found for project');
+            }
+
             $api = $this->llmProviderBuilder->getProviderApi($schema->project->llm->provider->value, $schema->project->llm->model);
 
             $messages = $this->getMessages($prompt, $schema, $isCorrectPrompt);

@@ -21,7 +21,7 @@ use MoonShine\Laravel\Models\MoonshineUser;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property MoonshineUser $moonshineUser
- * @property LargeLanguageModel $llm
+ * @property ?LargeLanguageModel $llm
  * @property Collection<int, ProjectSchema> $schemas
  */
 class Project extends Model

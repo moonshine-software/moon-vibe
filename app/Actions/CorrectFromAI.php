@@ -32,6 +32,10 @@ readonly class CorrectFromAI
             throw new GenerateException(__('app.schema.schema_not_found'));
         }
 
+        if($schema->project->llm === null) {
+            throw new GenerateException('LLM not found for project');
+        }
+
         $schema->status_id = SchemaStatus::PENDING;
         $schema->save();
 

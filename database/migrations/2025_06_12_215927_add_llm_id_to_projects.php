@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->unsignedBigInteger('llm_id')->nullable();
+            $table->unsignedBigInteger('llm_id')->after('moonshine_user_id')->nullable();
 
             $table->foreign('llm_id')->references('id')->on('large_language_models')
                 ->nullOnDelete()

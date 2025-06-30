@@ -78,6 +78,11 @@ class SettingsPage extends Page
 
             Select::make(__('app.settings.language'), 'lang')->options([
                 'en' => 'English',
+                'de' => 'German',
+                'fr' => 'French',
+                'it' => 'Italian',
+                'es' => 'Spanish',
+                'pt' => 'Portuguese',
                 'ru' => 'Russian',
             ])->default('en'),
         ]);

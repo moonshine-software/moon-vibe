@@ -31,7 +31,7 @@ return [
     'download'        => 'Download',
     'edit'            => 'Edit',
     'export'          => 'Export',
-    'file'            => 'The :attribute field must be a file.',
+    'file'            => 'Le champ :attribute doit être un fichier.',
     'filters'         => 'Filters',
     'import'          => 'Import',
     'loading'         => 'Loading ...',

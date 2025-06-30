@@ -15,9 +15,8 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 > To use this package you need API tokens for OpenAI/DeepSeek
 
 ### Installation
-1. Execute:
+1. Clone the repository:
 ```bash
-# Clone the repository
 git clone git@github.com:moonshine-software/moon-vibe.git
 ```
 2. Copy `.env.example` to `.env`

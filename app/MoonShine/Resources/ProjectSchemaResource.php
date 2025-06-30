@@ -6,6 +6,7 @@ namespace App\MoonShine\Resources;
 
 use App\Enums\SchemaStatus;
 use App\Models\ProjectSchema;
+use App\Repositories\ProjectRepository;
 use App\Services\SchemaValidator;
 use App\Services\SimpleSchema;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
@@ -95,7 +96,7 @@ class ProjectSchemaResource extends ModelResource
             Box::make([
                 ID::make('id'),
                 BelongsTo::make(__('app.schema.project'), 'project', resource: ProjectResource::class),
-                Textarea::make('', 'schema')->changeFill(function (ProjectSchema $data, Textarea $field): string {
+                Textarea::make('', 'schema')->changeFill(function (ProjectSchema $data, Textarea $field): ?string {
                     $field->customAttributes([
                         'class' => 'schema-edit-id-' . $data->id,
                         'rows' => 20,
@@ -133,6 +134,25 @@ class ProjectSchemaResource extends ModelResource
             ->validate(request()->string('schema')->value());
 
         $item->status_id = $item->error === '' ? SchemaStatus::SUCCESS : SchemaStatus::ERROR;
+
+        return $item;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    protected function afterCreated(mixed $item): mixed
+    {
+        if($item->first_prompt !== null) {
+            return $item;
+        }
+
+        $project = new ProjectRepository()->getProject((int) $item->project_id);
+        if($project !== null) {
+            $item->first_prompt = $project->description;
+        }
+        $item->save();
+        $item->refresh();
 
         return $item;
     }

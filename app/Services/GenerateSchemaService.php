@@ -176,9 +176,9 @@ readonly class GenerateSchemaService
         if (! empty($schemaResult)) {
             $schema->schema = $schemaResult;
         }
-        $schema->error = __("moonshine.schema.server_error");
+        $schema->error = __('schema.server_error');
         $schema->save();
-        $this->sendEvent(__("moonshine.schema.server_error"), (int) $schema->id);
+        $this->sendEvent(__('schema.server_error'), (int) $schema->id);
         report($e);
     }
 

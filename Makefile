@@ -16,7 +16,7 @@ build:
 	@echo "$(APP_URL)"
 
 .PHONY: install
-install: composer-install composer-update migrate-fresh npm-install npm-update npm-build
+install: composer-install composer-update migrate-fresh npm-install npm-update npm-build restart-worker
 	@echo "$(APP_URL)"
 
 .PHONY: rebuild
@@ -51,6 +51,10 @@ it-nginx:
 .PHONY: it-mysql
 it-mysql:
 	docker exec -it $(mysql) /bin/bash
+
+.PHONY: restart-worker
+restart-worker:
+	docker restart $(COMPOSE_PROJECT_NAME)-worker
 
 .PHONY: migrate
 migrate:

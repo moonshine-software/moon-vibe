@@ -82,14 +82,13 @@ readonly class MakeAdmin
             new Optimize(...$operationValues),
             new RemoveVendorDirectory(...$operationValues),
             new ArchiveDirectory(...$operationValues),
+            new RemoveAdminDirectory(...$operationValues),
         ];
 
         $totalOperations = count($operations);
         for ($i = 0; $i < $totalOperations; $i++) {
             $operations[$i]->handle((int) round($i * 100 / $totalOperations));
         }
-
-        new RemoveAdminDirectory(...$operationValues)->handle(100);
 
         return $this->directories->appArchiveFile;
     }

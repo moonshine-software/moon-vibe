@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\Prompt;
+use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
@@ -72,12 +73,17 @@ class PromptResource extends ModelResource
         ];
     }
 
+    /**
+     * @return array<int, FieldContract>
+     */
     protected function indexPageComponents(): array
     {
-        return [
+        /** @var  array<int, FieldContract> $components */
+        $components = [
             Divider::make(),
             Alert::make(type: 'info')->content(__('app.prompts.alert')),
         ];
+        return $components;
     }
 
     public function rules(mixed $item): array

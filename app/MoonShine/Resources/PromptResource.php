@@ -9,8 +9,15 @@ use MoonShine\Laravel\Pages\Crud\DetailPage;
 use MoonShine\Laravel\Pages\Crud\FormPage;
 use MoonShine\Laravel\Pages\Crud\IndexPage;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\Support\Enums\Color;
 use MoonShine\Support\Enums\SortDirection;
+use MoonShine\UI\Components\Alert;
+use MoonShine\UI\Components\Badge;
+use MoonShine\UI\Components\Collapse;
+use MoonShine\UI\Components\FlexibleRender;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Components\Layout\Divider;
+use MoonShine\UI\Components\Popover;
 use MoonShine\UI\Fields\ID;
 use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Text;
@@ -62,6 +69,14 @@ class PromptResource extends ModelResource
             Text::make(__('app.prompt_resource.title'), 'title'),
             Textarea::make(__('app.prompt_resource.prompt'), 'prompt'),
             Number::make(__('app.prompt_resource.order'), 'order'),
+        ];
+    }
+
+    protected function indexPageComponents(): array
+    {
+        return [
+            Divider::make(),
+            Alert::make(type: 'info')->content(__('app.prompts.alert')),
         ];
     }
 

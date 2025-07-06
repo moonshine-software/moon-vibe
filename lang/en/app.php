@@ -60,6 +60,9 @@ return [
         'correction' => 'Schema Correction',
         'prompt' => 'Prompt'
     ],
+    'prompts' => [
+        'alert' => 'Prompts data will be sent with your main request to create a project. It is not recommended to correct <b>Main prompt</b>. However, you can add additional examples for better generation. Follow the number of context when adding examples!'
+    ],
     'build' => [
         'cloning_repository' => 'Cloning rep.',
         'installing_dependencies' => 'Installing dependencies',

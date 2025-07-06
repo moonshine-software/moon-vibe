@@ -12,6 +12,7 @@ use App\MoonShine\Pages\Project\ProjectFormPage;
 use App\Services\SimpleSchema;
 use DevLnk\MoonShineBuilder\Services\CodeStructure\Factories\StructureFromArray;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use MoonShine\Contracts\UI\ActionButtonContract;
 use MoonShine\Contracts\UI\ComponentContract;
 use MoonShine\Contracts\UI\FormBuilderContract;
 use MoonShine\Laravel\Enums\Action;
@@ -111,6 +112,9 @@ class ProjectResource extends ModelResource
                         ->withConfirm(
                             '',
                             __('app.project.download_confirm'),
+                            formBuilder: fn(FormBuilderContract $builder): FormBuilderContract => $builder->submit(
+                                button: ActionButton::make(__('moonshine::ui.confirm'))->success()
+                            )
                         )
                     ,
                     ActionButton::make(
@@ -121,6 +125,9 @@ class ProjectResource extends ModelResource
                         ->withConfirm(
                             '',
                             __('app.project.test_confirm'),
+                            formBuilder: fn(FormBuilderContract $builder): FormBuilderContract => $builder->submit(
+                                button: ActionButton::make(__('moonshine::ui.confirm'))->success()
+                            )
                         )
                     ,
                     ActionButton::make(
@@ -128,7 +135,7 @@ class ProjectResource extends ModelResource
                         url: fn (ProjectSchema $model) => route('ai-request.correct', ['schemaId' => $model->getKey()])
                     )
                         ->withConfirm(
-                            __('app.project.correction'),
+                            title: __('app.project.correction'),
                             formBuilder: function (
                                 FormBuilderContract $builder,
                                 ProjectSchema $schema
@@ -165,7 +172,7 @@ class ProjectResource extends ModelResource
                                     ]);
 
                                 return $builder;
-                            },
+                            }
                         ),
                 ])
                 ->searchable(false)

@@ -127,6 +127,7 @@ class MoonShineLayout extends CompactLayout
 
         $colorManager
             ->primary('#454b51')
+            ->primary('120, 67, 233', dark: true)
         ;
     }
 

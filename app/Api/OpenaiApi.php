@@ -8,7 +8,7 @@ use App\Contracts\SchemaGenerateContract;
 use App\Exceptions\GenerateException;
 use OpenAI\Laravel\Facades\OpenAI;
 
-class OpenaiApi implements SchemaGenerateContract
+readonly class OpenaiApi implements SchemaGenerateContract
 {
     public function __construct(
         private string $model,

@@ -9,14 +9,15 @@ use App\Exceptions\GenerateException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
-class DeepSeek implements SchemaGenerateContract
+readonly class DeepSeek implements SchemaGenerateContract
 {
-    private string $url = 'https://api.deepseek.com/chat/completions';
+    private string $url;
 
     public function __construct(
         private string $model,
         private string $token
     ) {
+        $this->url = 'https://api.deepseek.com/chat/completions';
     }
 
     /**

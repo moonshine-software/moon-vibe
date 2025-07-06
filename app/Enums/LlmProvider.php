@@ -10,11 +10,14 @@ enum LlmProvider: int
 
     case DEEP_SEEK = 2;
 
+    case OPEN_ROUTER = 3;
+
     public function toString(): string
     {
         return match($this) {
             self::OPEN_AI => 'OpenAI',
             self::DEEP_SEEK => 'DeepSeek',
+            self::OPEN_ROUTER => 'OpenRouter',
         };
     }
 
@@ -23,6 +26,7 @@ enum LlmProvider: int
         return match($this) {
             self::OPEN_AI => 'openai.api_key',
             self::DEEP_SEEK => 'llm.deep-seek-token',
+            self::OPEN_ROUTER => 'llm.open-router-token',
         };
     }
 }

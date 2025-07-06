@@ -21,7 +21,7 @@ git clone git@github.com:moonshine-software/moon-vibe.git
 ```
 2. Copy `.env.example` to `.env`
 3. Change the `os_user` parameter to the OS user of your system for stable operation
-4. Add `OPENAI_API_KEY` and/or `DEEP_SEEK_TOKEN` to the `.env` file for API requests
+4. Add `OpenRouter` and/or `OpenAI`/`DEEP_SEEK_TOKEN` to the `.env` file for API requests
 5. Run:
 ```bash
 # Quick setup with Make
@@ -34,6 +34,7 @@ make up
 6. Go to http://localhost:80
 7. Use for login: `admin@mail.com/12345`
 8. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`, or for OpenRouter, copy the name of the model, for example `openai/gpt-4.1`)
+![2025-07-06_16-01-52](https://github.com/user-attachments/assets/dcf1616d-5bcf-45fb-89a3-05b51008bc20)
 9. You can now go to the **Generation** section and start using the application
 
 ### **Generate Schema**

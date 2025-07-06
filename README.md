@@ -21,7 +21,7 @@ git clone git@github.com:moonshine-software/moon-vibe.git
 ```
 2. Copy `.env.example` to `.env`
 3. Change the `os_user` parameter to the OS user of your system for stable operation
-4. Add `OpenRouter` and/or `OpenAI`/`DEEP_SEEK_TOKEN` to the `.env` file for API requests
+4. Add `OPEN_ROUTER_TOKEN` and/or `OPENAI_API_KEY`/`DEEP_SEEK_TOKEN` to the `.env` file for API requests
 5. Run:
 ```bash
 # Quick setup with Make

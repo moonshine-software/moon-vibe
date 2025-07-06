@@ -18,8 +18,8 @@ use MoonShine\Laravel\Pages\LoginPage;
 
 return [
     'title' => env('MOONSHINE_TITLE', 'Ms-Builder'),
-    'logo' => 'icon.png',
-    'logo_small' => 'icon.png',
+    'logo' => 'moon-vibe-full.png',
+    'logo_small' => 'moon-vibe.png',
 
 
     // Default flags

@@ -164,31 +164,32 @@ class MoonShineLayout extends CompactLayout
         ]);
     }
 
-    protected function getSidebarComponent(): Sidebar
-    {
-        return Sidebar::make([
-            Div::make([
-                Menu::make(),
-                When::make(
-                    fn (): bool => $this->isProfileEnabled(),
-                    fn (): array => [
-                        $this->getProfileComponent(sidebar: true),
-                    ],
-                ),
-            ])->customAttributes([
-                'class' => 'menu',
-                ':class' => "asideMenuOpen && '_is-opened'",
-                'style' => 'margin-top: 10rem',
-            ]),
-        ])
-            ->collapsed();
-    }
+//    // Without logo and theme switcher
+//    protected function getSidebarComponent(): Sidebar
+//    {
+//        return Sidebar::make([
+//            Div::make([
+//                Menu::make(),
+//                When::make(
+//                    fn (): bool => $this->isProfileEnabled(),
+//                    fn (): array => [
+//                        $this->getProfileComponent(sidebar: true),
+//                    ],
+//                ),
+//            ])->customAttributes([
+//                'class' => 'menu',
+//                ':class' => "asideMenuOpen && '_is-opened'",
+//                'style' => 'margin-top: 10rem',
+//            ]),
+//        ])
+//            ->collapsed();
+//    }
 
     protected function getProfileComponent(bool $sidebar = false): Profile
     {
         return Profile::make(
             logOutRoute: route('logout'),
-            avatar: fn () => '/icon.png',
+            avatar: fn () => '/moon-vibe.png',
             withBorder: $sidebar
         );
     }

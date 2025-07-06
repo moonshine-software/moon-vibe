@@ -112,7 +112,7 @@ This application revolutionizes the way you create Laravel admin panels by combi
 
 1. **OpenAI**: [OpenAI Platform](https://platform.openai.com)
 2. **DeepSeek**: [DeepSeek Platform](https://platform.deepseek.com)
-2. **OpenRouter**: [DeepSeek Platform](https://openrouter.ai)
+2. **OpenRouter**: [OpenRouter Platform](https://openrouter.ai)
 
 ## 📄 License
 

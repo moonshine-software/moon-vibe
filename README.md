@@ -12,7 +12,7 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 
 > The project runs only in Docker.
 
-> To use this package you need API tokens for OpenAI/DeepSeek
+> To use this package you need API tokens for OpenRouter/OpenAI/DeepSeek
 
 ### Installation
 1. Clone the repository:
@@ -33,7 +33,7 @@ make up
 ```
 6. Go to http://localhost:80
 7. Use for login: `admin@mail.com/12345`
-8. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`)
+8. Navigate to the **LLM** section and add your API model (for OpenAI, for example `gpt-4.1-mini`, or for OpenRouter, copy the name of the model, for example `openai/gpt-4.1`)
 9. You can now go to the **Generation** section and start using the application
 
 ### **Generate Schema**
@@ -109,8 +109,9 @@ This application revolutionizes the way you create Laravel admin panels by combi
 
 ### **LLM Providers Setup**
 
-1. **OpenAI**: Get API key from [OpenAI Platform](https://platform.openai.com)
-2. **DeepSeek**: Register at [DeepSeek Platform](https://platform.deepseek.com)
+1. **OpenAI**: [OpenAI Platform](https://platform.openai.com)
+2. **DeepSeek**: [DeepSeek Platform](https://platform.deepseek.com)
+2. **OpenRouter**: [DeepSeek Platform](https://openrouter.ai)
 
 ## 📄 License
 

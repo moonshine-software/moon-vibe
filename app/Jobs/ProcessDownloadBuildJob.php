@@ -107,7 +107,7 @@ class ProcessDownloadBuildJob implements ShouldQueue, ShouldBeUnique
             } catch (Throwable $e) {
                 $build->update([
                     'status_id' => BuildStatus::ERROR,
-                    'errors' => 'Server error',
+                    'errors' => $e->getMessage(),
                 ]);
                 report($e);
             }

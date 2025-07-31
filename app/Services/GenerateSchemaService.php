@@ -181,7 +181,7 @@ readonly class GenerateSchemaService
         if (! empty($schemaResult)) {
             $schema->schema = $schemaResult;
         }
-        $schema->error = __('schema.server_error');
+        $schema->error = $e->getMessage();
         $schema->save();
         $this->sendEvent(__('schema.server_error'), (int) $schema->id);
         report($e);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Api\ClaudeApi;
 use App\Api\DeepSeek;
 use App\Api\OpenaiApi;
 use App\Api\OpenRouterApi;
@@ -20,6 +21,7 @@ class LlmProviderBuilder
             LlmProvider::OPEN_AI->value => new OpenaiApi($model),
             LlmProvider::DEEP_SEEK->value => new DeepSeek($model, config(LlmProvider::DEEP_SEEK->configTokenKey())),
             LlmProvider::OPEN_ROUTER->value => new OpenRouterApi($model, config(LlmProvider::OPEN_ROUTER->configTokenKey())),
+            LlmProvider::CLAUDE->value => new ClaudeApi($model, config(LlmProvider::CLAUDE->configTokenKey())),
             default => throw new GenerateException('Not found LLM for generation')
         };
     }

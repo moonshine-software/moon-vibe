@@ -56,6 +56,10 @@ it-mysql:
 restart-worker:
 	docker restart $(COMPOSE_PROJECT_NAME)-worker
 
+.PHONY: logs
+logs:
+	docker logs -f $(COMPOSE_PROJECT_NAME)-worker
+
 .PHONY: migrate
 migrate:
 	docker exec $(app) php $(path)/artisan migrate

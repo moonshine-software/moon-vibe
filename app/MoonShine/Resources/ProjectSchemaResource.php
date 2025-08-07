@@ -64,7 +64,7 @@ class ProjectSchemaResource extends ModelResource
         return [
             Preview::make(__('app.schema.status'), formatted: function (ProjectSchema $schema) {
                 if ($schema->status_id === SchemaStatus::ERROR) {
-                    return (string) Badge::make('Ошибка: ' . $schema->error, Color::RED)->customAttributes([
+                    return (string) Badge::make('Error - ' . $schema->error, Color::RED)->customAttributes([
                         'class' => 'schema-id-' . $schema->id,
                     ]);
                 }

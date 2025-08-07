@@ -15,9 +15,8 @@ services:
   php:
     build:
       args:
-        user: ${DOCKER_USER}
-        uid: 1000
-        target: dev
+        gid: ${GID}
+        uid: ${UID}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: dev
@@ -84,8 +83,8 @@ services:
 #    container_name: ${COMPOSE_PROJECT_NAME}-scheduler
 #    build:
 #      args:
-#        user: ${DOCKER_USER}
-#        uid: 1000
+#        gid: ${GID}
+#        uid: ${UID}
 #      context: .
 #      dockerfile: ./docker/dockerfiles/php/Dockerfile
 #      target: scheduler
@@ -100,8 +99,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-worker
     build:
       args:
-        user: ${DOCKER_USER}
-        uid: 1000
+        gid: ${GID}
+        uid: ${UID}
       context: .
       dockerfile: ./docker/dockerfiles/php/Dockerfile
       target: worker

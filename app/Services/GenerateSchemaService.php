@@ -130,13 +130,13 @@ readonly class GenerateSchemaService
 
     private function save(ProjectSchema $schema, string $error, string $schemaResult): void
     {
-        $this->sendEvent("сохранение", (int)$schema->id);
+        $this->sendEvent("save", $schema->id);
 
         $status = $error === '' ? SchemaStatus::SUCCESS
             : SchemaStatus::ERROR;
 
         $schema->status_id = $status;
-        $schema->schema = $schemaResult;
+        $schema->schema = $schemaResult !== '' ? $schemaResult : null;
         $schema->error = $error !== '' ? $error : null;
         $schema->save();
 
@@ -183,7 +183,7 @@ readonly class GenerateSchemaService
         }
         $schema->error = $e->getMessage();
         $schema->save();
-        $this->sendEvent(__('schema.server_error'), (int) $schema->id);
+        $this->sendEvent('Error - ' . $e->getMessage(), $schema->id);
         report($e);
     }
 

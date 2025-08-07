@@ -84,7 +84,7 @@ readonly class GenerateSchemaService
                     ];
                     $messages[] = [
                         'role' => 'user',
-                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой.",
+                        'content' => "You made a mistake:$error, do not send apologies, try to re-generate the scheme and send it in JSON format with a fixed error.",
                     ];
 
                     $isValidSchema = false;

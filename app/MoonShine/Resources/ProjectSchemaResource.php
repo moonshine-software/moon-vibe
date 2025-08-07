@@ -103,7 +103,7 @@ class ProjectSchemaResource extends ModelResource
                     ]);
 
                     return $data->schema;
-                }),
+                })->unescape(),
             ]),
         ];
     }

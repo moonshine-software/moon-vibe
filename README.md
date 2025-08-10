@@ -25,8 +25,7 @@ git clone git@github.com:moonshine-software/moon-vibe.git
 5. Run:
 ```bash
 # Quick setup with Make
-make build
-make install
+make init
 
 # Then you can run the project with the following command:
 make up

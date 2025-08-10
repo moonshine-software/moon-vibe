@@ -9,9 +9,12 @@ app-npm := npm
 path := /var/www/app
 
 #docker
+.PHONY: init
+init: build install
+
 .PHONY: build
 build:
-	docker-compose -f docker-compose.yml up --build -d $(c)
+	docker compose -f docker-compose.yml up --build -d $(c)
 	@echo "Run command: make install"
 	@echo "$(APP_URL)"
 
@@ -21,20 +24,25 @@ install: composer-install composer-update migrate-fresh npm-install npm-update n
 
 .PHONY: rebuild
 rebuild:
-	docker-compose up -d --force-recreate --no-deps --build $(r)
+	@read -p "All images and containers will be deleted and rebuilt, continue? [Y/n] " ans; \
+	case "$$ans" in ""|[Yy]) ;; *) echo "Aborted."; exit 1;; esac
+	docker compose down --remove-orphans
+	IMAGES=$$(docker images --filter=reference="$(COMPOSE_PROJECT_NAME)*:*" -q); \
+	if [ -n "$$IMAGES" ]; then docker rmi $$IMAGES -f; else @echo "No images to remove"; fi
+	make build
 
 .PHONY: rebuild-app
 rebuild-app:
-	docker-compose up -d --force-recreate --no-deps --build php
+	docker compose up -d --force-recreate --no-deps --build php
 
 .PHONY: up
 up:
-	docker-compose -f docker-compose.yml up -d $(c)
+	docker compose -f docker-compose.yml up -d $(c)
 	@echo "$(APP_URL)"
 
 .PHONY: stop
 stop:
-	docker-compose -f docker-compose.yml stop $(c)
+	docker compose -f docker-compose.yml stop $(c)
 
 .PHONY: it
 it:
@@ -100,23 +108,23 @@ analyse:
 #npm
 .PHONY: npm
 npm:
-	docker-compose run --rm --service-ports $(app-npm) $(c)
+	docker compose run --rm --service-ports $(app-npm) $(c)
 
 .PHONY: npm-install
 npm-install:
-	docker-compose run --rm --service-ports $(app-npm) install $(c)
+	docker compose run --rm --service-ports $(app-npm) install $(c)
 
 .PHONY: npm-update
 npm-update:
-	docker-compose run --rm --service-ports $(app-npm) update $(c)
+	docker compose run --rm --service-ports $(app-npm) update $(c)
 
 .PHONY: npm-build
 npm-build:
-	docker-compose run --rm --service-ports $(app-npm) run build $(c)
+	docker compose run --rm --service-ports $(app-npm) run build $(c)
 
 .PHONY: npm-host
 npm-host:
-	docker-compose run --rm --service-ports $(app-npm) run dev --host $(c)
+	docker compose run --rm --service-ports $(app-npm) run dev --host $(c)
 
 .PHONY: deploy
 deploy:

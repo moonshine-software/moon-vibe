@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\LlmProvider;
 use App\Enums\SchemaStatus;
 use App\Exceptions\BuildException;
 use App\Models\ProjectSchema;
@@ -90,6 +91,10 @@ readonly class GenerateSchemaService
                     $isValidSchema = false;
                 }
 
+                // Simple bypass HTTP 429 error in Claude
+                if ($schema->project->llm->provider === LlmProvider::CLAUDE) {
+                    sleep(1);
+                }
                 $tries++;
             } while ($isValidSchema === false && $tries < $generateTries);
 

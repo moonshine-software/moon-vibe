@@ -91,10 +91,6 @@ readonly class GenerateSchemaService
                     $isValidSchema = false;
                 }
 
-                // Simple bypass HTTP 429 error in Claude
-                if ($schema->project->llm->provider === LlmProvider::CLAUDE) {
-                    sleep(1);
-                }
                 $tries++;
             } while ($isValidSchema === false && $tries < $generateTries);
 

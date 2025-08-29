@@ -1,8 +1,8 @@
-FROM php:8.4.7-fpm AS php
+FROM php:8.4-fpm AS php
 
 WORKDIR /var/www/app
 
-ARG user
+ARG gid
 ARG uid
 
 RUN apt-get update && apt-get install -y \
@@ -31,12 +31,8 @@ RUN pecl install redis \
 
 COPY --from=composer:2.8.9 /usr/bin/composer /usr/bin/composer
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
-
-RUN mkdir -p /root/.composer
+RUN groupadd -g ${gid} app-user && useradd -u ${uid} -g app-user -m -s /bin/bash app-user
+RUN mkdir -p /var/www/app && chown -R app-user:app-user /var/www/app
 
 FROM php AS dev
 
@@ -59,7 +55,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
 
-USER $user
+USER app-user
 
 FROM php AS build
 

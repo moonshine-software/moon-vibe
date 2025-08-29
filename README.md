@@ -20,13 +20,12 @@ Forget about days of admin panel development! MoonVibe is an AI-powered tool for
 git clone git@github.com:moonshine-software/moon-vibe.git
 ```
 2. Copy `.env.example` to `.env`
-3. Change the `os_user` parameter to the OS user of your system for stable operation
+3. Install `UID` and `GID` user of your OS
 4. Add `OPEN_ROUTER_TOKEN` and/or `OPENAI_API_KEY`/`DEEP_SEEK_TOKEN` to the `.env` file for API requests
 5. Run:
 ```bash
 # Quick setup with Make
-make build
-make install
+make init
 
 # Then you can run the project with the following command:
 make up
@@ -47,6 +46,8 @@ After configuring your LLM provider, you are ready to generate your admin panel 
 
 MoonVibe will automatically analyze your requirements and generate a complete admin panel structure: database schemas, models, migrations, and MoonShine resources. You can track the generation progress in real time. Once it’s finished, you can preview or download your ready-to-use project—or instantly test its functionality right from the MoonVibe interface by clicking the "Testing project" button.
 
+> You can watch the log of your request by completing the command in the console`make logs`
+> 
 ![2025-07-06_13-24-32](https://github.com/user-attachments/assets/eb57d793-c50b-41ec-a9c5-e371061ca432)
 
 ## 🎯 What is MoonShine AI Admin Generator?

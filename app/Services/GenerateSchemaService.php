@@ -85,7 +85,7 @@ readonly class GenerateSchemaService
                     ];
                     $messages[] = [
                         'role' => 'user',
-                        'content' => "Ты допустил ошибку: $error, не присылай извинений, попробуй повторно сгенерировать схему и прислать её в формате JSON с исправленной ошибкой.",
+                        'content' => "You made a mistake:$error, do not send apologies, try to re-generate the scheme and send it in JSON format with a fixed error.",
                     ];
 
                     $isValidSchema = false;
@@ -131,13 +131,13 @@ readonly class GenerateSchemaService
 
     private function save(ProjectSchema $schema, string $error, string $schemaResult): void
     {
-        $this->sendEvent("сохранение", (int)$schema->id);
+        $this->sendEvent("save", $schema->id);
 
         $status = $error === '' ? SchemaStatus::SUCCESS
             : SchemaStatus::ERROR;
 
         $schema->status_id = $status;
-        $schema->schema = $schemaResult;
+        $schema->schema = $schemaResult !== '' ? $schemaResult : null;
         $schema->error = $error !== '' ? $error : null;
         $schema->save();
 
@@ -184,7 +184,7 @@ readonly class GenerateSchemaService
         }
         $schema->error = $e->getMessage();
         $schema->save();
-        $this->sendEvent(__('schema.server_error'), (int) $schema->id);
+        $this->sendEvent('Error - ' . $e->getMessage(), $schema->id);
         report($e);
     }
 

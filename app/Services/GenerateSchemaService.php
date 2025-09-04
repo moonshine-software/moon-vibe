@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\LlmProvider;
 use App\Enums\SchemaStatus;
 use App\Exceptions\BuildException;
 use App\Models\ProjectSchema;

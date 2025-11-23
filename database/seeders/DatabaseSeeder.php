@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@mail.com',
             'moonshine_user_role_id' => 1,
             'password' => Hash::make('12345'),
-            'settings' => '{"build": {"repository": "https://github.com/dev-lnk/moonshine-blank.git"}, "generation": {"attempts": 5}}'
+            'settings' => '{"build": {"repository": "https://github.com/dev-lnk/moonshine-blank-v4.git"}, "generation": {"attempts": 5}}'
         ]);
     }
 }

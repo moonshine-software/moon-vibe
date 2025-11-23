@@ -72,7 +72,6 @@ readonly class MakeAdmin
         $operations = [
             new CloneRepository(...$operationValues)->setRepository($buildRepository),
             new InstallDependencies(...$operationValues),
-            new InstallMoonshineBuilder(...$operationValues),
             new InstallMarkdown(...$operationValues),
             new InstallTinyMce(...$operationValues),
             new PublishMoonshineBuilder(...$operationValues),
@@ -109,7 +108,6 @@ readonly class MakeAdmin
             new CopyEnv(...$operationValues),
             new SetTestSettings(...$operationValues),
             new InstallDependencies(...$operationValues),
-            new InstallMoonshineBuilder(...$operationValues),
             new InstallMarkdown(...$operationValues),
             new InstallTinyMce(...$operationValues),
             new PublishMoonshineBuilder(...$operationValues),

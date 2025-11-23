@@ -8,6 +8,10 @@ class InstallDependencies extends AbstractMakeOperation
     {
         $this->alert(__('app.build.installing_dependencies'), $percent);
 
-        $this->runProcess(['composer', 'install'], 'Failed to install dependencies');
+        $this->runProcess(
+            ['composer', 'install'],
+            'Failed to install dependencies',
+            $this->directories->appProjectDirectory
+        );
     }
 }

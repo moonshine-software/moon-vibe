@@ -229,9 +229,9 @@ You must, according to my next request, generate in a single file the admin pane
 
 ## Stack
 
-- The schema is written for the MoonShine v3 admin panel and Laravel 11,12
+- The schema is written for the MoonShine v4 admin panel and Laravel 11,12
 - Use methods for migrations from Laravel
-- Use methods for fields from MoonShine v3
+- Use methods for fields from MoonShine v4
 
 
 ## General instructions
